@@ -10,6 +10,7 @@ const GROUND = '.';
 
 const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 20;
+const STARS_QUANTITY = 20;
 
 class Predator {
 
@@ -40,10 +41,22 @@ class Rock {
     }
 }
 
+class Star {
+    constructor(y,x) {
+        this.x = x;
+        this.y = y;
+    }
+
+    changeState(world) {
+        const flag = world[this.y+1][this.x] === ' ';
+        if (flag) this.y += 1;
+    }
+}
+
 
 class World {
 
-    constructor(height, width, predators_q, rocks) {
+    constructor(height, width, predators_q, rocks, stars) {
         this.rand_positions = null;
         this.height = height;
         this.width = width;
@@ -56,12 +69,18 @@ class World {
         }
 
        
-
         //Rocks
         this.ROCKS = [];
         for (let i = 0; i < rocks; i++) {
             const rip = this.rndomizer(); //predator init position
             this.ROCKS.push(new Rock(rip.y, rip.x));
+        }
+
+        //Stars
+        this.STARS = [];
+        for (let i = 0; i < stars; i++) {
+            const rip = this.rndomizer(); //predator init position
+            this.STARS.push(new Star(rip.y, rip.x));
         }
 
         this.world = this.generate();
@@ -85,8 +104,9 @@ class World {
 
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
 
-        this.ROCKS.forEach(R => WORLD[R.y][R.x] = 'O');
+        this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
 
+        this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
         return WORLD;
     }
@@ -116,10 +136,11 @@ class World {
     tick() {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState());
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world));
+        this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.world = this.generate();
     }
 
 }
 
 
-const THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY);
+const THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY);
