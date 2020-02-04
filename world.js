@@ -11,6 +11,7 @@ const GROUND = '.';
 const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 20;
 const STARS_QUANTITY = 20;
+const BREAKS_QUANTITY = 40;
 
 class Predator {
 
@@ -56,10 +57,17 @@ class Star {
 
 class World {
 
-    constructor(height, width, predators_q, rocks, stars) {
+    constructor(height, width, predators_q, rocks, stars, breaks) {
         this.rand_positions = null;
         this.height = height;
         this.width = width;
+
+        //Breaks
+        this.BREAKS = [];
+        for (let i = 0; i < breaks; i++) {
+            const bip = this.rndomizer(); //break init position
+            this.BREAKS.push(bip);
+        }
 
         //Predators
         this.PREDATORS = [];
@@ -108,6 +116,8 @@ class World {
 
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
+        this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
+
         return WORLD;
     }
 
@@ -143,4 +153,4 @@ class World {
 }
 
 
-const THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY);
+const THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY);
