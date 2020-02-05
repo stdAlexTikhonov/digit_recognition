@@ -85,9 +85,29 @@ class Rock {
         this.y = y;
     }
 
+    check_way_down(world) {
+        return  world[this.y+1][this.x] === ' ';
+    }
+
+    move_possible(world) {
+        return ['+', 'O', '*'].includes(world[this.y+1][this.x])
+    }
+
+    check_way_left(world) {
+        return world[this.y][this.x-1] === ' ' && world[this.y+1][this.x-1] === ' ';
+    }
+
+    check_way_right(world) {
+        return world[this.y][this.x+1] === ' ' && world[this.y+1][this.x+1] === ' ';
+    }
+
     changeState(world) {
-        const flag = world[this.y+1][this.x] === ' ';
-        if (flag) this.y += 1;
+        if (this.check_way_down(world)) this.y += 1;
+        else if (this.move_possible(world)) {
+            if (this.check_way_left(world)) this.x -= 1;
+             else if (this.check_way_right(world)) this.x += 1;
+        }
+        
     }
 }
 
