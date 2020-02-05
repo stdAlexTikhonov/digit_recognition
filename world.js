@@ -11,7 +11,7 @@ const GROUND = '.';
 const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 20;
 const STARS_QUANTITY = 20;
-const BREAKS_QUANTITY = 40;
+const BREAKS_QUANTITY = 100;
 
 class Predator {
 
@@ -139,7 +139,6 @@ class World {
     }
 
     print() {
-        
         return this.world.map(row => row.join(' ')).join('\n');
     }
 
