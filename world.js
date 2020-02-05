@@ -24,6 +24,7 @@ class Player {
         this.y = y;
         this.score = 0;
         this.dir = UP;
+        this.passed_points = [];
     }
 
     check(nxt, world) {
@@ -33,16 +34,28 @@ class Player {
     changeState(world) {
         switch  (this.dir) {
             case UP:
-                if (this.check({x: this.x, y: this.y - 1}, world)) this.y -= 1;
+                if (this.check({x: this.x, y: this.y - 1}, world)) { 
+                    this.y -= 1;
+                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                }
                 break;
             case DOWN:
-                if (this.check({x: this.x, y: this.y + 1}, world)) this.y += 1;
+                if (this.check({x: this.x, y: this.y + 1}, world)) { 
+                    this.y += 1;
+                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                }
                 break;
             case LEFT:
-                if (this.check({x: this.x - 1, y: this.y}, world)) this.x -= 1;
+                if (this.check({x: this.x - 1, y: this.y}, world)) { 
+                    this.x -= 1; 
+                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                }
                 break;
             case RIGHT:
-                if (this.check({x: this.x + 1, y: this.y}, world)) this.x += 1;
+                if (this.check({x: this.x + 1, y: this.y}, world)) { 
+                    this.x += 1;
+                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                }
                 break;
         }
     }
@@ -97,6 +110,7 @@ class World {
         this.rand_positions = null;
         this.height = height;
         this.width = width;
+        this.passed_points = [];
 
         //Breaks
         this.BREAKS = [];
@@ -157,6 +171,8 @@ class World {
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
+
+        this.player.passed_points.forEach(P => WORLD[P.y][P.x] = ' ');
 
         WORLD[this.player.y][this.player.x] = PLAYER;
 
