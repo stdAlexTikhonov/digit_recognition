@@ -1,6 +1,11 @@
 const WIDTH = 30;
 const HEIGHT = 30;
 
+const UP = 'UP';
+const DOWN = 'DOWN';
+const LEFT = 'LEFT';
+const RIGHT = 'RIGHT';
+
 const PLAYER = 'A';
 const ROCK = 'O';
 const FOOD = '*';
@@ -12,6 +17,37 @@ const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 20;
 const STARS_QUANTITY = 20;
 const BREAKS_QUANTITY = 100;
+
+class Player {
+    constructor(x,y) {
+        this.x = x;
+        this.y = y;
+        this.score = 0;
+        this.dir = UP;
+    }
+
+    check(nxt, world) {
+        return [' ', '*', '.'].includes(world[nxt.y][nxt.x]);
+    }
+
+    changeState(world) {
+        switch  (this.dir) {
+            case UP:
+                if (this.check({x: this.x, y: this.y - 1}, world)) this.y -= 1;
+                break;
+            case DOWN:
+                if (this.check({x: this.x, y: this.y + 1}, world)) this.y += 1;
+                break;
+            case LEFT:
+                if (this.check({x: this.x - 1, y: this.y}, world)) this.x -= 1;
+                break;
+            case RIGHT:
+                if (this.check({x: this.x + 1, y: this.y}, world)) this.x += 1;
+                break;
+        }
+    }
+
+}
 
 class Predator {
 
@@ -91,6 +127,10 @@ class World {
             this.STARS.push(new Star(rip.y, rip.x));
         }
 
+        const pp = this.rndomizer();//player position
+
+        this.player = new Player(pp.x,pp.y);
+
         this.world = this.generate();
         
         
@@ -117,6 +157,8 @@ class World {
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
+
+        WORLD[this.player.y][this.player.x] = PLAYER;
 
         return WORLD;
     }
@@ -146,6 +188,7 @@ class World {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState());
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
+        this.player.changeState(this.world);
         this.world = this.generate();
     }
 
