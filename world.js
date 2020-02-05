@@ -164,6 +164,8 @@ class World {
         WORLD[0] = FIRST_ROW;
         WORLD[this.height-1] = LAST_ROW;
 
+        this.player.passed_points.forEach(P => WORLD[P.y][P.x] = ' ');
+
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
@@ -172,7 +174,7 @@ class World {
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
 
-        this.player.passed_points.forEach(P => WORLD[P.y][P.x] = ' ');
+        
 
         WORLD[this.player.y][this.player.x] = PLAYER;
 
