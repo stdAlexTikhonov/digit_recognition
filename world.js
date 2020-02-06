@@ -32,6 +32,14 @@ class Player {
         return [' ', '*', '.'].includes(world[nxt.y][nxt.x]);
     }
 
+    check_force_move_left(world) {
+        return world[this.y][this.x-1] === ROCK && world[this.y][this.x-2] === ' ' && this.force;
+    }
+
+    check_force_move_right(world) {
+        return world[this.y][this.x+1] === ROCK && world[this.y][this.x+2] === ' ' && this.force;
+    }
+
     changeState(world) {
         switch  (this.dir) {
             case UP:
@@ -50,13 +58,13 @@ class Player {
                 if (this.check({x: this.x - 1, y: this.y}, world)) { 
                     this.x -= 1; 
                     if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
-                }
+                } else if (this.check_force_move_left(world)) this.x -= 1;
                 break;
             case RIGHT:
                 if (this.check({x: this.x + 1, y: this.y}, world)) { 
                     this.x += 1;
                     if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
-                }
+                } else if (this.check_force_move_right(world)) this.x += 1;
                 break;
         }
     }
