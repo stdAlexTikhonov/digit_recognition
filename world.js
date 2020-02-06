@@ -25,6 +25,7 @@ class Player {
         this.score = 0;
         this.dir = UP;
         this.passed_points = [];
+        this.force = false;
     }
 
     check(nxt, world) {
@@ -101,12 +102,26 @@ class Rock {
         return world[this.y][this.x+1] === ' ' && world[this.y+1][this.x+1] === ' ';
     }
 
-    changeState(world) {
+    check_force_move_left(world) {
+        return world[this.y][this.x-1] === ' ' && world[this.y][this.x+1] === PLAYER;
+    }
+
+    check_force_move_right(world) {
+        return world[this.y][this.x+1] === ' ' && world[this.y][this.x-1] === PLAYER;
+    }
+
+    changeState(world, force) {
         if (this.check_way_down(world)) this.y += 1;
+        else if (this.check_force_move_left(world) && force) {
+            this.x -= 1
+        }
+        else if (this.check_force_move_right(world) && force) {
+            this.x += 1
+        }
         else if (this.move_possible(world)) {
             if (this.check_way_left(world)) this.x -= 1;
              else if (this.check_way_right(world)) this.x += 1;
-        }
+        } 
         
     }
 }
@@ -244,7 +259,7 @@ class World {
 
     tick() {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState());
-        this.ROCKS.forEach(ROCK => ROCK.changeState(this.world));
+        this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player.force));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.player.changeState(this.world);
         this.world = this.generate();

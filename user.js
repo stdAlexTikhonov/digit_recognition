@@ -1,16 +1,25 @@
 document.onkeydown = e => {
+    const current_direction = THE_WORLD.player.dir;
     switch (e.keyCode) {
         case 37:
-            THE_WORLD.player.dir = LEFT;
+            if (THE_WORLD.player.dir === LEFT) THE_WORLD.player.force = true;
+            else THE_WORLD.player.dir = LEFT;
             break;
         case 38:
-            THE_WORLD.player.dir = UP;
+            if (THE_WORLD.player.dir === UP) THE_WORLD.player.force = true;
+            else THE_WORLD.player.dir = UP;
             break;
         case 39:
-            THE_WORLD.player.dir = RIGHT;
+            if (THE_WORLD.player.dir === RIGHT) THE_WORLD.player.force = true;
+            else THE_WORLD.player.dir = RIGHT;
             break;
         case 40:
-            THE_WORLD.player.dir = DOWN;
+            if (THE_WORLD.player.dir === DOWN) THE_WORLD.player.force = true;
+            else THE_WORLD.player.dir = DOWN;
             break;
     }
 };
+
+document.onkeyup = e => {
+    THE_WORLD.player.force = false;
+}
