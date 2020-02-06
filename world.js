@@ -12,6 +12,7 @@ const FOOD = '*';
 const BREAK = '+';
 const WALL = '#';
 const GROUND = '.';
+const EMPTY = ' ';
 
 const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 20;
@@ -29,15 +30,15 @@ class Player {
     }
 
     check(nxt, world) {
-        return [' ', '*', '.'].includes(world[nxt.y][nxt.x]);
+        return [EMPTY, '*', '.'].includes(world[nxt.y][nxt.x]);
     }
 
     check_force_move_left(world) {
-        return world[this.y][this.x-1] === ROCK && world[this.y][this.x-2] === ' ' && this.force;
+        return world[this.y][this.x-1] === ROCK && world[this.y][this.x-2] === EMPTY && this.force;
     }
 
     check_force_move_right(world) {
-        return world[this.y][this.x+1] === ROCK && world[this.y][this.x+2] === ' ' && this.force;
+        return world[this.y][this.x+1] === ROCK && world[this.y][this.x+2] === EMPTY && this.force;
     }
 
     changeState(world) {
@@ -95,7 +96,7 @@ class Rock {
     }
 
     check_way_down(world) {
-        return  world[this.y+1][this.x] === ' ';
+        return  world[this.y+1][this.x] === EMPTY;
     }
 
     move_possible(world) {
@@ -103,19 +104,19 @@ class Rock {
     }
 
     check_way_left(world) {
-        return world[this.y][this.x-1] === ' ' && world[this.y+1][this.x-1] === ' ';
+        return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY;
     }
 
     check_way_right(world) {
-        return world[this.y][this.x+1] === ' ' && world[this.y+1][this.x+1] === ' ';
+        return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY;
     }
 
     check_force_move_left(world) {
-        return world[this.y][this.x-1] === ' ' && world[this.y][this.x+1] === PLAYER;
+        return world[this.y][this.x-1] === EMPTY && world[this.y][this.x+1] === PLAYER;
     }
 
     check_force_move_right(world) {
-        return world[this.y][this.x+1] === ' ' && world[this.y][this.x-1] === PLAYER;
+        return world[this.y][this.x+1] === EMPTY && world[this.y][this.x-1] === PLAYER;
     }
 
     changeState(world, force) {
@@ -141,7 +142,7 @@ class Star {
     }
 
     check_way_down(world) {
-        return  world[this.y+1][this.x] === ' ';
+        return  world[this.y+1][this.x] === EMPTY;
     }
 
     move_possible(world) {
@@ -149,11 +150,11 @@ class Star {
     }
 
     check_way_left(world) {
-        return world[this.y][this.x-1] === ' ' && world[this.y+1][this.x-1] === ' ';
+        return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY;
     }
 
     check_way_right(world) {
-        return world[this.y][this.x+1] === ' ' && world[this.y+1][this.x+1] === ' ';
+        return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY;
     }
 
     changeState(world) {
@@ -227,7 +228,7 @@ class World {
         WORLD[0] = FIRST_ROW;
         WORLD[this.height-1] = LAST_ROW;
 
-        this.player.passed_points.forEach(P => WORLD[P.y][P.x] = ' ');
+        this.player.passed_points.forEach(P => WORLD[P.y][P.x] = EMPTY);
 
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
 
@@ -262,7 +263,7 @@ class World {
     }
 
     print() {
-        return this.world.map(row => row.join(' ')).join('\n');
+        return this.world.map(row => row.join(EMPTY)).join('\n');
     }
 
     tick() {
