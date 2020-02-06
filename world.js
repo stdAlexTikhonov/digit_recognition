@@ -18,6 +18,7 @@ const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 20;
 const STARS_QUANTITY = 20;
 const BREAKS_QUANTITY = 100;
+const EMPTY_CHARS = 100;
 
 class Player {
     constructor(x,y) {
@@ -25,7 +26,8 @@ class Player {
         this.y = y;
         this.score = 0;
         this.dir = UP;
-        this.passed_points = [];
+        this.EMPTIES = [];
+
         this.force = false;
     }
 
@@ -46,25 +48,25 @@ class Player {
             case UP:
                 if (this.check({x: this.x, y: this.y - 1}, world)) { 
                     this.y -= 1;
-                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 }
                 break;
             case DOWN:
                 if (this.check({x: this.x, y: this.y + 1}, world)) { 
                     this.y += 1;
-                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 }
                 break;
             case LEFT:
                 if (this.check({x: this.x - 1, y: this.y}, world)) { 
                     this.x -= 1; 
-                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 } else if (this.check_force_move_left(world)) this.x -= 1;
                 break;
             case RIGHT:
                 if (this.check({x: this.x + 1, y: this.y}, world)) { 
                     this.x += 1;
-                    if (!this.passed_points.some(point => point.x === this.x && point.y === this.y)) this.passed_points.push({ x: this.x, y: this.y});
+                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 } else if (this.check_force_move_right(world)) this.x += 1;
                 break;
         }
@@ -174,7 +176,6 @@ class World {
         this.rand_positions = null;
         this.height = height;
         this.width = width;
-        this.passed_points = [];
 
         //Breaks
         this.BREAKS = [];
@@ -204,10 +205,15 @@ class World {
             const rip = this.rndomizer(); //predator init position
             this.STARS.push(new Star(rip.y, rip.x));
         }
-
+        
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.x,pp.y);
+
+        for (let i = 0; i < EMPTY_CHARS; i++) {
+            const eip = this.rndomizer(); //predator init position
+            this.player.EMPTIES.push(new Star(eip.y, eip.x));
+        }
 
         this.world = this.generate();
         
@@ -228,7 +234,7 @@ class World {
         WORLD[0] = FIRST_ROW;
         WORLD[this.height-1] = LAST_ROW;
 
-        this.player.passed_points.forEach(P => WORLD[P.y][P.x] = EMPTY);
+        this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = EMPTY);
 
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
 
