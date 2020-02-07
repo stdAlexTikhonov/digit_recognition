@@ -24,8 +24,9 @@ class Player {
     constructor(x,y) {
         this.x = x;
         this.y = y;
-        this.score = 0;
+        this.scores = 0;
         this.dir = UP;
+        this.scores = 0;
         this.EMPTIES = [];
 
         this.force = false;
@@ -70,6 +71,7 @@ class Player {
                 } else if (this.check_force_move_right(world)) this.x += 1;
                 break;
         }
+        if (world[this.y][this.x] === FOOD) this.scores++;
     }
 
 }
@@ -141,6 +143,7 @@ class Star {
     constructor(y,x) {
         this.x = x;
         this.y = y;
+        this.still_here = true;
     }
 
     check_way_down(world) {
@@ -160,7 +163,8 @@ class Star {
     }
 
     changeState(world) {
-        if (this.check_way_down(world)) this.y += 1;
+        if (world[this.y][this.x] === PLAYER) this.still_here = false;
+        else if (this.check_way_down(world)) this.y += 1;
         else if (this.move_possible(world)) {
             if (this.check_way_left(world)) this.x -= 1;
              else if (this.check_way_right(world)) this.x += 1;
@@ -212,7 +216,7 @@ class World {
 
         for (let i = 0; i < EMPTY_CHARS; i++) {
             const eip = this.rndomizer(); //predator init position
-            this.player.EMPTIES.push(new Star(eip.y, eip.x));
+            this.player.EMPTIES.push({y: eip.y, x: eip.x});
         }
 
         this.world = this.generate();
@@ -240,11 +244,11 @@ class World {
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
 
+        this.STARS = this.STARS.filter(STAR => STAR.still_here);
+
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
-
-        
 
         WORLD[this.player.y][this.player.x] = PLAYER;
 
@@ -269,7 +273,7 @@ class World {
     }
 
     print() {
-        return this.world.map(row => row.join(EMPTY)).join('\n');
+        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + this.player.scores;
     }
 
     tick() {
