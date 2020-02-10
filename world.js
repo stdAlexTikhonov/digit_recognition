@@ -15,17 +15,17 @@ const GROUND = '.';
 const EMPTY = ' ';
 
 const PREDATOR_QUANTITY = 3;
-const ROCKS_QUANTITY = 20;
-const STARS_QUANTITY = 20;
-const BREAKS_QUANTITY = 100;
-const EMPTY_CHARS = 100;
+const ROCKS_QUANTITY = 0;
+const STARS_QUANTITY = 0;
+const BREAKS_QUANTITY = 0;
+const EMPTY_CHARS = 0;
 
 class Player {
     constructor(x,y) {
         this.x = x;
         this.y = y;
         this.scores = 0;
-        this.dir = UP;
+        this.dir = null;
         this.scores = 0;
         this.EMPTIES = [];
 
@@ -268,7 +268,7 @@ class World {
         }
 
         this.rand_positions.push(pos);
-
+        debugger;
         return pos;
     }
 
