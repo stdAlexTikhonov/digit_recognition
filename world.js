@@ -1,3 +1,4 @@
+//784 spaces
 const WIDTH = 30;
 const HEIGHT = 30;
 
@@ -14,10 +15,10 @@ const WALL = '#';
 const GROUND = '.';
 const EMPTY = ' ';
 
-const PREDATOR_QUANTITY = 3;
-const ROCKS_QUANTITY = 0;
-const STARS_QUANTITY = 0;
-const BREAKS_QUANTITY = 0;
+const PREDATOR_QUANTITY = 0;
+const ROCKS_QUANTITY = 30;
+const STARS_QUANTITY = 30;
+const BREAKS_QUANTITY = 100;
 const EMPTY_CHARS = 0;
 
 class Player {
@@ -177,7 +178,7 @@ class Star {
 class World {
 
     constructor(height, width, predators_q, rocks, stars, breaks) {
-        this.rand_positions = null;
+        this.rand_positions = [];
         this.height = height;
         this.width = width;
 
@@ -256,19 +257,19 @@ class World {
     }
 
     rndomizer() {
-        this.rand_positions = [];
+        
         let rand_x = Math.floor(Math.random() * (this.width - 2)) + 1;
-        let rand_y = Math.floor(Math.random() * (this.height - 2)) + 1;
+        let rand_y = Math.floor(Math.random() * (this.width - 2)) + 1;
         let pos = { x: rand_x, y: rand_y };
 
         while(this.rand_positions.some(el => el.x === pos.x && el.y === pos.y)) {
             rand_x = Math.floor(Math.random() * (this.width - 2)) + 1;
-            rand_y = Math.floor(Math.random() * (this.height - 2)) + 1;
+            rand_y = Math.floor(Math.random() * (this.width - 2)) + 1;
             pos = { x: rand_x, y: rand_y };
         }
 
         this.rand_positions.push(pos);
-    
+        
         return pos;
     }
 
