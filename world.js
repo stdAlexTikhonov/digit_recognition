@@ -25,9 +25,7 @@ class Player {
     constructor(x,y) {
         this.x = x;
         this.y = y;
-        this.scores = 0;
         this.dir = null;
-        this.scores = 0;
         this.EMPTIES = [];
 
         this.force = false;
@@ -72,7 +70,7 @@ class Player {
                 } else if (this.check_force_move_right(world)) this.x += 1;
                 break;
         }
-        if (world[this.y][this.x] === FOOD) this.scores++;
+        
     }
 
 }
@@ -147,6 +145,8 @@ class Star {
         this.still_here = true;
     }
 
+    static scores = 0;
+
     check_way_down(world) {
         return  world[this.y+1][this.x] === EMPTY;
     }
@@ -164,7 +164,7 @@ class Star {
     }
 
     changeState(world) {
-        if (world[this.y][this.x] === PLAYER) this.still_here = false;
+        if (world[this.y][this.x] === PLAYER) { if (this.still_here) { Star.scores += 1; this.still_here = false; } }
         else if (this.check_way_down(world)) this.y += 1;
         else if (this.move_possible(world)) {
             if (this.check_way_left(world)) this.x -= 1;
@@ -181,7 +181,6 @@ class World {
         this.rand_positions = [];
         this.height = height;
         this.width = width;
-
         //Breaks
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
@@ -211,6 +210,7 @@ class World {
             this.STARS.push(new Star(rip.y, rip.x));
         }
         
+       
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.x,pp.y);
@@ -245,9 +245,7 @@ class World {
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
 
-        this.STARS = this.STARS.filter(STAR => STAR.still_here);
-
-        this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
+        this.STARS.forEach(S => { if(S.still_here) WORLD[S.y][S.x] = FOOD });
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
 
@@ -274,7 +272,7 @@ class World {
     }
 
     print() {
-        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + this.player.scores;
+        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores;
     }
 
     tick() {
