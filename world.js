@@ -268,7 +268,7 @@ class World {
         }
 
         this.rand_positions.push(pos);
-        debugger;
+    
         return pos;
     }
 
