@@ -259,6 +259,7 @@ class World {
         if (!Rock.boom) WORLD[this.player.y][this.player.x] = PLAYER;
         else {
             this.STARS.push(new Star(this.player.y, this.player.x));
+            this.player.dir = null;
         }
 
         return WORLD;
