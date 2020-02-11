@@ -46,31 +46,31 @@ class Player {
     changeState(world) {
         switch  (this.dir) {
             case UP:
-                if (this.check({x: this.x, y: this.y - 1}, world)) { 
+                if (this.check({x: this.x, y: this.y - 1}, world)) {
                     this.y -= 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 }
                 break;
             case DOWN:
-                if (this.check({x: this.x, y: this.y + 1}, world)) { 
+                if (this.check({x: this.x, y: this.y + 1}, world)) {
                     this.y += 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 }
                 break;
             case LEFT:
-                if (this.check({x: this.x - 1, y: this.y}, world)) { 
-                    this.x -= 1; 
+                if (this.check({x: this.x - 1, y: this.y}, world)) {
+                    this.x -= 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 } else if (this.check_force_move_left(world)) this.x -= 1;
                 break;
             case RIGHT:
-                if (this.check({x: this.x + 1, y: this.y}, world)) { 
+                if (this.check({x: this.x + 1, y: this.y}, world)) {
                     this.x += 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 } else if (this.check_force_move_right(world)) this.x += 1;
                 break;
         }
-        
+
     }
 
 }
@@ -84,7 +84,7 @@ class Predator {
         this.x = x;
         this.y = y;
     }
-    
+
     changeState() {
         this.phase = this.phase < 3 ? this.phase + 1 : 0;
         this.show = this.phases[this.phase];
@@ -96,7 +96,10 @@ class Rock {
     constructor(y,x) {
         this.x = x;
         this.y = y;
+        this.killer = false;
     }
+
+    static boom = false;
 
     check_way_down(world) {
         return  world[this.y+1][this.x] === EMPTY;
@@ -123,6 +126,7 @@ class Rock {
     }
 
     changeState(world, force) {
+        if (world[this.y][this.x] === PLAYER) { Rock.boom = true; this.killer = true; }
         if (this.check_way_down(world)) this.y += 1;
         else if (this.check_force_move_left(world) && force) {
             this.x -= 1
@@ -133,8 +137,8 @@ class Rock {
         else if (this.move_possible(world)) {
             if (this.check_way_left(world)) this.x -= 1;
              else if (this.check_way_right(world)) this.x += 1;
-        } 
-        
+        }
+
     }
 }
 
@@ -170,7 +174,7 @@ class Star {
             if (this.check_way_left(world)) this.x -= 1;
              else if (this.check_way_right(world)) this.x += 1;
         }
-        
+
     }
 }
 
@@ -195,7 +199,7 @@ class World {
             this.PREDATORS.push(new Predator(pip.y, pip.x));
         }
 
-       
+
         //Rocks
         this.ROCKS = [];
         for (let i = 0; i < rocks; i++) {
@@ -209,8 +213,8 @@ class World {
             const rip = this.rndomizer(); //predator init position
             this.STARS.push(new Star(rip.y, rip.x));
         }
-        
-       
+
+
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.x,pp.y);
@@ -221,8 +225,8 @@ class World {
         }
 
         this.world = this.generate();
-        
-        
+
+
     }
 
     generate() {
@@ -235,7 +239,7 @@ class World {
         const WORLD = new Array(this.height)
 
         for (let i = 0; i < this.height; i++) WORLD[i] = MIDDLE.slice();
-        
+
         WORLD[0] = FIRST_ROW;
         WORLD[this.height-1] = LAST_ROW;
 
@@ -243,19 +247,25 @@ class World {
 
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
 
+        this.ROCKS = this.ROCKS.filter(rock => !rock.killer);
+
+
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
 
         this.STARS.forEach(S => { if(S.still_here) WORLD[S.y][S.x] = FOOD });
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
 
-        WORLD[this.player.y][this.player.x] = PLAYER;
+        if (!Rock.boom) WORLD[this.player.y][this.player.x] = PLAYER;
+        else {
+            this.STARS.push(new Star(this.player.y, this.player.x));
+        }
 
         return WORLD;
     }
 
     rndomizer() {
-        
+
         let rand_x = Math.floor(Math.random() * (this.width - 2)) + 1;
         let rand_y = Math.floor(Math.random() * (this.width - 2)) + 1;
         let pos = { x: rand_x, y: rand_y };
@@ -267,12 +277,12 @@ class World {
         }
 
         this.rand_positions.push(pos);
-        
+
         return pos;
     }
 
     print() {
-        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores;
+        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Rock: ' + Rock.boom;
     }
 
     tick() {
