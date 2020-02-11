@@ -97,11 +97,14 @@ class Rock {
         this.x = x;
         this.y = y;
         this.killer = false;
+        this.falling = false;
     }
 
     static boom = false;
 
     check_way_down(world) {
+        if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Rock.boom = true; }
+        this.falling = true;
         return  world[this.y+1][this.x] === EMPTY;
     }
 
@@ -110,10 +113,12 @@ class Rock {
     }
 
     check_way_left(world) {
+        this.falling = true;
         return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY;
     }
 
     check_way_right(world) {
+        this.falling = true;
         return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY;
     }
 
@@ -137,6 +142,8 @@ class Rock {
         else if (this.move_possible(world)) {
             if (this.check_way_left(world)) this.x -= 1;
              else if (this.check_way_right(world)) this.x += 1;
+        } else {
+            this.falling = false;
         }
 
     }
