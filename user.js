@@ -1,6 +1,6 @@
 document.onkeydown = e => {
     const current_direction = THE_WORLD.player.dir;
-    if (!Rock.boom) {
+    if (!Rock.boom && !Predator.win) {
         switch (e.keyCode) {
             case 37:
                 if (THE_WORLD.player.dir === LEFT) THE_WORLD.player.force = true;

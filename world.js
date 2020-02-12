@@ -91,6 +91,8 @@ class Predator {
         this.flag = false;
     }
 
+    static win = false;
+
     looking_around(world) {
         if (world[this.y][this.x-1] !== EMPTY) { this.dir_left = false; }
         if (world[this.y-1][this.x] !== EMPTY) { this.dir_up = false; }
@@ -143,16 +145,20 @@ class Predator {
         
         switch (this.dir) {
             case DOWN:
-                if (this.flag && world[this.y+1][this.x] === EMPTY) this.y += 1;
+                if (world[this.y+1][this.x] === PLAYER) Predator.win = true;
+                else if (this.flag && world[this.y+1][this.x] === EMPTY) this.y += 1;
                 break;
             case RIGHT:
-                if (this.flag && world[this.y][this.x+1] === EMPTY) this.x += 1;
+                if (world[this.y][this.x+1] === PLAYER) Predator.win = true;
+                else if (this.flag && world[this.y][this.x+1] === EMPTY) this.x += 1;
                 break;
             case UP:
-                if (this.flag && world[this.y-1][this.x] === EMPTY) this.y -= 1;
+                if (world[this.y-1][this.x] === PLAYER) Predator.win = true;
+                else if (this.flag && world[this.y-1][this.x] === EMPTY) this.y -= 1;
                 break;
             case LEFT:
-                if (this.flag && world[this.y][this.x-1] === EMPTY) this.x -= 1;
+                if (world[this.y][this.x-1] === PLAYER) Predator.win = true;
+                else if (this.flag && world[this.y][this.x-1] === EMPTY) this.x -= 1;
                 break;
         }
 
@@ -332,7 +338,7 @@ class World {
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
 
-        if (!Rock.boom) WORLD[this.player.y][this.player.x] = PLAYER;
+        if (!Rock.boom && !Predator.win) WORLD[this.player.y][this.player.x] = PLAYER;
         else {
             this.STARS.push(new Star(this.player.y, this.player.x));
             this.player.dir = null;
