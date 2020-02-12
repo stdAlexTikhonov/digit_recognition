@@ -88,6 +88,7 @@ class Predator {
         this.dir_up = false;
         this.dir_right = false;
         this.dir = DOWN;
+        this.flag = false;
     }
 
     looking_around(world) {
@@ -135,21 +136,23 @@ class Predator {
     changeState(world) {
         this.phase = this.phase < 3 ? this.phase + 1 : 0;
         this.show = this.phases[this.phase];
-        this.looking_around(world);
-        this.check_dir();
+        this.flag = !this.flag;
 
+        this.flag && this.looking_around(world);
+        this.flag && this.check_dir();
+        
         switch (this.dir) {
             case DOWN:
-                if (world[this.y+1][this.x] === EMPTY) this.y += 1;
+                if (this.flag && world[this.y+1][this.x] === EMPTY) this.y += 1;
                 break;
             case RIGHT:
-                if (world[this.y][this.x+1] === EMPTY) this.x += 1;
+                if (this.flag && world[this.y][this.x+1] === EMPTY) this.x += 1;
                 break;
             case UP:
-                if (world[this.y-1][this.x] === EMPTY) this.y -= 1;
+                if (this.flag && world[this.y-1][this.x] === EMPTY) this.y -= 1;
                 break;
             case LEFT:
-                if (world[this.y][this.x-1] === EMPTY) this.x -= 1;
+                if (this.flag && world[this.y][this.x-1] === EMPTY) this.x -= 1;
                 break;
         }
 
