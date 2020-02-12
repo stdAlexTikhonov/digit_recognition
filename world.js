@@ -15,11 +15,11 @@ const WALL = '#';
 const GROUND = '.';
 const EMPTY = ' ';
 
-const PREDATOR_QUANTITY = 1;
-const ROCKS_QUANTITY = 0;
-const STARS_QUANTITY = 0;
-const BREAKS_QUANTITY = 0;
-const EMPTY_CHARS = 400;
+const PREDATOR_QUANTITY = 3;
+const ROCKS_QUANTITY = 30;
+const STARS_QUANTITY = 30;
+const BREAKS_QUANTITY = 100;
+const EMPTY_CHARS = 500;
 
 class Player {
     constructor(x,y) {
@@ -87,42 +87,49 @@ class Predator {
         this.dir_left = false;
         this.dir_up = false;
         this.dir_right = false;
-        this.wall_left = false;
-        this.wall_up = false;
-        this.wall_right = false;
-        this.wall_down = false;
         this.dir = DOWN;
-        this.prev_dir = null;
     }
 
     looking_around(world) {
-        this.prev_dir = this.dir;
-        this.prevent = false;
-        if (world[this.y][this.x-1] !== EMPTY) { this.wall_left = true; this.dir_left = false; }
-        if (world[this.y-1][this.x] !== EMPTY) { this.wall_up = true; this.dir_up = false; }
-        if (world[this.y][this.x+1] !== EMPTY) { this.wall_right = true; this.dir_right = false; }
-        if (world[this.y+1][this.x] !== EMPTY) { this.wall_down = true; this.dir_down = false; }
+        if (world[this.y][this.x-1] !== EMPTY) { this.dir_left = false; }
+        if (world[this.y-1][this.x] !== EMPTY) { this.dir_up = false; }
+        if (world[this.y][this.x+1] !== EMPTY) { this.dir_right = false; }
+        if (world[this.y+1][this.x] !== EMPTY) { this.dir_down = false; }
 
-
-        if (world[this.y][this.x-1] === EMPTY) { this.dir_left = true; this.wall_left = false; }
-        if (world[this.y-1][this.x] === EMPTY) { this.dir_up = true; this.wall_up = false; }
-        if (world[this.y][this.x+1] === EMPTY) { this.dir_right = true; this.wall_right = false; }
-        if (world[this.y+1][this.x] === EMPTY) { this.dir_down = true; this.wall_down = false; }
+        if (world[this.y][this.x-1] === EMPTY) { this.dir_left = true; }
+        if (world[this.y-1][this.x] === EMPTY) { this.dir_up = true; }
+        if (world[this.y][this.x+1] === EMPTY) { this.dir_right = true; }
+        if (world[this.y+1][this.x] === EMPTY) { this.dir_down = true; }
     }
 
+
     check_dir() {
-
-        if (this.wall_down && this.wall_right && this. wall_up && this.wall_left) this.dir = null;
-        else if (this.wall_left && this.dir_down && [DOWN,LEFT].includes(this.prev_dir)) this.dir = DOWN;
-        else if (this.wall_down && this.dir_right && [RIGHT,DOWN].includes(this.prev_dir)) this.dir = RIGHT;
-        else if (this.wall_right && this.dir_up && [RIGHT,UP].includes(this.prev_dir)) this.dir = UP;
-        else if (this.wall_up && this.dir_left && [UP, LEFT].includes(this.prev_dir)) this.dir = LEFT;
-        else if (this.prev_dir === RIGHT && this.dir_down) this.dir = DOWN;
-        else if (this.prev_dir === UP && this.dir_right) this.dir = RIGHT;
-        else if (this.prev_dir === LEFT && this.dir_up) this.dir = UP;
-        else if (this.prev_dir === DOWN && this.dir_left) this.dir = LEFT;
-        else this.dir = null;
-
+        switch (this.dir) {
+            case DOWN:
+                if (this.dir_left) this.dir = LEFT;
+                else if (this.dir_down) this.dir = DOWN;
+                else if (this.dir_right) this.dir = RIGHT;
+                else this.dir = UP;
+                break;
+            case RIGHT:
+                if (this.dir_down) this.dir = DOWN;
+                else if (this.dir_right) this.dir = RIGHT;
+                else if (this.dir_up) this.dir = UP;
+                else this.dir = LEFT;
+                break;
+            case UP:
+                if (this.dir_right) this.dir = RIGHT;
+                else if (this.dir_up) this.dir = UP;
+                else if (this.dir_left) this.dir = LEFT;
+                else this.dir = DOWN;
+                break;
+            case LEFT:
+                if (this.dir_up) this.dir = UP;
+                else if (this.dir_left) this.dir = LEFT;
+                else if (this.dir_down) this.dir = DOWN;
+                else this.dir = RIGHT;
+                break;
+        }
     }
 
     changeState(world) {
@@ -133,16 +140,16 @@ class Predator {
 
         switch (this.dir) {
             case DOWN:
-                this.y += 1;
+                if (world[this.y+1][this.x] === EMPTY) this.y += 1;
                 break;
             case RIGHT:
-                this.x += 1;
+                if (world[this.y][this.x+1] === EMPTY) this.x += 1;
                 break;
             case UP:
-                this.y -= 1;
+                if (world[this.y-1][this.x] === EMPTY) this.y -= 1;
                 break;
             case LEFT:
-                this.x -= 1;
+                if (world[this.y][this.x-1] === EMPTY) this.x -= 1;
                 break;
         }
 
