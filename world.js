@@ -89,6 +89,7 @@ class Predator {
         this.dir_right = false;
         this.dir = DOWN;
         this.flag = false;
+        this.still_alive = true;
     }
 
     looking_around(world) {
@@ -96,6 +97,15 @@ class Predator {
         this.dir_up = world[this.y-1][this.x] === EMPTY;
         this.dir_right = world[this.y][this.x+1] === EMPTY;
         this.dir_down = world[this.y+1][this.x] === EMPTY;
+    }
+
+    find_player(world) {
+        const FOUND_PLAYER_LEFT = world[this.y][this.x-1] === PLAYER;
+        const FOUND_PLAYER_TOP = world[this.y-1][this.x] === PLAYER;
+        const FOUND_PLAYER_RIGHT = world[this.y][this.x+1] === PLAYER;
+        const FOUND_PLAYER_DOWN = world[this.y+1][this.x] === PLAYER;
+        
+        return FOUND_PLAYER_DOWN || FOUND_PLAYER_TOP || FOUND_PLAYER_LEFT || FOUND_PLAYER_RIGHT;
     }
 
 
@@ -132,7 +142,7 @@ class Predator {
         this.phase = this.phase < 3 ? this.phase + 1 : 0;
         this.show = this.phases[this.phase];
         this.flag = !this.flag;
-
+        if (this.find_player(world)) this.still_alive = false;
         this.flag && this.looking_around(world);
         this.flag && this.check_dir();
         
@@ -331,7 +341,7 @@ class World {
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = EMPTY);
 
-        this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
+        this.PREDATORS.forEach(P => { if (P.still_alive) WORLD[P.y][P.x] = P.show});
 
         this.ROCKS = this.ROCKS.filter(rock => !rock.killer);
 
