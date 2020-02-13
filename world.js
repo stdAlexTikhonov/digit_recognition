@@ -108,6 +108,10 @@ class Predator {
         return FOUND_PLAYER_DOWN || FOUND_PLAYER_TOP || FOUND_PLAYER_LEFT || FOUND_PLAYER_RIGHT;
     }
 
+    find_rock(world) {
+        return world[this.y-1][this.x] === ROCK;
+    }
+
 
     check_dir() {
         switch (this.dir) {
@@ -142,7 +146,7 @@ class Predator {
         this.phase = this.phase < 3 ? this.phase + 1 : 0;
         this.show = this.phases[this.phase];
         this.flag = !this.flag;
-        if (this.find_player(world)) this.still_alive = false;
+        if (this.find_player(world) || this.find_rock(world)) this.still_alive = false;
         this.flag && this.looking_around(world);
         this.flag && this.check_dir();
         
