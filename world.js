@@ -91,8 +91,6 @@ class Predator {
         this.flag = false;
     }
 
-    static win = false;
-
     looking_around(world) {
         this.dir_left = world[this.y][this.x-1] === EMPTY;
         this.dir_up = world[this.y-1][this.x] === EMPTY;
@@ -140,25 +138,37 @@ class Predator {
         
         switch (this.dir) {
             case DOWN:
-                if (world[this.y+1][this.x] === PLAYER) Predator.win = true;
-                else if (this.flag && world[this.y+1][this.x] === EMPTY) this.y += 1;
+                if (this.flag && world[this.y+1][this.x] === EMPTY) this.y += 1;
                 break;
             case RIGHT:
-                if (world[this.y][this.x+1] === PLAYER) Predator.win = true;
-                else if (this.flag && world[this.y][this.x+1] === EMPTY) this.x += 1;
+                if (this.flag && world[this.y][this.x+1] === EMPTY) this.x += 1;
                 break;
             case UP:
-                if (world[this.y-1][this.x] === PLAYER) Predator.win = true;
-                else if (this.flag && world[this.y-1][this.x] === EMPTY) this.y -= 1;
+                if (this.flag && world[this.y-1][this.x] === EMPTY) this.y -= 1;
                 break;
             case LEFT:
-                if (world[this.y][this.x-1] === PLAYER) Predator.win = true;
-                else if (this.flag && world[this.y][this.x-1] === EMPTY) this.x -= 1;
+                if (this.flag && world[this.y][this.x-1] === EMPTY) this.x -= 1;
                 break;
         }
 
     }
 
+}
+
+class Bomb {
+    constructor(x,y) {
+        this.x = x;
+        this.y = y;
+
+        this.STARS = [];
+      
+        this.STARS.push(new Star(this.y, this.x));
+        this.STARS.push(new Star(this.y-1, this.x));
+        this.STARS.push(new Star(this.y+1, this.x));
+        this.STARS.push(new Star(this.y, this.x-1));
+        this.STARS.push(new Star(this.y, this.x+1));
+        
+    }
 }
 
 class Rock {
@@ -169,10 +179,9 @@ class Rock {
         this.falling = false;
     }
 
-    static boom = false;
 
     check_way_down(world) {
-        if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Rock.boom = true; }
+        if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; }
         this.falling = true;
         return  world[this.y+1][this.x] === EMPTY;
     }
@@ -200,7 +209,7 @@ class Rock {
     }
 
     changeState(world, force) {
-        if (world[this.y][this.x] === PLAYER) { Rock.boom = true; this.killer = true; }
+        if (world[this.y][this.x] === PLAYER) { this.killer = true; }
         if (this.check_way_down(world)) this.y += 1;
         else if (this.check_force_move_left(world) && force) {
             this.x -= 1
@@ -333,12 +342,8 @@ class World {
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
 
-        if (!Rock.boom && !Predator.win) WORLD[this.player.y][this.player.x] = PLAYER;
-        else {
-            this.STARS.push(new Star(this.player.y, this.player.x));
-            this.player.dir = null;
-        }
-
+        WORLD[this.player.y][this.player.x] = PLAYER;
+        
         return WORLD;
     }
 
