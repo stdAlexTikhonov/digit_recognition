@@ -94,15 +94,10 @@ class Predator {
     static win = false;
 
     looking_around(world) {
-        if (world[this.y][this.x-1] !== EMPTY) { this.dir_left = false; }
-        if (world[this.y-1][this.x] !== EMPTY) { this.dir_up = false; }
-        if (world[this.y][this.x+1] !== EMPTY) { this.dir_right = false; }
-        if (world[this.y+1][this.x] !== EMPTY) { this.dir_down = false; }
-
-        if (world[this.y][this.x-1] === EMPTY) { this.dir_left = true; }
-        if (world[this.y-1][this.x] === EMPTY) { this.dir_up = true; }
-        if (world[this.y][this.x+1] === EMPTY) { this.dir_right = true; }
-        if (world[this.y+1][this.x] === EMPTY) { this.dir_down = true; }
+        this.dir_left = world[this.y][this.x-1] === EMPTY;
+        this.dir_up = world[this.y-1][this.x] === EMPTY;
+        this.dir_right = world[this.y][this.x+1] === EMPTY;
+        this.dir_down = world[this.y+1][this.x] === EMPTY;
     }
 
 
