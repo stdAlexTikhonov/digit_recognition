@@ -29,6 +29,9 @@ const stopGame = () => {
     THE_WORLD.stopTimer(); 
     clearInterval(interval);
     start_screen.style.display = 'flex';
+
+    scores.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
+    start_screen.appendChild(scores);
 }
 
 const start_screen = document.createElement('div');
@@ -38,6 +41,10 @@ start_screen.style.top = 0;
 start_screen.style.left = 0;
 start_screen.style.width = '460px';
 start_screen.style.height = '470px';
+start_screen.style.flexDirection = 'column';
+start_screen.style.justifyContent = 'center';
+start_screen.style.backgroundColor = 'rgba(255,255,255,0.7)';
+
 
 
 
@@ -53,6 +60,15 @@ start_btn.style.color = 'lightgreen';
 start_btn.style.margin = 'auto';
 start_btn.style.cursor = 'pointer';
 start_btn.style.padding = '15px';
+
+const scores = document.createElement('div');
+scores.style.fontFamily = 'Tahoma';
+scores.style.fontSize = '15px';
+scores.style.margin = 'auto';
+
+
+
+
 
 
 start_screen.appendChild(start_btn);
