@@ -446,6 +446,8 @@ class World {
             Player.flag = false;
         } else if (Player.flag) {
             this.world[this.player.y][this.player.x] = PLAYER;
+        } else {
+            stopGame(); 
         }
 
         
@@ -465,6 +467,4 @@ class World {
 
 }
 
-
-const THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY);
 
