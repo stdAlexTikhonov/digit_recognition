@@ -31,6 +31,8 @@ class Player {
         this.force = false;
     }
 
+    static off = false;
+
     check(nxt, world) {
         return [EMPTY, '*', '.'].includes(world[nxt.y][nxt.x]);
     }
@@ -44,6 +46,7 @@ class Player {
     }
 
     changeState(world) {
+        if (Player.off) return false;
         switch  (this.dir) {
             case UP:
                 if (this.check({x: this.x, y: this.y - 1}, world)) {
@@ -91,6 +94,7 @@ class Predator {
         this.flag = false;
         this.still_alive = true;
     }
+
 
     looking_around(world) {
         this.dir_left = world[this.y][this.x-1] === EMPTY;
@@ -195,7 +199,7 @@ class Rock {
 
 
     check_way_down(world) {
-        if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; }
+        if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Player.off = true; }
         this.falling = true;
         return  world[this.y+1][this.x] === EMPTY;
     }
@@ -223,7 +227,7 @@ class Rock {
     }
 
     changeState(world, force) {
-        if (world[this.y][this.x] === PLAYER) { this.killer = true; }
+        if (world[this.y][this.x] === PLAYER) { this.killer = true; Player.off = true; }
         if (this.check_way_down(world)) this.y += 1;
         else if (this.check_force_move_left(world) && force) {
             this.x -= 1

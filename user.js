@@ -1,5 +1,4 @@
 document.onkeydown = e => {
-
     switch (e.keyCode) {
         case 37:
             if (THE_WORLD.player.dir === LEFT) THE_WORLD.player.force = true;
