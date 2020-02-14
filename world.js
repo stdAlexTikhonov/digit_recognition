@@ -15,7 +15,7 @@ const WALL = '#';
 const GROUND = '.';
 const EMPTY = ' ';
 
-const PREDATOR_QUANTITY = 1;
+const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 30;
 const STARS_QUANTITY = 30;
 const BREAKS_QUANTITY = 100;
@@ -150,7 +150,14 @@ class Predator {
         this.phase = this.phase < 3 ? this.phase + 1 : 0;
         this.show = this.phases[this.phase];
         this.flag = !this.flag;
-        if (this.find_player(world) || this.find_rock(world)) this.still_alive = false;
+        if (this.find_rock(world)) 
+            this.still_alive = false;
+
+        if (this.find_player(world)) {
+            this.still_alive = false;
+            Player.off = true;
+        }
+        
         this.flag && this.looking_around(world);
         this.flag && this.check_dir();
         
