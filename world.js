@@ -15,7 +15,7 @@ const WALL = '#';
 const GROUND = '.';
 const EMPTY = ' ';
 
-const PREDATOR_QUANTITY = 3;
+const PREDATOR_QUANTITY = 1;
 const ROCKS_QUANTITY = 30;
 const STARS_QUANTITY = 30;
 const BREAKS_QUANTITY = 100;
@@ -345,18 +345,13 @@ class World {
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = EMPTY);
 
-        this.PREDATORS.forEach(P => { if (P.still_alive) WORLD[P.y][P.x] = P.show});
-
-        this.ROCKS = this.ROCKS.filter(rock => !rock.killer);
-
+        this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
 
-        this.STARS.forEach(S => { if(S.still_here) WORLD[S.y][S.x] = FOOD });
+        this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
-
-        WORLD[this.player.y][this.player.x] = PLAYER;
         
         return WORLD;
     }
@@ -382,12 +377,32 @@ class World {
         return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Rock: ' + Rock.boom;
     }
 
+    check_predators() {
+        this.PREDATORS = this.PREDATORS.filter(predator => predator.still_alive);
+    }
+
+    check_food() {
+        this.STARS = this.STARS.filter(star => star.still_here);
+    }
+
+    check_rocks() {
+        this.ROCKS = this.ROCKS.filter(rock => !rock.killer);
+    }
+
+    check_player() {
+        this.world[this.player.y][this.player.x] = PLAYER;
+    }
+
     tick() {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player.force));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.player.changeState(this.world);
+        this.check_predators();
+        this.check_food();
+        this.check_rocks();
         this.world = this.generate();
+        this.check_player();
     }
 
 }
