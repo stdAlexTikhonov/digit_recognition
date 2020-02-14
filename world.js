@@ -27,11 +27,12 @@ class Player {
         this.y = y;
         this.dir = null;
         this.EMPTIES = [];
-
+        
         this.force = false;
     }
 
     static off = false;
+    static flag = true;
 
     check(nxt, world) {
         return [EMPTY, '*', '.'].includes(world[nxt.y][nxt.x]);
@@ -192,6 +193,11 @@ class Bomb {
         this.STARS.push(new Star(this.y+1, this.x));
         this.STARS.push(new Star(this.y, this.x-1));
         this.STARS.push(new Star(this.y, this.x+1));
+        this.STARS.push(new Star(this.y-1, this.x-1));
+        this.STARS.push(new Star(this.y-1, this.x+1));
+        this.STARS.push(new Star(this.y+1, this.x-1));
+        this.STARS.push(new Star(this.y+1, this.x+1));
+
         
     }
 }
@@ -263,11 +269,11 @@ class Star {
     static scores = 0;
 
     check_way_down(world) {
-        return  world[this.y+1][this.x] === EMPTY;
+        return  world[this.y+1] && world[this.y+1][this.x] === EMPTY;
     }
 
     move_possible(world) {
-        return ['+', 'O', '*'].includes(world[this.y+1][this.x])
+        return world[this.y+1] && ['+', 'O', '*'].includes(world[this.y+1][this.x])
     }
 
     check_way_left(world) {
@@ -401,7 +407,15 @@ class World {
     }
 
     check_player() {
-        this.world[this.player.y][this.player.x] = PLAYER;
+        if (Player.off && Player.flag) {
+            const boom = new Bomb(this.player.x, this.player.y);
+            this.STARS = this.STARS.concat(boom.STARS);
+            Player.flag = false;
+        } else if (Player.flag) {
+            this.world[this.player.y][this.player.x] = PLAYER;
+        }
+
+        
     }
 
     tick() {
