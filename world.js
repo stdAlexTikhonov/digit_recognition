@@ -16,10 +16,11 @@ const GROUND = '.';
 const EMPTY = ' ';
 
 const PREDATOR_QUANTITY = 3;
-const ROCKS_QUANTITY = 100;
+const ROCKS_QUANTITY = 30;
 const STARS_QUANTITY = 30;
 const BREAKS_QUANTITY = 100;
 const EMPTY_CHARS = 200;
+
 
 class Player {
     constructor(x,y) {
@@ -303,6 +304,9 @@ class World {
         this.rand_positions = [];
         this.height = height;
         this.width = width;
+        this.minutes = 0;
+        this.seconds = 0;
+        this.timer = null;
         //Breaks
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
@@ -344,7 +348,28 @@ class World {
 
         this.world = this.generate();
 
+        this.startTimer();
+    }
 
+    startTimer() {
+        this.timer = setTimeout(() => {
+            this.seconds++;
+            if (this.seconds > 59) {
+                this.seconds = 0;
+                this.minutes++;
+            }
+            this.startTimer();
+        }, 1000);
+    }
+
+    stopTimer() {
+        clearInterval(this.timer);
+    }
+
+    getTime() {
+        const minutes = this.minutes < 10 ? '0' + this.minutes : this.minutes;
+        const seconds = this.seconds < 10 ? '0' + this.seconds : this.seconds;
+        return minutes + ':' + seconds; 
     }
 
     generate() {
@@ -369,7 +394,7 @@ class World {
 
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
-        // this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
+        this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
         
         return WORLD;
     }
@@ -392,7 +417,7 @@ class World {
     }
 
     print() {
-        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Rock: ' + Rock.boom;
+        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Time: ' + this.getTime();
     }
 
     check_predators() {
@@ -442,3 +467,4 @@ class World {
 
 
 const THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY);
+
