@@ -16,10 +16,10 @@ const GROUND = '.';
 const EMPTY = ' ';
 
 const PREDATOR_QUANTITY = 3;
-const ROCKS_QUANTITY = 30;
+const ROCKS_QUANTITY = 100;
 const STARS_QUANTITY = 30;
 const BREAKS_QUANTITY = 100;
-const EMPTY_CHARS = 500;
+const EMPTY_CHARS = 200;
 
 class Player {
     constructor(x,y) {
@@ -213,6 +213,7 @@ class Rock {
 
     check_way_down(world) {
         if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Player.off = true; }
+        else if (this.falling && '/-|\\'.includes(world[this.y+1][this.x])) { this.killer = true; }
         this.falling = true;
         return  world[this.y+1][this.x] === EMPTY;
     }
@@ -368,7 +369,7 @@ class World {
 
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
-        this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
+        // this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
         
         return WORLD;
     }
@@ -395,6 +396,13 @@ class World {
     }
 
     check_predators() {
+        this.PREDATORS.forEach(predator => {
+            if (!predator.still_alive) {
+                const boom = new Bomb(predator.x, predator.y);
+                this.STARS = this.STARS.concat(boom.STARS);
+            }
+        });
+
         this.PREDATORS = this.PREDATORS.filter(predator => predator.still_alive);
     }
 
