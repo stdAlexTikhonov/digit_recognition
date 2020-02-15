@@ -88,7 +88,7 @@ class Predator {
         this.show = '/';
         this.x = x;
         this.y = y;
-        this.dir_down = false;
+        this.dir_down = true;
         this.dir_left = false;
         this.dir_up = false;
         this.dir_right = false;
@@ -148,18 +148,22 @@ class Predator {
         }
     }
 
+    no_way() {
+        return !this.dir_up && !this.dir_down && !this.dir_left && !this.dir_right
+    }
+
     changeState(world) {
         this.phase = this.phase < 3 ? this.phase + 1 : 0;
         this.show = this.phases[this.phase];
         this.flag = !this.flag;
-        if (this.find_rock(world)) 
+        if (this.find_rock(world) || this.no_way()) 
             this.still_alive = false;
 
         if (this.find_player(world)) {
             this.still_alive = false;
             Player.off = true;
         }
-        
+
         this.flag && this.looking_around(world);
         this.flag && this.check_dir();
         
