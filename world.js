@@ -19,7 +19,7 @@ const PREDATOR_QUANTITY = 3;
 const ROCKS_QUANTITY = 30;
 const STARS_QUANTITY = 30;
 const BREAKS_QUANTITY = 100;
-const EMPTY_CHARS = 200;
+const GROUND_QUANTITY = 600;
 
 let SEED = 2;
 
@@ -347,15 +347,16 @@ class World {
             this.STARS.push(new Star(rip.y, rip.x));
         }
 
+        this.GROUND = [];
+        for (let i = 0; i < GROUND_QUANTITY; i++) {
+            const rip = this.rndomizer(); //predator init position
+            this.GROUND.push({y: rip.y, x: rip.x});
+        }
+
 
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.x,pp.y);
-
-        for (let i = 0; i < EMPTY_CHARS; i++) {
-            const eip = this.rndomizer(); //predator init position
-            this.player.EMPTIES.push({y: eip.y, x: eip.x});
-        }
 
         this.world = this.generate();
 
@@ -387,7 +388,7 @@ class World {
         const FIRST_ROW = new Array(this.width).fill(WALL);
         const LAST_ROW = new Array(this.width).fill(WALL);
 
-        const MIDDLE = new Array(this.width).fill(GROUND);
+        const MIDDLE = new Array(this.width).fill(EMPTY);
         MIDDLE[0] = WALL; MIDDLE[this.width-1] = WALL;
 
         const WORLD = new Array(this.height)
@@ -396,6 +397,8 @@ class World {
 
         WORLD[0] = FIRST_ROW;
         WORLD[this.height-1] = LAST_ROW;
+
+        this.GROUND.forEach(P => WORLD[P.y][P.x] = GROUND);
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = EMPTY);
 
