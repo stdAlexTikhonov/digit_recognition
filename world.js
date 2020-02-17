@@ -21,6 +21,13 @@ const STARS_QUANTITY = 30;
 const BREAKS_QUANTITY = 100;
 const EMPTY_CHARS = 200;
 
+let SEED = 2;
+
+function random() {
+    let x = Math.sin(SEED++) * 10000;
+    return x - Math.floor(x);
+}
+
 
 class Player {
     constructor(x,y) {
@@ -28,7 +35,7 @@ class Player {
         this.y = y;
         this.dir = null;
         this.EMPTIES = [];
-        
+
         this.force = false;
     }
 
@@ -110,7 +117,7 @@ class Predator {
         const FOUND_PLAYER_TOP = world[this.y-1][this.x] === PLAYER;
         const FOUND_PLAYER_RIGHT = world[this.y][this.x+1] === PLAYER;
         const FOUND_PLAYER_DOWN = world[this.y+1][this.x] === PLAYER;
-        
+
         return FOUND_PLAYER_DOWN || FOUND_PLAYER_TOP || FOUND_PLAYER_LEFT || FOUND_PLAYER_RIGHT;
     }
 
@@ -156,7 +163,7 @@ class Predator {
         this.phase = this.phase < 3 ? this.phase + 1 : 0;
         this.show = this.phases[this.phase];
         this.flag = !this.flag;
-        if (this.find_rock(world) || this.no_way()) 
+        if (this.find_rock(world) || this.no_way())
             this.still_alive = false;
 
         if (this.find_player(world)) {
@@ -166,7 +173,7 @@ class Predator {
 
         this.flag && this.looking_around(world);
         this.flag && this.check_dir();
-        
+
         switch (this.dir) {
             case DOWN:
                 if (this.flag && world[this.y+1][this.x] === EMPTY) this.y += 1;
@@ -192,7 +199,7 @@ class Bomb {
         this.y = y;
 
         this.STARS = [];
-      
+
         this.STARS.push(new Star(this.y, this.x));
         this.STARS.push(new Star(this.y-1, this.x));
         this.STARS.push(new Star(this.y+1, this.x));
@@ -203,7 +210,7 @@ class Bomb {
         this.STARS.push(new Star(this.y+1, this.x-1));
         this.STARS.push(new Star(this.y+1, this.x+1));
 
-        
+
     }
 }
 
@@ -373,7 +380,7 @@ class World {
     getTime() {
         const minutes = this.minutes < 10 ? '0' + this.minutes : this.minutes;
         const seconds = this.seconds < 10 ? '0' + this.seconds : this.seconds;
-        return minutes + ':' + seconds; 
+        return minutes + ':' + seconds;
     }
 
     generate() {
@@ -399,19 +406,19 @@ class World {
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
-        
+
         return WORLD;
     }
 
     rndomizer() {
 
-        let rand_x = Math.floor(Math.random() * (this.width - 2)) + 1;
-        let rand_y = Math.floor(Math.random() * (this.width - 2)) + 1;
+        let rand_x = Math.floor(random() * (this.width - 2)) + 1;
+        let rand_y = Math.floor(random() * (this.width - 2)) + 1;
         let pos = { x: rand_x, y: rand_y };
 
         while(this.rand_positions.some(el => el.x === pos.x && el.y === pos.y)) {
-            rand_x = Math.floor(Math.random() * (this.width - 2)) + 1;
-            rand_y = Math.floor(Math.random() * (this.width - 2)) + 1;
+            rand_x = Math.floor(random() * (this.width - 2)) + 1;
+            rand_y = Math.floor(random() * (this.width - 2)) + 1;
             pos = { x: rand_x, y: rand_y };
         }
 
@@ -451,10 +458,10 @@ class World {
         } else if (Player.flag) {
             this.world[this.player.y][this.player.x] = PLAYER;
         } else {
-            stopGame(); 
+            stopGame();
         }
 
-        
+
     }
 
     tick() {
