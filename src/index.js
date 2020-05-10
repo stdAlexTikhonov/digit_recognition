@@ -1,5 +1,7 @@
 //width: 460px
 //height: 470px
+import { World, Player, Star, WIDTH, HEIGHT, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY } from "./world"
+
 const show = document.createElement('pre');
 show.style.margin = 0;
 const main = document.createElement('div');
@@ -11,7 +13,7 @@ main.style.height = '470px';
 main.appendChild(show);
 document.body.appendChild(main);
 
-let THE_WORLD = null;
+window.THE_WORLD = null;
 let interval = null;
 const startGame = () => {
     THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY);
@@ -25,7 +27,7 @@ const startGame = () => {
     },100);
 }
 
-const stopGame = () => {
+export const stopGame = () => {
     THE_WORLD.stopTimer(); 
     clearInterval(interval);
     start_screen.style.display = 'flex';

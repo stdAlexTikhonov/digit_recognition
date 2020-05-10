@@ -1,11 +1,11 @@
-//784 spaces
-const WIDTH = 30;
-const HEIGHT = 30;
+import { stopGame } from "./index"
+export const WIDTH = 30;
+export const HEIGHT = 30;
 
-const UP = 'UP';
-const DOWN = 'DOWN';
-const LEFT = 'LEFT';
-const RIGHT = 'RIGHT';
+export const UP = 'UP';
+export const DOWN = 'DOWN';
+export const LEFT = 'LEFT';
+export const RIGHT = 'RIGHT';
 
 const PLAYER = 'A';
 const ROCK = 'O';
@@ -15,11 +15,11 @@ const WALL = '#';
 const GROUND = '.';
 const EMPTY = ' ';
 
-const PREDATOR_QUANTITY = 3;
-const ROCKS_QUANTITY = 30;
-const STARS_QUANTITY = 30;
-const BREAKS_QUANTITY = 100;
-const GROUND_QUANTITY = 600;
+export const PREDATOR_QUANTITY = 3;
+export const ROCKS_QUANTITY = 30;
+export const STARS_QUANTITY = 30;
+export const BREAKS_QUANTITY = 100;
+export const GROUND_QUANTITY = 600;
 
 let SEED = 2;
 
@@ -29,7 +29,7 @@ function random() {
 }
 
 
-class Player {
+export class Player {
     constructor(x,y) {
         this.x = x;
         this.y = y;
@@ -38,9 +38,6 @@ class Player {
 
         this.force = false;
     }
-
-    static off = false;
-    static flag = true;
 
     check(nxt, world) {
         return [EMPTY, '*', '.'].includes(world[nxt.y][nxt.x]);
@@ -87,7 +84,10 @@ class Player {
 
 }
 
-class Predator {
+Player.off = false;
+Player.flag = true;
+
+export class Predator {
 
     constructor(y,x) {
         this.phases = '/-\\|';
@@ -193,7 +193,7 @@ class Predator {
 
 }
 
-class Bomb {
+export class Bomb {
     constructor(x,y) {
         this.x = x;
         this.y = y;
@@ -209,19 +209,16 @@ class Bomb {
         this.STARS.push(new Star(this.y-1, this.x+1));
         this.STARS.push(new Star(this.y+1, this.x-1));
         this.STARS.push(new Star(this.y+1, this.x+1));
-
-
     }
 }
 
-class Rock {
+export class Rock {
     constructor(y,x) {
         this.x = x;
         this.y = y;
         this.killer = false;
         this.falling = false;
     }
-
 
     check_way_down(world) {
         if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Player.off = true; }
@@ -272,7 +269,7 @@ class Rock {
     }
 }
 
-class Star {
+export class Star {
     constructor(y,x) {
         this.x = x;
         this.y = y;
@@ -280,8 +277,6 @@ class Star {
         this.falling = false;
         this.killer = false;
     }
-
-    static scores = 0;
 
     check_way_down(world) {
         if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Player.off = true; }
@@ -317,8 +312,10 @@ class Star {
     }
 }
 
+Star.scores = 0;
 
-class World {
+
+export class World {
 
     constructor(height, width, predators_q, rocks, stars, breaks) {
         this.rand_positions = [];
@@ -489,5 +486,6 @@ class World {
     }
 
 }
+
 
 
