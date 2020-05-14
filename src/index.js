@@ -1,5 +1,6 @@
 //width: 460px
 //height: 470px
+import "./styles/styles.css"
 import { World, Player, Star, WIDTH, HEIGHT, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY } from "./world"
 
 const show = document.createElement('pre');
@@ -7,6 +8,7 @@ show.style.margin = 0;
 const main = document.createElement('div');
 document.body.style.display = 'flex';
 main.style.margin = 'auto';
+main.style.fontFamily = 'Roboto';
 main.style.position = 'relative';
 main.style.width = '460px';
 main.style.height = '470px';
