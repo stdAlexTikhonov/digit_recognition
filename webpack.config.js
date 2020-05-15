@@ -13,6 +13,12 @@ module.exports = {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, 'dist')
     },
+    resolve: {
+        extensions: ['.js', '.json'],
+    },
+    devServer: {
+        port: 4200
+    },
     plugins: [
         new HTMLWebpackPlugin({
             template: "./index.html"
