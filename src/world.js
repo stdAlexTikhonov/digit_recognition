@@ -193,25 +193,6 @@ export class Predator {
 
 }
 
-export class Bomb {
-    constructor(x,y) {
-        this.x = x;
-        this.y = y;
-
-        this.STARS = [];
-
-        this.STARS.push(new Star(this.y, this.x));
-        this.STARS.push(new Star(this.y-1, this.x));
-        this.STARS.push(new Star(this.y+1, this.x));
-        this.STARS.push(new Star(this.y, this.x-1));
-        this.STARS.push(new Star(this.y, this.x+1));
-        this.STARS.push(new Star(this.y-1, this.x-1));
-        this.STARS.push(new Star(this.y-1, this.x+1));
-        this.STARS.push(new Star(this.y+1, this.x-1));
-        this.STARS.push(new Star(this.y+1, this.x+1));
-    }
-}
-
 export class Rock {
     constructor(y,x) {
         this.x = x;
@@ -441,13 +422,7 @@ export class World {
     }
 
     check_predators() {
-        this.PREDATORS.forEach(predator => {
-            if (!predator.still_alive) {
-                const boom = new Bomb(predator.x, predator.y);
-                this.STARS = this.STARS.concat(boom.STARS);
-            }
-        });
-
+       
         this.PREDATORS = this.PREDATORS.filter(predator => predator.still_alive);
     }
 
@@ -461,8 +436,7 @@ export class World {
 
     check_player() {
         if (Player.off && Player.flag) {
-            const boom = new Bomb(this.player.x, this.player.y);
-            this.STARS = this.STARS.concat(boom.STARS);
+            
             Player.flag = false;
         } else if (Player.flag) {
             this.world[this.player.y][this.player.x] = PLAYER;
