@@ -4,6 +4,7 @@ import "./styles/styles.css"
 import { World, Player, Star, WIDTH, HEIGHT, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY } from "./world"
 
 const show = document.createElement('pre');
+window.prevStates = [];
 show.style.margin = 0;
 const main = document.createElement('div');
 document.body.style.display = 'flex';
@@ -23,11 +24,14 @@ const startGame = () => {
     Player.flag = true;
     Star.scores = 0;
     show.innerText = THE_WORLD.print();
+    prevStates.push(THE_WORLD.print());
 
     interval = setInterval(() => {
         if (!window.shiftPressed) {
             THE_WORLD.tick();
             show.innerText = THE_WORLD.print();
+            prevStates.push(THE_WORLD.print())
+            if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
         }
     },100);
 }
