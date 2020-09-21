@@ -14,7 +14,7 @@ main.style.width = '460px';
 main.style.height = '470px';
 main.appendChild(show);
 document.body.appendChild(main);
-
+window.shiftPressed = false;
 window.THE_WORLD = null;
 let interval = null;
 const startGame = () => {
@@ -22,10 +22,13 @@ const startGame = () => {
     Player.off = false;
     Player.flag = true;
     Star.scores = 0;
+    show.innerText = THE_WORLD.print();
 
     interval = setInterval(() => {
-        THE_WORLD.tick();
-        show.innerText = THE_WORLD.print();
+        if (!window.shiftPressed) {
+            THE_WORLD.tick();
+            show.innerText = THE_WORLD.print();
+        }
     },100);
 }
 
