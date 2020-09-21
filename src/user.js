@@ -1,5 +1,7 @@
 
 document.onkeydown = e => {
+    window.shiftPressed = e.shiftKey;
+    
     switch (e.keyCode) {
         case 37:
             if (window.THE_WORLD.player.dir === "LEFT") window.THE_WORLD.player.force = true;
@@ -22,5 +24,7 @@ document.onkeydown = e => {
 };
 
 document.onkeyup = e => {
+    window.shiftPressed = e.shiftKey;
+    
     window.THE_WORLD.player.force = false;
 }

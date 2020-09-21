@@ -19,7 +19,7 @@ export const PREDATOR_QUANTITY = 3;
 export const ROCKS_QUANTITY = 30;
 export const STARS_QUANTITY = 30;
 export const BREAKS_QUANTITY = 100;
-export const GROUND_QUANTITY = 600;
+export const GROUND_QUANTITY = 0;
 
 let SEED = 2;
 
