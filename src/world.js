@@ -305,6 +305,7 @@ export class World {
         this.minutes = 0;
         this.seconds = 0;
         this.timer = null;
+        this.pause = false;
         //Breaks
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
