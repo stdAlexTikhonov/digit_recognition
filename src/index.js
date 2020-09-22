@@ -15,7 +15,7 @@ main.style.width = '460px';
 main.style.height = '470px';
 main.appendChild(show);
 document.body.appendChild(main);
-window.shiftPressed = false;
+window.pause = false;
 window.THE_WORLD = null;
 let interval = null;
 const startGame = () => {
@@ -27,7 +27,7 @@ const startGame = () => {
     prevStates.push(THE_WORLD.print());
 
     interval = setInterval(() => {
-        if (!window.shiftPressed) {
+        if (!window.pause) {
             THE_WORLD.tick();
             show.innerText = THE_WORLD.print();
             prevStates.push(THE_WORLD.print())

@@ -1,8 +1,7 @@
 let frame = 9;
 
 document.onkeydown = e => {
-    window.shiftPressed = e.shiftKey;
-    if (e.shiftKey) window.THE_WORLD.stopTimer(); 
+    window.pause = e.keyCode === 80 ? window.pause : e.shiftKey;
     
     switch (e.keyCode) {
         case 37:
@@ -22,7 +21,7 @@ document.onkeydown = e => {
             else window.THE_WORLD.player.dir = "DOWN";
             break;
         case 190:
-            if (window.shiftPressed) {
+            if (window.pause) {
                 
                 if (frame < 9) { 
                     frame++; 
@@ -37,17 +36,20 @@ document.onkeydown = e => {
             }
             break;
         case 188:
-            if (window.shiftPressed) {
+            if (window.pause) {
                 if (frame > 0) { frame--; console.log(frame); }
                 document.getElementsByTagName('pre')[0].innerText = window.prevStates[frame];
             }
+            break;
+        case 80:
+            window.pause = !window.pause;
             break;
     }
     
 };
 
 document.onkeyup = e => {
-    window.shiftPressed = e.shiftKey;
-    if (e.shiftKey === false) frame = 9;
+    window.pause = e.keyCode === 80 ? window.pause : e.shiftKey;
+    if (e.shiftKey === false) { frame = 9; }
     window.THE_WORLD.player.force = false;
 }
