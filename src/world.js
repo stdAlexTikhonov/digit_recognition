@@ -209,17 +209,17 @@ export class Rock {
     }
 
     move_possible(world) {
-        return ['+', 'O', '*'].includes(world[this.y+1][this.x])
+        return ['+', 'O', '*'].includes(world[this.y+1][this.x]) && !['O', '*'].includes(world[this.y-1][this.x])
     }
 
     check_way_left(world) {
         this.falling = true;
-        return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY;
+        return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY && !['O', '*'].includes(world[this.y-1][this.x-1]);
     }
 
     check_way_right(world) {
         this.falling = true;
-        return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY;
+        return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY && !['O', '*'].includes(world[this.y-1][this.x+1]);
     }
 
     check_force_move_left(world) {
@@ -267,17 +267,17 @@ export class Star {
     }
 
     move_possible(world) {
-        return world[this.y+1] && ['+', 'O', '*'].includes(world[this.y+1][this.x])
+        return world[this.y+1] && ['+', 'O', '*'].includes(world[this.y+1][this.x]) && !['O', '*'].includes(world[this.y-1][this.x])
     }
 
     check_way_left(world) {
         this.falling = true;
-        return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY;
+        return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY && !['O', '*'].includes(world[this.y-1][this.x-1]);
     }
 
     check_way_right(world) {
         this.falling = true;
-        return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY;
+        return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY && !['O', '*'].includes(world[this.y-1][this.x+1]);
     }
 
     changeState(world) {
@@ -325,6 +325,7 @@ export class World {
         for (let i = 0; i < rocks; i++) {
             const rip = this.rndomizer(); //predator init position
             this.ROCKS.push(new Rock(rip.y, rip.x));
+            this.ROCKS.sort((a,b) => a.y - b.y);
         }
 
         //Stars
@@ -332,6 +333,7 @@ export class World {
         for (let i = 0; i < stars; i++) {
             const rip = this.rndomizer(); //predator init position
             this.STARS.push(new Star(rip.y, rip.x));
+            this.STARS.sort((a,b) => a.y - b.y);
         }
 
         this.GROUND = [];
