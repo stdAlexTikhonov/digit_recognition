@@ -26,12 +26,13 @@ document.onkeydown = e => {
                 
                 if (frame < 9) { 
                     frame++; 
-                    console.log(frame);
                     document.getElementsByTagName('pre')[0].innerText = window.prevStates[frame]
                 }
                 else {
                     window.THE_WORLD.tick();
                     document.getElementsByTagName('pre')[0].innerText = window.THE_WORLD.print();
+                    prevStates.push(THE_WORLD.print())
+                    if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
                 }
             }
             break;
