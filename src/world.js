@@ -106,9 +106,9 @@ export class Predator {
 
 
     looking_around(world) {
-        this.dir_left = world[this.y][this.x-1] === EMPTY;
+        this.dir_left = world[this.y][this.x-1] === EMPTY && !"*O".includes(world[this.y-1][this.x-1]);
         this.dir_up = world[this.y-1][this.x] === EMPTY;
-        this.dir_right = world[this.y][this.x+1] === EMPTY;
+        this.dir_right = world[this.y][this.x+1] === EMPTY && !"*O".includes(world[this.y-1][this.x+1]);
         this.dir_down = world[this.y+1][this.x] === EMPTY;
     }
 
