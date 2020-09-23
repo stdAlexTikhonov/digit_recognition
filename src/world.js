@@ -21,6 +21,42 @@ export const STARS_QUANTITY = 30;
 export const BREAKS_QUANTITY = 100;
 export const GROUND_QUANTITY = 0;
 
+import merphy_sleep_1 from './assets/merphy/merphysleep1.png';
+import merphy_sleep_2 from './assets/merphy/merphysleep2.png';
+import merphy_sleep_3 from './assets/merphy/merphysleep3.png';
+import merphy_sleep_4 from './assets/merphy/merphysleep4.png';
+import merphy_sleep_5 from './assets/merphy/merphysleep5.png';
+import merphy_sleep_6 from './assets/merphy/merphysleep6.png';
+import merphy_sleep_7 from './assets/merphy/merphysleep7.png';
+import merphy_sleep_8 from './assets/merphy/merphysleep8.png';
+import merphy_sleep_9 from './assets/merphy/merphysleep9.png';
+import merphy_sleep_10 from './assets/merphy/merphysleep10.png';
+import merphy_sleep_11 from './assets/merphy/merphysleep11.png';
+import merphy_sleep_12 from './assets/merphy/merphysleep12.png';
+import merphy_sleep_13 from './assets/merphy/merphysleep13.png';
+import merphy_sleep_14 from './assets/merphy/merphysleep14.png';
+import merphy_sleep_15 from './assets/merphy/merphysleep15.png';
+import merphy_sleep_16 from './assets/merphy/merphysleep16.png';
+
+const merphy_sleep = [
+    merphy_sleep_1,
+    merphy_sleep_2,
+    merphy_sleep_3,
+    merphy_sleep_4,
+    merphy_sleep_5,
+    merphy_sleep_6,
+    merphy_sleep_7,
+    merphy_sleep_8,
+    merphy_sleep_9,
+    merphy_sleep_10,
+    merphy_sleep_11,
+    merphy_sleep_12,
+    merphy_sleep_13,
+    merphy_sleep_14,
+    merphy_sleep_15,
+    merphy_sleep_16,
+];
+
 let SEED = 2;
 
 function random() {
@@ -35,8 +71,17 @@ export class Player {
         this.y = y;
         this.dir = null;
         this.EMPTIES = [];
-
+        this.state = 0;
         this.force = false;
+        this.time_to_sleep = false;
+
+        this.img = document.createElement('img');
+        this.img.src = merphy_sleep[this.state];
+        this.img.width = 32;
+        this.img.height = 32;
+
+
+        document.body.appendChild(this.img);
     }
 
     check(nxt, world) {
@@ -51,8 +96,13 @@ export class Player {
         return world[this.y][this.x+1] === ROCK && world[this.y][this.x+2] === EMPTY && this.force;
     }
 
-    changeState(world) {
+    changeState(world, seconds) {
         if (Player.off) return false;
+        if (seconds % 10 === 0) this.time_to_sleep = true;
+        if(this.time_to_sleep && this.state < 12) this.state +=1;
+        else { this.state = 0; this.time_to_sleep = false; }
+     
+        this.img.src = merphy_sleep[this.state];
         switch  (this.dir) {
             case UP:
                 if (this.check({x: this.x, y: this.y - 1}, world)) {
@@ -351,6 +401,8 @@ export class World {
         this.world = this.generate();
 
         this.startTimer();
+
+
     }
 
     startTimer() {
@@ -454,7 +506,7 @@ export class World {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player.force));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
-        this.player.changeState(this.world);
+        this.player.changeState(this.world, this.seconds);
         this.check_predators();
         this.check_food();
         this.check_rocks();
