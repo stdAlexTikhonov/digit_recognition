@@ -5,7 +5,10 @@ document.onkeydown = e => {
     
     switch (e.keyCode) {
         case 37:
-            if (window.THE_WORLD.player.dir === "LEFT") window.THE_WORLD.player.force = true;
+            if (window.THE_WORLD.player.dir === "LEFT") { 
+                window.THE_WORLD.player.force = true; 
+                window.THE_WORLD.player.merphy_state = 'FORCE_LEFT';
+            }
             else window.THE_WORLD.player.dir = "LEFT";
             break;
         case 38:
@@ -13,7 +16,10 @@ document.onkeydown = e => {
             else window.THE_WORLD.player.dir = "UP";
             break;
         case 39:
-            if (window.THE_WORLD.player.dir === "RIGHT") window.THE_WORLD.player.force = true;
+            if (window.THE_WORLD.player.dir === "RIGHT") { 
+                window.THE_WORLD.player.force = true;
+                window.THE_WORLD.player.merphy_state = 'FORCE_RIGHT';
+            }
             else window.THE_WORLD.player.dir = "RIGHT";
             break;
         case 40:

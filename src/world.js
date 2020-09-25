@@ -21,6 +21,16 @@ export const STARS_QUANTITY = 30;
 export const BREAKS_QUANTITY = 100;
 export const GROUND_QUANTITY = 0;
 
+
+export const STOP = "STOP";
+export const MOVE_LEFT = "MOVE_LEFT";
+export const MOVE_RIGHT = "MOVE_RIGHT";
+export const FORCE_LEFT = "FORCE_LEFT";
+export const FORCE_RIGHT = "FORCE_RIGHT";
+export const MOVE_UP = "MOVE_UP";
+export const MOVE_DOWN = "MOVE_DOWN";
+
+
 import merphy_sleep_1 from './assets/merphy/merphysleep1.png';
 import merphy_sleep_2 from './assets/merphy/merphysleep2.png';
 import merphy_sleep_3 from './assets/merphy/merphysleep3.png';
@@ -37,6 +47,18 @@ import merphy_sleep_13 from './assets/merphy/merphysleep13.png';
 import merphy_sleep_14 from './assets/merphy/merphysleep14.png';
 import merphy_sleep_15 from './assets/merphy/merphysleep15.png';
 import merphy_sleep_16 from './assets/merphy/merphysleep16.png';
+
+
+import merphy_left_1 from './assets/merphy/merphyl1.png';
+import merphy_left_2 from './assets/merphy/merphyl2.png';
+import merphy_left_3 from './assets/merphy/merphyl3.png';
+
+import merphy_right_1 from './assets/merphy/merphyr4.png';
+import merphy_right_2 from './assets/merphy/merphyr5.png';
+import merphy_right_3 from './assets/merphy/merphyr6.png';
+
+import meprhy_force_left from './assets/merphy/merphyhl.png';
+import meprhy_force_right from './assets/merphy/merphyhr.png';
 
 const merphy_sleep = [
     merphy_sleep_1,
@@ -57,6 +79,18 @@ const merphy_sleep = [
     merphy_sleep_16,
 ];
 
+const merphy_left = [
+    merphy_left_1,
+    merphy_left_2,
+    merphy_left_3
+];
+
+const merphy_right = [
+    merphy_right_1,
+    merphy_right_2,
+    merphy_right_3
+];
+
 let SEED = 2;
 
 function random() {
@@ -74,11 +108,12 @@ export class Player {
         this.state = 0;
         this.force = false;
         this.time_to_sleep = false;
-
+        this.pic_sequence = merphy_left;
         this.img = document.createElement('img');
-        this.img.src = merphy_sleep[this.state];
+        this.img.src = merphy_sleep[0];
         this.img.width = 32;
         this.img.height = 32;
+        this.merphy_state = STOP;
 
 
         document.body.appendChild(this.img);
@@ -96,37 +131,76 @@ export class Player {
         return world[this.y][this.x+1] === ROCK && world[this.y][this.x+2] === EMPTY && this.force;
     }
 
-    changeState(world, seconds) {
+    changePic(seconds) {
+        switch (this.merphy_state) {
+            case STOP:
+                // if (seconds % 10 === 0) this.time_to_sleep = true;
+                // if(this.time_to_sleep && this.state < 12) this.state +=1;
+                // else { this.state = 0; this.time_to_sleep = false; }
+                this.img.src = merphy_sleep[0];
+                break;
+            case MOVE_LEFT:
+                if( this.state < 2) this.state +=1;
+                else this.state = 0;
+                this.img.src = merphy_left[this.state];
+                this.pic_sequence = merphy_left;
+                break;
+            case MOVE_RIGHT:
+                if( this.state < 2) this.state +=1;
+                else this.state = 0;
+                this.img.src = merphy_right[this.state];
+                this.pic_sequence = merphy_right;
+                break;
+            case FORCE_LEFT:
+                this.img.src = meprhy_force_left;
+                break;
+            case FORCE_RIGHT:
+                this.img.src = meprhy_force_right;
+                break;
+            case MOVE_UP:
+            case MOVE_DOWN:
+                if( this.state < 2) this.state +=1;
+                else this.state = 0;
+                this.img.src = this.pic_sequence[this.state];
+                break;
+        }
+
+    }
+
+    changeState(world) {
         if (Player.off) return false;
-        if (seconds % 10 === 0) this.time_to_sleep = true;
-        if(this.time_to_sleep && this.state < 12) this.state +=1;
-        else { this.state = 0; this.time_to_sleep = false; }
-     
-        this.img.src = merphy_sleep[this.state];
+        
         switch  (this.dir) {
             case UP:
                 if (this.check({x: this.x, y: this.y - 1}, world)) {
+                    this.merphy_state = MOVE_UP;
                     this.y -= 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 }
+                else this.merphy_state = STOP;
                 break;
             case DOWN:
                 if (this.check({x: this.x, y: this.y + 1}, world)) {
                     this.y += 1;
+                    this.merphy_state = MOVE_DOWN;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
-                }
+                } else this.merphy_state = STOP;
                 break;
             case LEFT:
                 if (this.check({x: this.x - 1, y: this.y}, world)) {
+                    this.merphy_state = MOVE_LEFT;
                     this.x -= 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 } else if (this.check_force_move_left(world)) this.x -= 1;
+                else this.merphy_state = STOP;
                 break;
             case RIGHT:
                 if (this.check({x: this.x + 1, y: this.y}, world)) {
+                    this.merphy_state = MOVE_RIGHT;
                     this.x += 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 } else if (this.check_force_move_right(world)) this.x += 1;
+                else this.merphy_state = STOP;
                 break;
         }
 
@@ -506,7 +580,8 @@ export class World {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player.force));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
-        this.player.changeState(this.world, this.seconds);
+        this.player.changeState(this.world);
+        this.player.changePic(this.seconds);
         this.check_predators();
         this.check_food();
         this.check_rocks();
