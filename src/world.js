@@ -1,6 +1,7 @@
 import { stopGame } from "./index"
 export const WIDTH = 30;
 export const HEIGHT = 30;
+export const BLOCK_WIDTH = 32;
 
 export const UP = 'UP';
 export const DOWN = 'DOWN';
@@ -430,6 +431,14 @@ export class World {
         this.seconds = 0;
         this.timer = null;
         this.pause = false;
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = WIDTH * BLOCK_WIDTH;
+        this.canvas.height = HEIGHT * BLOCK_WIDTH;
+        this.ctx = this.canvas.getContext("2d");
+        
+
+        document.body.appendChild(this.canvas);
+
         //Breaks
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
@@ -547,6 +556,34 @@ export class World {
     }
 
     print() {
+        this.ctx.fillStyle = "black";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+
+        this.world.forEach((row,i) => {
+            row.forEach((el,j) => { 
+                if (el === WALL) { 
+                    this.ctx.fillStyle = 'gray';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === BREAK) { 
+                    this.ctx.fillStyle = 'red';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === ROCK) { 
+                    this.ctx.fillStyle = 'blue';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === FOOD) { 
+                    this.ctx.fillStyle = 'yellow';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if ('/-|\\'.includes(el)) {
+                    this.ctx.fillStyle = 'green';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === 'A') {
+                    this.ctx.drawImage(this.player.img,j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH)
+                }
+            })
+        })
+        this.ctx.fillRect(0, 0, BLOCK_WIDTH, BLOCK_WIDTH);
+
         return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Time: ' + this.getTime();
     }
 
