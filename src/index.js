@@ -1,6 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
+
 import { World, Player, Star, WIDTH, HEIGHT, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY } from "./world"
 
 const show = document.createElement('pre');
@@ -76,8 +77,6 @@ const scores = document.createElement('div');
 scores.style.fontFamily = 'Tahoma';
 scores.style.fontSize = '15px';
 scores.style.margin = 'auto';
-
-
 
 
 
