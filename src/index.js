@@ -9,6 +9,7 @@ window.prevStates = [];
 show.style.margin = 0;
 const main = document.createElement('div');
 document.body.style.display = 'flex';
+document.body.style.alignItems = 'center';
 main.style.margin = 'auto';
 main.style.fontFamily = 'Roboto';
 main.style.position = 'relative';
@@ -44,6 +45,7 @@ export const stopGame = () => {
 
     scores.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
     start_screen.appendChild(scores);
+    document.body.removeChild(THE_WORLD.canvas);
 }
 
 const start_screen = document.createElement('div');

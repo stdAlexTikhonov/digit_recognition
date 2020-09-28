@@ -1,6 +1,6 @@
 import { stopGame } from "./index"
 export const WIDTH = 30;
-export const HEIGHT = 30;
+export const HEIGHT = 20;
 export const BLOCK_WIDTH = 32;
 
 export const UP = 'UP';
@@ -17,9 +17,9 @@ const GROUND = '.';
 const EMPTY = ' ';
 
 export const PREDATOR_QUANTITY = 3;
-export const ROCKS_QUANTITY = 30;
-export const STARS_QUANTITY = 30;
-export const BREAKS_QUANTITY = 100;
+export const ROCKS_QUANTITY = 10;
+export const STARS_QUANTITY = 10;
+export const BREAKS_QUANTITY = 10;
 export const GROUND_QUANTITY = 0;
 
 
@@ -117,7 +117,7 @@ export class Player {
         this.merphy_state = STOP;
 
 
-        document.body.appendChild(this.img);
+        // document.body.appendChild(this.img);
     }
 
     check(nxt, world) {
@@ -541,12 +541,12 @@ export class World {
     rndomizer() {
 
         let rand_x = Math.floor(random() * (this.width - 2)) + 1;
-        let rand_y = Math.floor(random() * (this.width - 2)) + 1;
+        let rand_y = Math.floor(random() * (this.height - 2)) + 1;
         let pos = { x: rand_x, y: rand_y };
 
         while(this.rand_positions.some(el => el.x === pos.x && el.y === pos.y)) {
             rand_x = Math.floor(random() * (this.width - 2)) + 1;
-            rand_y = Math.floor(random() * (this.width - 2)) + 1;
+            rand_y = Math.floor(random() * (this.height - 2)) + 1;
             pos = { x: rand_x, y: rand_y };
         }
 
