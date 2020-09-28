@@ -1,6 +1,6 @@
 import { stopGame } from "./index"
 export const WIDTH = 30;
-export const HEIGHT = 20;
+export const HEIGHT = 18;
 export const BLOCK_WIDTH = 32;
 
 export const UP = 'UP';
@@ -436,7 +436,6 @@ export class World {
         this.canvas.height = HEIGHT * BLOCK_WIDTH;
         this.ctx = this.canvas.getContext("2d");
         
-
         document.body.appendChild(this.canvas);
 
         //Breaks
