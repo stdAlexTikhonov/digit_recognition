@@ -1,6 +1,7 @@
 import { stopGame } from "./index"
 export const WIDTH = 30;
-export const HEIGHT = 30;
+export const HEIGHT = 18;
+export const BLOCK_WIDTH = 32;
 
 export const UP = 'UP';
 export const DOWN = 'DOWN';
@@ -16,9 +17,9 @@ const GROUND = '.';
 const EMPTY = ' ';
 
 export const PREDATOR_QUANTITY = 3;
-export const ROCKS_QUANTITY = 30;
-export const STARS_QUANTITY = 30;
-export const BREAKS_QUANTITY = 100;
+export const ROCKS_QUANTITY = 10;
+export const STARS_QUANTITY = 10;
+export const BREAKS_QUANTITY = 10;
 export const GROUND_QUANTITY = 0;
 
 
@@ -109,14 +110,14 @@ export class Player {
         this.force = false;
         this.time_to_sleep = false;
         this.pic_sequence = merphy_left;
-        this.img = document.createElement('img');
+        this.img = new Image();
         this.img.src = merphy_sleep[0];
         this.img.width = 32;
         this.img.height = 32;
         this.merphy_state = STOP;
 
 
-        document.body.appendChild(this.img);
+        // document.body.appendChild(this.img);
     }
 
     check(nxt, world) {
@@ -430,6 +431,13 @@ export class World {
         this.seconds = 0;
         this.timer = null;
         this.pause = false;
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = WIDTH * BLOCK_WIDTH;
+        this.canvas.height = HEIGHT * BLOCK_WIDTH;
+        this.ctx = this.canvas.getContext("2d");
+        
+        document.body.appendChild(this.canvas);
+
         //Breaks
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
@@ -532,12 +540,12 @@ export class World {
     rndomizer() {
 
         let rand_x = Math.floor(random() * (this.width - 2)) + 1;
-        let rand_y = Math.floor(random() * (this.width - 2)) + 1;
+        let rand_y = Math.floor(random() * (this.height - 2)) + 1;
         let pos = { x: rand_x, y: rand_y };
 
         while(this.rand_positions.some(el => el.x === pos.x && el.y === pos.y)) {
             rand_x = Math.floor(random() * (this.width - 2)) + 1;
-            rand_y = Math.floor(random() * (this.width - 2)) + 1;
+            rand_y = Math.floor(random() * (this.height - 2)) + 1;
             pos = { x: rand_x, y: rand_y };
         }
 
@@ -547,6 +555,34 @@ export class World {
     }
 
     print() {
+        this.ctx.fillStyle = "black";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+
+        this.world.forEach((row,i) => {
+            row.forEach((el,j) => { 
+                if (el === WALL) { 
+                    this.ctx.fillStyle = 'gray';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === BREAK) { 
+                    this.ctx.fillStyle = 'red';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === ROCK) { 
+                    this.ctx.fillStyle = 'blue';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === FOOD) { 
+                    this.ctx.fillStyle = 'yellow';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if ('/-|\\'.includes(el)) {
+                    this.ctx.fillStyle = 'green';
+                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === 'A') {
+                    this.ctx.drawImage(this.player.img,j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH)
+                }
+            })
+        })
+        this.ctx.fillRect(0, 0, BLOCK_WIDTH, BLOCK_WIDTH);
+
         return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Time: ' + this.getTime();
     }
 
