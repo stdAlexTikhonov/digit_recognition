@@ -110,7 +110,7 @@ export class Player {
         this.force = false;
         this.time_to_sleep = false;
         this.pic_sequence = merphy_left;
-        this.img = document.createElement('img');
+        this.img = new Image();
         this.img.src = merphy_sleep[0];
         this.img.width = 32;
         this.img.height = 32;
