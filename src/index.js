@@ -3,7 +3,7 @@
 import "./styles/styles.css"
 
 import { World, Player, Star, WIDTH, HEIGHT, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY } from "./world"
-
+let frames = 0;
 const show = document.createElement('pre');
 window.prevStates = [];
 show.style.margin = 0;
@@ -30,19 +30,40 @@ const startGame = () => {
     show.innerText = THE_WORLD.print();
     prevStates.push(THE_WORLD.print());
     main.style.display = 'none';
-    interval = setInterval(() => {
+    // interval = setInterval(() => {
+        // if (!window.pause) {
+            // THE_WORLD.tick();
+            // show.innerText = THE_WORLD.print();
+            // prevStates.push(THE_WORLD.print())
+            // if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
+            
+        // }
+    // },100);
+    draw();
+}
+
+const draw = () => {
+    
+      if (frames % 5 === 0) {
         if (!window.pause) {
             THE_WORLD.tick();
             // show.innerText = THE_WORLD.print();
             prevStates.push(THE_WORLD.print())
             if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
+            
         }
-    },100);
+      }  
+        
+    
+        
+    window.requestAnimationFrame(draw);   
+   
+    frames++;
 }
 
 export const stopGame = () => {
     THE_WORLD.stopTimer(); 
-    clearInterval(interval);
+    // clearInterval(interval);
     start_screen.style.display = 'flex';
 
     scores.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
