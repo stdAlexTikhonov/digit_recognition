@@ -43,8 +43,8 @@ const startGame = () => {
 }
 
 const draw = () => {
-    if (frames % 5 === 0) {
-        
+    
+      if (frames % 5 === 0) {
         if (!window.pause) {
             THE_WORLD.tick();
             // show.innerText = THE_WORLD.print();
@@ -52,7 +52,9 @@ const draw = () => {
             if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
             
         }
-    }
+      }  
+        
+    
         
     window.requestAnimationFrame(draw);   
    

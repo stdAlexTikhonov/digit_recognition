@@ -20,7 +20,7 @@ export const PREDATOR_QUANTITY = 3;
 export const ROCKS_QUANTITY = 10;
 export const STARS_QUANTITY = 10;
 export const BREAKS_QUANTITY = 10;
-export const GROUND_QUANTITY = 0;
+export const GROUND_QUANTITY = 140;
 
 
 export const STOP = "STOP";
@@ -48,6 +48,8 @@ import merphy_sleep_13 from './assets/merphy/merphysleep13.png';
 import merphy_sleep_14 from './assets/merphy/merphysleep14.png';
 import merphy_sleep_15 from './assets/merphy/merphysleep15.png';
 import merphy_sleep_16 from './assets/merphy/merphysleep16.png';
+import sprite from './assets/merphy/sprite.png';
+import sprite2 from './assets/merphy/sprite2.png';
 
 
 import merphy_left_1 from './assets/merphy/merphyl1.png';
@@ -111,13 +113,34 @@ export class Player {
         this.time_to_sleep = false;
         this.pic_sequence = merphy_left;
         this.img = new Image();
-        this.img.src = merphy_sleep[0];
-        this.img.width = 32;
+        this.img.src = sprite;
+        this.img.width = 100;
         this.img.height = 32;
         this.merphy_state = STOP;
+        this.dy = 0;
 
 
         // document.body.appendChild(this.img);
+
+    // const canvas = document.getElementById("canvas");
+    // canvas.style.border = '1px solid black'
+    //   const ctx = canvas.getContext("2d");
+     
+    //   this.img.addEventListener("load", (e) => {
+    //     ctx.drawImage(
+    //         this.img,
+    //         64,
+    //         0,
+    //         32,
+    //         32,
+    //         32,
+    //         32,
+    //         32,
+    //         32
+    //       );
+    //   });
+        
+     
     }
 
     check(nxt, world) {
@@ -133,38 +156,57 @@ export class Player {
     }
 
     changePic(seconds) {
+
+        if( this.state < 2) this.state +=1;
+        else this.state = 0;
+
         switch (this.merphy_state) {
             case STOP:
-                // if (seconds % 10 === 0) this.time_to_sleep = true;
-                // if(this.time_to_sleep && this.state < 12) this.state +=1;
-                // else { this.state = 0; this.time_to_sleep = false; }
-                this.img.src = merphy_sleep[0];
+                this.dy = 1;
                 break;
             case MOVE_LEFT:
-                if( this.state < 2) this.state +=1;
-                else this.state = 0;
-                this.img.src = merphy_left[this.state];
-                this.pic_sequence = merphy_left;
+                this.dy = 0;
                 break;
             case MOVE_RIGHT:
-                if( this.state < 2) this.state +=1;
-                else this.state = 0;
-                this.img.src = merphy_right[this.state];
-                this.pic_sequence = merphy_right;
+                this.dy = 2;
                 break;
-            case FORCE_LEFT:
-                this.img.src = meprhy_force_left;
-                break;
-            case FORCE_RIGHT:
-                this.img.src = meprhy_force_right;
-                break;
-            case MOVE_UP:
-            case MOVE_DOWN:
-                if( this.state < 2) this.state +=1;
-                else this.state = 0;
-                this.img.src = this.pic_sequence[this.state];
+            default:
+                this.dy = 0;
                 break;
         }
+        
+        // switch (this.merphy_state) {
+        //     case STOP:
+        //         // if (seconds % 10 === 0) this.time_to_sleep = true;
+        //         // if(this.time_to_sleep && this.state < 12) this.state +=1;
+        //         // else { this.state = 0; this.time_to_sleep = false; }
+        //         this.img.src = merphy_sleep[0];
+        //         break;
+        //     case MOVE_LEFT:
+        //         if( this.state < 2) this.state +=1;
+        //         else this.state = 0;
+        //         this.img.src = merphy_left[this.state];
+        //         this.pic_sequence = merphy_left;
+        //         break;
+        //     case MOVE_RIGHT:
+        //         if( this.state < 2) this.state +=1;
+        //         else this.state = 0;
+        //         this.img.src = merphy_right[this.state];
+        //         this.pic_sequence = merphy_right;
+        //         break;
+        //     case FORCE_LEFT:
+        //         this.img.src = meprhy_force_left;
+        //         break;
+        //     case FORCE_RIGHT:
+        //         this.img.src = meprhy_force_right;
+        //         break;
+        //     case MOVE_UP:
+        //     case MOVE_DOWN:
+        //         if( this.state < 2) this.state +=1;
+        //         else this.state = 0;
+        //         this.img.src = this.pic_sequence[this.state];
+        //         break;
+        // }
 
     }
 
@@ -429,12 +471,15 @@ export class World {
         this.width = width;
         this.minutes = 0;
         this.seconds = 0;
+        this.img = new Image();
+        this.img.src = sprite2;
         this.timer = null;
         this.pause = false;
         this.canvas = document.createElement('canvas');
         this.canvas.width = WIDTH * BLOCK_WIDTH;
         this.canvas.height = HEIGHT * BLOCK_WIDTH;
         this.ctx = this.canvas.getContext("2d");
+        
         
         document.body.appendChild(this.canvas);
 
@@ -562,22 +607,21 @@ export class World {
         this.world.forEach((row,i) => {
             row.forEach((el,j) => { 
                 if (el === WALL) { 
-                    this.ctx.fillStyle = 'gray';
-                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                    this.ctx.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH)
                 } else if (el === BREAK) { 
-                    this.ctx.fillStyle = 'red';
-                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                    this.ctx.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH)
                 } else if (el === ROCK) { 
-                    this.ctx.fillStyle = 'blue';
-                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                    this.ctx.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH)
                 } else if (el === FOOD) { 
-                    this.ctx.fillStyle = 'yellow';
-                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                    this.ctx.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH)
+                } else if (el === GROUND) { 
+                    this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH)
                 } else if ('/-|\\'.includes(el)) {
                     this.ctx.fillStyle = 'green';
                     this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === 'A') {
-                    this.ctx.drawImage(this.player.img,j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH)
+                    this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH)
+                    // this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
                 }
             })
         })
