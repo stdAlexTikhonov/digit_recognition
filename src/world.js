@@ -260,7 +260,7 @@ export class Predator {
 
     constructor(y,x) {
         this.phases = '/-\\|';
-        this.phase = 0;
+        this.state = 0;
         this.show = '/';
         this.x = x;
         this.y = y;
@@ -271,6 +271,9 @@ export class Predator {
         this.dir = DOWN;
         this.flag = false;
         this.still_alive = true;
+        this.img = new Image();
+        this.img.src = sprite3;
+        this.char = SCISSORS;
     }
 
 
@@ -329,7 +332,7 @@ export class Predator {
     }
 
     changeState(world) {
-        this.phase = this.phase < 3 ? this.phase + 1 : 0;
+        this.state = this.state < 7 ? this.state + 1 : 0;
         this.show = this.phases[this.phase];
         this.flag = !this.flag;
         if (this.find_rock(world) || this.no_way())
@@ -475,8 +478,6 @@ export class World {
         this.seconds = 0;
         this.img = new Image();
         this.img.src = sprite2;
-        this.predator = new Image();
-        this.predator.src = sprite3;
         this.timer = null;
         this.pause = false;
         this.canvas = document.createElement('canvas');
@@ -575,7 +576,7 @@ export class World {
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = EMPTY);
 
-        this.PREDATORS.forEach(P => WORLD[P.y][P.x] = SCISSORS);
+        this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P);
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
 
@@ -620,8 +621,8 @@ export class World {
                     this.ctx.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === GROUND) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if (el === SCISSORS) {
-                    this.ctx.drawImage(this.predator, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el.char === SCISSORS) {
+                    this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === 'A') {
                     this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 }
