@@ -7,7 +7,8 @@ export const UP = 'UP';
 export const DOWN = 'DOWN';
 export const LEFT = 'LEFT';
 export const RIGHT = 'RIGHT';
-const DIRS = [UP, DOWN, LEFT, RIGHT];
+export const NO_WAY = 'NO_WAY';
+const DIRS = [NO_WAY, UP, DOWN, LEFT, RIGHT];
 
 const PLAYER = 'A';
 const ROCK = 'O';
@@ -325,6 +326,12 @@ export class Predator {
                 else if (this.dir_down) this.dir = DOWN;
                 else this.dir = RIGHT;
                 break;
+            case NO_WAY:
+                if (this.dir_up) this.dir = UP;
+                else if (this.dir_left) this.dir = LEFT;
+                else if (this.dir_down) this.dir = DOWN;
+                else if (this.dir_right) this.dir = RIGHT;
+                break;
         }
     }
 
@@ -336,8 +343,10 @@ export class Predator {
         this.state = this.state < 7 ? this.state + 1 : 0;
         this.show = this.phases[this.phase];
         this.flag = !this.flag;
-        if (this.find_rock(world) || this.no_way())
+        if (this.find_rock(world))
             this.still_alive = false;
+        
+        if (this.no_way()) this.dir = NO_WAY;
 
         if (this.find_player(world)) {
             this.still_alive = false;
@@ -623,7 +632,7 @@ export class World {
                 } else if (el === GROUND) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el.char === SCISSORS) {
-                    this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, (DIRS.indexOf(el.dir) + 1) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === 'A') {
                     this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 }
