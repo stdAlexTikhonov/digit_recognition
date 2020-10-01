@@ -7,6 +7,7 @@ export const UP = 'UP';
 export const DOWN = 'DOWN';
 export const LEFT = 'LEFT';
 export const RIGHT = 'RIGHT';
+const DIRS = [UP, DOWN, LEFT, RIGHT];
 
 const PLAYER = 'A';
 const ROCK = 'O';
@@ -622,7 +623,7 @@ export class World {
                 } else if (el === GROUND) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el.char === SCISSORS) {
-                    this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, (DIRS.indexOf(el.dir) + 1) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === 'A') {
                     this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 }
