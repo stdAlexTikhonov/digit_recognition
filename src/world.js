@@ -15,6 +15,7 @@ const BREAK = '+';
 const WALL = '#';
 const GROUND = '.';
 const EMPTY = ' ';
+const SCISSORS = 'X';
 
 export const PREDATOR_QUANTITY = 3;
 export const ROCKS_QUANTITY = 10;
@@ -50,6 +51,7 @@ import merphy_sleep_15 from './assets/merphy/merphysleep15.png';
 import merphy_sleep_16 from './assets/merphy/merphysleep16.png';
 import sprite from './assets/merphy/sprite.png';
 import sprite2 from './assets/merphy/sprite2.png';
+import sprite3 from "./assets/merphy/sprite3.png";
 
 
 import merphy_left_1 from './assets/merphy/merphyl1.png';
@@ -473,6 +475,8 @@ export class World {
         this.seconds = 0;
         this.img = new Image();
         this.img.src = sprite2;
+        this.predator = new Image();
+        this.predator.src = sprite3;
         this.timer = null;
         this.pause = false;
         this.canvas = document.createElement('canvas');
@@ -571,7 +575,7 @@ export class World {
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = EMPTY);
 
-        this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P.show);
+        this.PREDATORS.forEach(P => WORLD[P.y][P.x] = SCISSORS);
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
 
@@ -616,9 +620,8 @@ export class World {
                     this.ctx.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === GROUND) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if ('/-|\\'.includes(el)) {
-                    this.ctx.fillStyle = 'green';
-                    this.ctx.fillRect(j*BLOCK_WIDTH, i*BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+                } else if (el === SCISSORS) {
+                    this.ctx.drawImage(this.predator, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === 'A') {
                     this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 }
