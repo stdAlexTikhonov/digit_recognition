@@ -22,7 +22,7 @@ export const PREDATOR_QUANTITY = 3;
 export const ROCKS_QUANTITY = 10;
 export const STARS_QUANTITY = 10;
 export const BREAKS_QUANTITY = 10;
-export const GROUND_QUANTITY = 140;
+export const GROUND_QUANTITY = 250;
 
 
 export const STOP = "STOP";
