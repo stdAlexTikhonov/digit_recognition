@@ -20,6 +20,7 @@ main.id = 'main';
 // main.appendChild(show);
 document.body.appendChild(main);
 window.pause = false;
+window.myReq = null;
 window.THE_WORLD = null;
 let interval = null;
 const startGame = () => {
@@ -30,6 +31,7 @@ const startGame = () => {
     show.innerText = THE_WORLD.print();
     prevStates.push(THE_WORLD.print());
     main.style.display = 'none';
+    window.pause = false;
     // interval = setInterval(() => {
         // if (!window.pause) {
             // THE_WORLD.tick();
@@ -53,22 +55,21 @@ const draw = () => {
             
         }
       }  
-        
-    
-        
-    window.requestAnimationFrame(draw);   
+     
+      if (!window.pause) window.myReq = window.requestAnimationFrame(draw);   
    
     frames++;
 }
 
 export const stopGame = () => {
     THE_WORLD.stopTimer(); 
-    // clearInterval(interval);
+    window.cancelAnimationFrame(window.myReq);
+    window.pause = true;
     start_screen.style.display = 'flex';
 
     scores.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
     start_screen.appendChild(scores);
-    document.body.removeChild(THE_WORLD.canvas);
+    if (THE_WORLD.canvas.parentNode) document.body.removeChild(THE_WORLD.canvas);
     main.style.display = 'block';
 }
 
