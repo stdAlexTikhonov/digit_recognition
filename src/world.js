@@ -288,18 +288,26 @@ export class Predator {
 
     find_player(world) {
         let FOUND_PLAYER = false;
+
+        const up = world[this.y-1][this.x] === PLAYER;
+        const down = world[this.y+1][this.x] === PLAYER;
+        const left = world[this.y][this.x-1] === PLAYER;
+        const right = world[this.y][this.x+1] === PLAYER;
         switch (this.dir) {
             case UP:
-                FOUND_PLAYER = world[this.y-1][this.x] === PLAYER;
+                FOUND_PLAYER = up;
                 break;
             case DOWN:
-                FOUND_PLAYER = world[this.y+1][this.x] === PLAYER;
+                FOUND_PLAYER = down;
                 break;
             case LEFT:
-                FOUND_PLAYER = world[this.y][this.x-1] === PLAYER;
+                FOUND_PLAYER = left;
                 break;
             case RIGHT:
-                FOUND_PLAYER = world[this.y][this.x+1] === PLAYER;
+                FOUND_PLAYER = right;
+                break;
+            case NO_WAY:
+                FOUND_PLAYER = up || down || left || right;
                 break;
         }
 
