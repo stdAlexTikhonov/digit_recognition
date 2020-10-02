@@ -287,12 +287,23 @@ export class Predator {
     }
 
     find_player(world) {
-        const FOUND_PLAYER_LEFT = world[this.y][this.x-1] === PLAYER;
-        const FOUND_PLAYER_TOP = world[this.y-1][this.x] === PLAYER;
-        const FOUND_PLAYER_RIGHT = world[this.y][this.x+1] === PLAYER;
-        const FOUND_PLAYER_DOWN = world[this.y+1][this.x] === PLAYER;
+        let FOUND_PLAYER = false;
+        switch (this.dir) {
+            case UP:
+                FOUND_PLAYER = world[this.y-1][this.x] === PLAYER;
+                break;
+            case DOWN:
+                FOUND_PLAYER = world[this.y+1][this.x] === PLAYER;
+                break;
+            case LEFT:
+                FOUND_PLAYER = world[this.y][this.x-1] === PLAYER;
+                break;
+            case RIGHT:
+                FOUND_PLAYER = world[this.y][this.x+1] === PLAYER;
+                break;
+        }
 
-        return FOUND_PLAYER_DOWN || FOUND_PLAYER_TOP || FOUND_PLAYER_LEFT || FOUND_PLAYER_RIGHT;
+        return FOUND_PLAYER;
     }
 
     find_rock(world) {
