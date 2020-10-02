@@ -35,68 +35,11 @@ export const MOVE_UP = "MOVE_UP";
 export const MOVE_DOWN = "MOVE_DOWN";
 
 
-import merphy_sleep_1 from './assets/merphy/merphysleep1.png';
-import merphy_sleep_2 from './assets/merphy/merphysleep2.png';
-import merphy_sleep_3 from './assets/merphy/merphysleep3.png';
-import merphy_sleep_4 from './assets/merphy/merphysleep4.png';
-import merphy_sleep_5 from './assets/merphy/merphysleep5.png';
-import merphy_sleep_6 from './assets/merphy/merphysleep6.png';
-import merphy_sleep_7 from './assets/merphy/merphysleep7.png';
-import merphy_sleep_8 from './assets/merphy/merphysleep8.png';
-import merphy_sleep_9 from './assets/merphy/merphysleep9.png';
-import merphy_sleep_10 from './assets/merphy/merphysleep10.png';
-import merphy_sleep_11 from './assets/merphy/merphysleep11.png';
-import merphy_sleep_12 from './assets/merphy/merphysleep12.png';
-import merphy_sleep_13 from './assets/merphy/merphysleep13.png';
-import merphy_sleep_14 from './assets/merphy/merphysleep14.png';
-import merphy_sleep_15 from './assets/merphy/merphysleep15.png';
-import merphy_sleep_16 from './assets/merphy/merphysleep16.png';
 import sprite from './assets/merphy/sprite.png';
 import sprite2 from './assets/merphy/sprite2.png';
 import sprite3 from "./assets/merphy/sprite3.png";
 
 
-import merphy_left_1 from './assets/merphy/merphyl1.png';
-import merphy_left_2 from './assets/merphy/merphyl2.png';
-import merphy_left_3 from './assets/merphy/merphyl3.png';
-
-import merphy_right_1 from './assets/merphy/merphyr4.png';
-import merphy_right_2 from './assets/merphy/merphyr5.png';
-import merphy_right_3 from './assets/merphy/merphyr6.png';
-
-import meprhy_force_left from './assets/merphy/merphyhl.png';
-import meprhy_force_right from './assets/merphy/merphyhr.png';
-
-const merphy_sleep = [
-    merphy_sleep_1,
-    merphy_sleep_2,
-    merphy_sleep_3,
-    merphy_sleep_4,
-    merphy_sleep_5,
-    merphy_sleep_6,
-    merphy_sleep_7,
-    merphy_sleep_8,
-    merphy_sleep_9,
-    merphy_sleep_10,
-    merphy_sleep_11,
-    merphy_sleep_12,
-    merphy_sleep_13,
-    merphy_sleep_14,
-    merphy_sleep_15,
-    merphy_sleep_16,
-];
-
-const merphy_left = [
-    merphy_left_1,
-    merphy_left_2,
-    merphy_left_3
-];
-
-const merphy_right = [
-    merphy_right_1,
-    merphy_right_2,
-    merphy_right_3
-];
 
 let SEED = 2;
 
@@ -115,36 +58,13 @@ export class Player {
         this.state = 0;
         this.force = false;
         this.time_to_sleep = false;
-        this.pic_sequence = merphy_left;
         this.img = new Image();
         this.img.src = sprite;
         this.img.width = 100;
         this.img.height = 32;
         this.merphy_state = STOP;
         this.dy = 0;
-
-
-        // document.body.appendChild(this.img);
-
-    // const canvas = document.getElementById("canvas");
-    // canvas.style.border = '1px solid black'
-    //   const ctx = canvas.getContext("2d");
-     
-    //   this.img.addEventListener("load", (e) => {
-    //     ctx.drawImage(
-    //         this.img,
-    //         64,
-    //         0,
-    //         32,
-    //         32,
-    //         32,
-    //         32,
-    //         32,
-    //         32
-    //       );
-    //   });
         
-     
     }
 
     check(nxt, world) {
