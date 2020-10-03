@@ -197,9 +197,7 @@ Player.flag = true;
 export class Predator {
 
     constructor(y,x) {
-        this.phases = '/-\\|';
         this.state = 0;
-        this.show = '/';
         this.x = x;
         this.y = y;
         this.dir_down = true;
@@ -258,24 +256,28 @@ export class Predator {
     check_dir() {
         switch (this.dir) {
             case DOWN:
+                if (!this.dir_down) this.dir = NO_WAY;
                 if (this.dir_left) this.dir = LEFT;
                 else if (this.dir_down) this.dir = DOWN;
                 else if (this.dir_right) this.dir = RIGHT;
                 else this.dir = UP;
                 break;
             case RIGHT:
+                if (!this.dir_right) this.dir = NO_WAY;
                 if (this.dir_down) this.dir = DOWN;
                 else if (this.dir_right) this.dir = RIGHT;
                 else if (this.dir_up) this.dir = UP;
                 else this.dir = LEFT;
                 break;
             case UP:
+                if (!this.dir_up) this.dir = NO_WAY;
                 if (this.dir_right) this.dir = RIGHT;
                 else if (this.dir_up) this.dir = UP;
                 else if (this.dir_left) this.dir = LEFT;
                 else this.dir = DOWN;
                 break;
             case LEFT:
+                if (!this.dir_left) this.dir = NO_WAY;
                 if (this.dir_up) this.dir = UP;
                 else if (this.dir_left) this.dir = LEFT;
                 else if (this.dir_down) this.dir = DOWN;
@@ -296,7 +298,6 @@ export class Predator {
 
     changeState(world) {
         this.state = this.state < 7 ? this.state + 1 : 0;
-        this.show = this.phases[this.phase];
         this.flag = !this.flag;
         if (this.find_rock(world))
             this.still_alive = false;
@@ -340,7 +341,7 @@ export class Rock {
 
     check_way_down(world) {
         if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Player.off = true; }
-        else if (this.falling && '/-|\\'.includes(world[this.y+1][this.x])) { this.killer = true; }
+        else if (this.falling && world[this.y+1][this.x].char === SCISSORS) { this.killer = true; }
         this.falling = true;
         return  world[this.y+1][this.x] === EMPTY;
     }
@@ -398,7 +399,7 @@ export class Star {
 
     check_way_down(world) {
         if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Player.off = true; }
-        else if (this.falling && '/-|\\'.includes(world[this.y+1][this.x])) { this.killer = true; }
+        else if (this.falling && world[this.y+1][this.x].char === SCISSORS) { this.killer = true; }
         this.falling = true;
         return  world[this.y+1] && world[this.y+1][this.x] === EMPTY;
     }
