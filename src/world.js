@@ -473,8 +473,39 @@ export class World {
             this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
             this.tick();
             this.print();
-            console.log("Left? : " + _x + " ; Top? : " + _y);
+           
         }
+
+
+        const createDiv = (img, index) => {
+            const div = document.createElement('div');
+            div.style.width = BLOCK_WIDTH + 'px';
+            div.style.height = BLOCK_WIDTH + 'px';
+            div.style.backgroundImage = `url(${img})`;
+            div.style.backgroundColor = 'black';
+            div.style.backgroundPositionX = BLOCK_WIDTH * index + 'px';
+            div.style.margin = '20px';
+            div.style.cursor = 'pointer';
+            return div
+        }
+        
+        
+        const edit_block = document.createElement('div');
+        edit_block.style.width = '10%';
+        edit_block.style.border = '1px solid black';
+        edit_block.style.height = HEIGHT * BLOCK_WIDTH + 'px';
+        edit_block.style.display = 'flex';
+        edit_block.style.flexDirection = 'column';
+        edit_block.style.alignItems = 'center';
+        for (let i = 0; i < 5; i++) {
+            const div = createDiv(sprite2, i)
+            edit_block.appendChild(div);
+        }
+        
+        const empty = createDiv();
+        edit_block.appendChild(empty);
+
+        this.edit_block = edit_block;
 
         //Breaks
         this.BREAKS = [];
