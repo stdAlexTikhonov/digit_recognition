@@ -2,7 +2,22 @@
 //height: 470px
 import "./styles/styles.css"
 
-import { World, Player, Star, WIDTH, HEIGHT, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY } from "./world"
+import { 
+    World, 
+    Player, 
+    Star, 
+    WIDTH, 
+    HEIGHT, 
+    PREDATOR_QUANTITY,
+    ROCKS_QUANTITY,
+    STARS_QUANTITY,
+    BREAKS_QUANTITY,
+    BLOCK_WIDTH,
+    sprite,
+    sprite2,
+    sprite3
+} from "./world"
+
 let frames = 0;
 const show = document.createElement('pre');
 window.prevStates = [];
@@ -56,8 +71,12 @@ window.onkeydown = (e) => {
     if (e.keyCode === 80) {
         if (window.pause) {
             window.pause = false;
+            document.body.removeChild(edit_block);
             draw();
-        } else window.pause = true;
+        } else  { 
+            window.pause = true;
+            document.body.appendChild(edit_block);
+        }
 
     }
 }
@@ -105,6 +124,36 @@ const scores = document.createElement('div');
 scores.style.fontFamily = 'Tahoma';
 scores.style.fontSize = '15px';
 scores.style.margin = 'auto';
+
+export const createDiv = (img, index) => {
+    const div = document.createElement('div');
+    div.style.width = BLOCK_WIDTH + 'px';
+    div.style.height = BLOCK_WIDTH + 'px';
+    div.style.backgroundImage = `url(${img})`;
+    div.style.backgroundColor = 'black';
+    div.style.backgroundPositionX = BLOCK_WIDTH * index + 'px';
+    div.style.margin = '20px';
+    div.style.cursor = 'pointer';
+    return div
+}
+
+
+const edit_block = document.createElement('div');
+edit_block.style.width = '10%';
+edit_block.style.border = '1px solid black';
+edit_block.style.height = HEIGHT * BLOCK_WIDTH + 'px';
+edit_block.style.display = 'flex';
+edit_block.style.flexDirection = 'column';
+edit_block.style.alignItems = 'center';
+for (let i = 0; i < 5; i++) {
+    const div = createDiv(sprite2, i)
+    edit_block.appendChild(div);
+}
+
+const empty = createDiv();
+edit_block.appendChild(empty);
+
+
 
 
 

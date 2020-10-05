@@ -39,6 +39,11 @@ import sprite from './assets/merphy/sprite.png';
 import sprite2 from './assets/merphy/sprite2.png';
 import sprite3 from "./assets/merphy/sprite3.png";
 
+export {
+    sprite,
+    sprite2,
+    sprite3
+}
 
 
 let SEED = 2;
