@@ -461,10 +461,18 @@ export class World {
         document.body.appendChild(this.canvas);
 
         this.canvas.onclick = (e) => {
-            var rect = e.target.getBoundingClientRect();
-            var x = e.clientX - rect.left; //x position within the element.
-            var y = e.clientY - rect.top;  //y position within the element.
-            console.log("Left? : " + Math.floor(x/BLOCK_WIDTH) + " ; Top? : " + Math.floor(y/BLOCK_WIDTH));
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left; //x position within the element.
+            const y = e.clientY - rect.top;  //y position within the element.
+            const _x = Math.floor(x/BLOCK_WIDTH);
+            const _y = Math.floor(y/BLOCK_WIDTH);
+
+            this.GROUND = this.GROUND.filter((val) => !(val.x === _x && val.y === _y));
+            this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
+            this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
+            this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
+          
+            console.log("Left? : " + _x + " ; Top? : " + _y);
         }
 
         //Breaks
@@ -562,6 +570,7 @@ export class World {
         this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
+
 
         return WORLD;
     }
