@@ -489,7 +489,8 @@ export class World {
                     this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
                     this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
                     this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
-                    switch( this.selected_value) {
+                    this.WALLS = this.WALLS.filter((val) => !(val.x === _x && val.y === _y));
+                    switch(this.selected_value) {
                         case GROUND:
                             this.GROUND.push({ x: _x, y: _y});
                             break;
@@ -501,6 +502,9 @@ export class World {
                             break;
                         case FOOD:
                             this.STARS.push(new Star(_y, _x));
+                            break;
+                        case WALL:
+                            this.WALLS.push({ x: _x, y: _y });
                             break;    
                     }
                     
@@ -565,6 +569,9 @@ export class World {
         edit_block.appendChild(empty);
 
         this.edit_block = edit_block;
+
+        //WALLS
+        this.WALLS = [];
 
         //Breaks
         this.BREAKS = [];
@@ -662,7 +669,7 @@ export class World {
 
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
 
-
+        this.WALLS.forEach(W => WORLD[W.y][W.x] = WALL);
         return WORLD;
     }
 
