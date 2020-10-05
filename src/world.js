@@ -456,26 +456,46 @@ export class World {
         this.canvas.width = WIDTH * BLOCK_WIDTH;
         this.canvas.height = HEIGHT * BLOCK_WIDTH;
         this.ctx = this.canvas.getContext("2d");
+        this.selected_values = [];
+        this.mouse_pressed = false;
         
         
         document.body.appendChild(this.canvas);
-
-        this.canvas.onclick = (e) => {
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX - rect.left; //x position within the element.
-            const y = e.clientY - rect.top;  //y position within the element.
-            const _x = Math.floor(x/BLOCK_WIDTH);
-            const _y = Math.floor(y/BLOCK_WIDTH);
-
-            this.GROUND = this.GROUND.filter((val) => !(val.x === _x && val.y === _y));
-            this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
-            this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
-            this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
-            this.world = this.generate();
-            this.world[this.player.y][this.player.x] = PLAYER;
-            this.print();
-           
+        this.canvas.onmousedown = e1 => {
+            this.mouse_pressed = true;
         }
+
+        this.canvas.onmouseup = e1 => {
+            this.mouse_pressed = false;
+        }
+
+        this.canvas.onmousemove = (e) => {
+            if (this.mouse_pressed && window.pause) {
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX - rect.left; //x position within the element.
+                const y = e.clientY - rect.top;  //y position within the element.
+                const _x = Math.floor(x/BLOCK_WIDTH);
+                const _y = Math.floor(y/BLOCK_WIDTH);
+    
+                let val = _x + "_" + _y;
+                
+                if (!this.selected_values.includes(val)) { 
+                    this.selected_values = [...this.selected_values, val];
+                    this.GROUND = this.GROUND.filter((val) => !(val.x === _x && val.y === _y));
+                    this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
+                    this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
+                    this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
+                    this.world = this.generate();
+                    this.world[this.player.y][this.player.x] = PLAYER;
+                    this.print();
+                }
+            }
+            
+            // 
+            
+        }
+        
+
 
 
         const createDiv = (img, index) => {
