@@ -1,7 +1,7 @@
 let frame = 9;
 
 document.onkeydown = e => {
-    window.pause = e.keyCode === 80 ? window.pause : e.shiftKey;
+    
     
     switch (e.keyCode) {
         case 37:
@@ -47,15 +47,11 @@ document.onkeydown = e => {
                 document.getElementsByTagName('pre')[0].innerText = window.prevStates[frame];
             }
             break;
-        case 80:
-            window.pause = !window.pause;
-            break;
     }
     
 };
 
 document.onkeyup = e => {
-    window.pause = e.keyCode === 80 ? window.pause : e.shiftKey;
     if (e.shiftKey === false) { frame = 9; }
     window.THE_WORLD.player.force = false;
 }

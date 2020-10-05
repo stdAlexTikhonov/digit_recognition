@@ -22,7 +22,6 @@ document.body.appendChild(main);
 window.pause = false;
 window.myReq = null;
 window.THE_WORLD = null;
-let interval = null;
 const startGame = () => {
     THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY);
     Player.off = false;
@@ -32,15 +31,7 @@ const startGame = () => {
     prevStates.push(THE_WORLD.print());
     main.style.display = 'none';
     window.pause = false;
-    // interval = setInterval(() => {
-        // if (!window.pause) {
-            // THE_WORLD.tick();
-            // show.innerText = THE_WORLD.print();
-            // prevStates.push(THE_WORLD.print())
-            // if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
-            
-        // }
-    // },100);
+ 
     draw();
 }
 
@@ -52,13 +43,23 @@ const draw = () => {
             // show.innerText = THE_WORLD.print();
             prevStates.push(THE_WORLD.print())
             if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
-            
         }
       }  
      
       if (!window.pause) window.myReq = window.requestAnimationFrame(draw);   
    
     frames++;
+}
+
+window.onkeydown = (e) => {
+    console.log(e.keyCode);
+    if (e.keyCode === 80) {
+        if (window.pause) {
+            window.pause = false;
+            draw();
+        } else window.pause = true;
+
+    }
 }
 
 export const stopGame = () => {
