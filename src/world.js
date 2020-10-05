@@ -452,12 +452,20 @@ export class World {
         this.timer = null;
         this.pause = false;
         this.canvas = document.createElement('canvas');
+        this.canvas.id = 'canvas';
         this.canvas.width = WIDTH * BLOCK_WIDTH;
         this.canvas.height = HEIGHT * BLOCK_WIDTH;
         this.ctx = this.canvas.getContext("2d");
         
         
         document.body.appendChild(this.canvas);
+
+        this.canvas.onclick = (e) => {
+            var rect = e.target.getBoundingClientRect();
+            var x = e.clientX - rect.left; //x position within the element.
+            var y = e.clientY - rect.top;  //y position within the element.
+            console.log("Left? : " + Math.floor(x/BLOCK_WIDTH) + " ; Top? : " + Math.floor(y/BLOCK_WIDTH));
+        }
 
         //Breaks
         this.BREAKS = [];
