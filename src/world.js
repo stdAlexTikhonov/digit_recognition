@@ -471,7 +471,8 @@ export class World {
             this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
             this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
             this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
-            this.tick();
+            this.world = this.generate();
+            this.world[this.player.y][this.player.x] = PLAYER;
             this.print();
            
         }
