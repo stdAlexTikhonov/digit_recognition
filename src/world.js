@@ -19,6 +19,8 @@ const GROUND = '.';
 const EMPTY = ' ';
 const SCISSORS = 'X';
 
+const elements = [WALL, GROUND, ROCK, BREAK, FOOD];
+
 export const PREDATOR_QUANTITY = 3;
 export const ROCKS_QUANTITY = 10;
 export const STARS_QUANTITY = 10;
@@ -458,6 +460,7 @@ export class World {
         this.ctx = this.canvas.getContext("2d");
         this.selected_values = [];
         this.mouse_pressed = false;
+        this.selected_value = EMPTY;
         
         
         document.body.appendChild(this.canvas);
@@ -510,6 +513,12 @@ export class World {
             return div
         }
         
+        const resetBtns = () => { 
+            const items = document.getElementsByClassName('btn');
+            for (let i = 0; i < items.length; i++) {
+                items[i].style.border = 'none';
+            }
+        }
         
         const edit_block = document.createElement('div');
         edit_block.style.width = '10%';
@@ -518,12 +527,25 @@ export class World {
         edit_block.style.display = 'flex';
         edit_block.style.flexDirection = 'column';
         edit_block.style.alignItems = 'center';
+
         for (let i = 0; i < 5; i++) {
             const div = createDiv(sprite2, i)
+            div.className = 'btn';
+            div.onmousedown = e =>  { 
+                resetBtns();
+                this.selected_value = elements[i]
+                div.style.border = '3px solid blue';
+            };
             edit_block.appendChild(div);
         }
         
         const empty = createDiv();
+        empty.onmousedown = e =>  {
+            resetBtns();
+            empty.style.border = "3px solid blue";
+            empty.className = 'btn';
+            this.selected_value = EMPTY
+        };
         edit_block.appendChild(empty);
 
         this.edit_block = edit_block;
