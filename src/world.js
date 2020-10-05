@@ -470,6 +470,7 @@ export class World {
 
         this.canvas.onmouseup = e1 => {
             this.mouse_pressed = false;
+            this.selected_values = [];
         }
 
         this.canvas.onmousemove = (e) => {
@@ -488,6 +489,21 @@ export class World {
                     this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
                     this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
                     this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
+                    switch( this.selected_value) {
+                        case GROUND:
+                            this.GROUND.push({ x: _x, y: _y});
+                            break;
+                        case BREAK:
+                            this.BREAKS.push({ x: _x, y: _y});
+                            break;
+                        case ROCK:
+                            this.ROCKS.push(new Rock(_y, _x));
+                            break;
+                        case FOOD:
+                            this.STARS.push(new Star(_y, _x));
+                            break;    
+                    }
+                    
                     this.world = this.generate();
                     this.world[this.player.y][this.player.x] = PLAYER;
                     this.print();
