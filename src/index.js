@@ -32,7 +32,7 @@ main.id = 'main';
 document.body.appendChild(main);
 window.pause = false;
 window.myReq = null;
-window.THE_WORLD = null;
+export let THE_WORLD;
 const startGame = () => {
     THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY);
     Player.off = false;
