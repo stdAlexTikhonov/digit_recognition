@@ -5,7 +5,7 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH,
     UP, DOWN, RIGHT, LEFT, NO_WAY, DIRS,
     PLAYER, ROCK, FOOD, BREAK, WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, STOP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, MOVE_UP,
+    GROUND_QUANTITY, STOP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, MOVE_UP, SEED
 } from "./constants";
 
 
@@ -13,17 +13,12 @@ import sprite from './assets/merphy/sprite.png';
 import sprite2 from './assets/merphy/sprite2.png';
 import sprite3 from "./assets/merphy/sprite3.png";
 
-export {
-    sprite,
-    sprite2,
-    sprite3
-}
 
 
-let SEED = 2;
+let seed = SEED;
 
 function random() {
-    let x = Math.sin(SEED++) * 10000;
+    let x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
 }
 
