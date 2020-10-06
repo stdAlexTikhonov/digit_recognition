@@ -12,6 +12,7 @@ import { Star } from "./star";
 import { Rock } from "./rock";
 import { Predator } from "./predator"
 
+import sprite from './assets/merphy/sprite.png';
 import sprite2 from './assets/merphy/sprite2.png';
 import sprite3 from './assets/merphy/sprite3.png';
 
@@ -161,6 +162,15 @@ export class World {
             this.selected_value = SCISSORS;
         };
         edit_block.appendChild(scissors);
+
+        const player = createDiv(sprite, 0);
+        player.onmousedown = e =>  {
+            resetBtns();
+            player.style.border = "3px solid blue";
+            player.className = 'btn';
+            this.selected_value = PLAYER;
+        };
+        edit_block.appendChild(player);
 
         this.edit_block = edit_block;
 
