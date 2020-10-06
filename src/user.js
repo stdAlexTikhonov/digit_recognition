@@ -1,35 +1,36 @@
-let frame = 9;
+import { FRAME, LEFT, UP, FORCE_LEFT, RIGHT, FORCE_RIGHT, DOWN } from './constants';
+let frame = FRAME;
 
 document.onkeydown = e => {
     
     
     switch (e.keyCode) {
         case 37:
-            if (window.THE_WORLD.player.dir === "LEFT") { 
+            if (window.THE_WORLD.player.dir === LEFT) { 
                 window.THE_WORLD.player.force = true; 
-                window.THE_WORLD.player.merphy_state = 'FORCE_LEFT';
+                window.THE_WORLD.player.merphy_state = FORCE_LEFT;
             }
-            else window.THE_WORLD.player.dir = "LEFT";
+            else window.THE_WORLD.player.dir = LEFT;
             break;
         case 38:
-            if (window.THE_WORLD.player.dir === "UP") window.THE_WORLD.player.force = true;
-            else window.THE_WORLD.player.dir = "UP";
+            if (window.THE_WORLD.player.dir === UP) window.THE_WORLD.player.force = true;
+            else window.THE_WORLD.player.dir = UP;
             break;
         case 39:
-            if (window.THE_WORLD.player.dir === "RIGHT") { 
+            if (window.THE_WORLD.player.dir === RIGHT) { 
                 window.THE_WORLD.player.force = true;
-                window.THE_WORLD.player.merphy_state = 'FORCE_RIGHT';
+                window.THE_WORLD.player.merphy_state = FORCE_RIGHT;
             }
-            else window.THE_WORLD.player.dir = "RIGHT";
+            else window.THE_WORLD.player.dir = RIGHT;
             break;
         case 40:
-            if (window.THE_WORLD.player.dir === "DOWN") window.THE_WORLD.player.force = true;
-            else window.THE_WORLD.player.dir = "DOWN";
+            if (window.THE_WORLD.player.dir === DOWN) window.THE_WORLD.player.force = true;
+            else window.THE_WORLD.player.dir = DOWN;
             break;
         case 190:
             if (window.pause) {
                 
-                if (frame < 9) { 
+                if (frame < FRAME) { 
                     frame++; 
                     document.getElementsByTagName('pre')[0].innerText = window.prevStates[frame]
                 }
@@ -52,6 +53,6 @@ document.onkeydown = e => {
 };
 
 document.onkeyup = e => {
-    if (e.shiftKey === false) { frame = 9; }
+    if (e.shiftKey === false) { frame = FRAME; }
     window.THE_WORLD.player.force = false;
 }

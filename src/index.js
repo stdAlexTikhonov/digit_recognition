@@ -6,13 +6,13 @@ import {
     World, 
     Player, 
     Star, 
-    WIDTH, 
-    HEIGHT, 
-    PREDATOR_QUANTITY,
-    ROCKS_QUANTITY,
-    STARS_QUANTITY,
-    BREAKS_QUANTITY,
 } from "./world"
+
+import {
+    WIDTH, HEIGHT, PREDATOR_QUANTITY,
+    ROCKS_QUANTITY, STARS_QUANTITY,
+    BREAKS_QUANTITY,
+} from "./constants";
 
 let frames = 0;
 const show = document.createElement('pre');

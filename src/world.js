@@ -1,40 +1,12 @@
 import { stopGame } from "./index"
-export const WIDTH = 30;
-export const HEIGHT = 18;
-export const BLOCK_WIDTH = 32;
+import "./user";
 
-export const UP = 'UP';
-export const DOWN = 'DOWN';
-export const LEFT = 'LEFT';
-export const RIGHT = 'RIGHT';
-export const NO_WAY = 'NO_WAY';
-const DIRS = [NO_WAY, UP, DOWN, LEFT, RIGHT];
-
-const PLAYER = 'A';
-const ROCK = 'O';
-const FOOD = '*';
-const BREAK = '+';
-const WALL = '#';
-const GROUND = '.';
-const EMPTY = ' ';
-const SCISSORS = 'X';
-
-const elements = [WALL, GROUND, ROCK, BREAK, FOOD];
-
-export const PREDATOR_QUANTITY = 3;
-export const ROCKS_QUANTITY = 10;
-export const STARS_QUANTITY = 10;
-export const BREAKS_QUANTITY = 10;
-export const GROUND_QUANTITY = 250;
-
-
-export const STOP = "STOP";
-export const MOVE_LEFT = "MOVE_LEFT";
-export const MOVE_RIGHT = "MOVE_RIGHT";
-export const FORCE_LEFT = "FORCE_LEFT";
-export const FORCE_RIGHT = "FORCE_RIGHT";
-export const MOVE_UP = "MOVE_UP";
-export const MOVE_DOWN = "MOVE_DOWN";
+import { 
+    WIDTH, HEIGHT, BLOCK_WIDTH,
+    UP, DOWN, RIGHT, LEFT, NO_WAY, DIRS,
+    PLAYER, ROCK, FOOD, BREAK, WALL, GROUND, EMPTY, SCISSORS, elements,
+    GROUND_QUANTITY, STOP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, MOVE_UP,
+} from "./constants";
 
 
 import sprite from './assets/merphy/sprite.png';
