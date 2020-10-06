@@ -13,6 +13,7 @@ import { Rock } from "./rock";
 import { Predator } from "./predator"
 
 import sprite2 from './assets/merphy/sprite2.png';
+import sprite3 from './assets/merphy/sprite3.png';
 
 let seed = SEED;
 
@@ -71,6 +72,7 @@ export class World {
                     this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
                     this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
                     this.WALLS = this.WALLS.filter((val) => !(val.x === _x && val.y === _y));
+                    this.PREDATORS = this.PREDATORS.filter((val) => !(val.x === _x && val.y === _y));
                     switch(this.selected_value) {
                         case GROUND:
                             this.GROUND.push({ x: _x, y: _y});
@@ -86,6 +88,8 @@ export class World {
                             break;
                         case WALL:
                             this.WALLS.push({ x: _x, y: _y });
+                        case SCISSORS:
+                            this.PREDATORS.push(new Predator(_y, _x));
                             break;    
                     }
                     
@@ -148,6 +152,15 @@ export class World {
             this.selected_value = EMPTY
         };
         edit_block.appendChild(empty);
+
+        const scissors = createDiv(sprite3, 0);
+        scissors.onmousedown = e =>  {
+            resetBtns();
+            scissors.style.border = "3px solid blue";
+            scissors.className = 'btn';
+            this.selected_value = SCISSORS;
+        };
+        edit_block.appendChild(scissors);
 
         this.edit_block = edit_block;
 
