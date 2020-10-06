@@ -2,11 +2,10 @@
 //height: 470px
 import "./styles/styles.css"
 
-import { 
-    World, 
-    Player, 
-    Star, 
-} from "./world"
+import { World } from "./world";
+import { Player } from "./player"; 
+import { Star } from "./star"; 
+
 
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,
