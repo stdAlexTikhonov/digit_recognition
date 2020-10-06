@@ -7,7 +7,7 @@ import {
 import sprite from './assets/merphy/sprite.png';
 
 export class Player {
-    constructor(x,y) {
+    constructor(y,x) {
         this.x = x;
         this.y = y;
         this.dir = null;
