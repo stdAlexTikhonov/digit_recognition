@@ -91,12 +91,17 @@ export class World {
                             this.WALLS.push({ x: _x, y: _y });
                         case SCISSORS:
                             this.PREDATORS.push(new Predator(_y, _x));
-                            break;    
+                            break;   
+                        case PLAYER:
+                            this.player = new Player(_y,_x);
+                            this.player.img.addEventListener('load', e => this.print());
+                            break; 
                     }
                     
                     this.world = this.generate();
                     this.world[this.player.y][this.player.x] = PLAYER;
                     this.print();
+
                 }
             }
             
@@ -217,7 +222,7 @@ export class World {
 
         const pp = this.rndomizer();//player position
 
-        this.player = new Player(pp.x,pp.y);
+        this.player = new Player(pp.y,pp.x);
 
         this.world = this.generate();
 
