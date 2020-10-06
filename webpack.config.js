@@ -12,7 +12,6 @@ module.exports = {
     mode: "development",
     entry: { 
         main: "./index.js", 
-        user: "./user.js"
     },
     output: {
         filename: "[name].[hash].js",
