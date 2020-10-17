@@ -36,85 +36,83 @@ export class World {
         this.img.src = sprite2;
         this.timer = null;
         this.pause = false;
-        this.canvas = document.createElement('canvas');
-        this.canvas.id = 'canvas';
-        this.canvas.width = WIDTH * BLOCK_WIDTH;
-        this.canvas.height = HEIGHT * BLOCK_WIDTH;
-        this.ctx = this.canvas.getContext("2d");
+        // this.canvas = document.createElement('canvas');
+        // this.canvas.id = 'canvas';
+        // this.canvas.width = WIDTH * BLOCK_WIDTH;
+        // this.canvas.height = HEIGHT * BLOCK_WIDTH;
+        // this.ctx = this.canvas.getContext("2d");
         this.viewport = document.createElement('canvas');
         this.viewport.id = 'viewport';
         this.viewport.width = VIEWPORT_WIDTH * BLOCK_WIDTH;
-        this.viewport.height = VIEWPORT_WIDTH * BLOCK_WIDTH;
+        this.viewport.height = VIEWPORT_HEIGHT * BLOCK_WIDTH;
         this.ctx_vp = this.viewport.getContext("2d");
         this.selected_values = [];
         this.mouse_pressed = false;
         this.selected_value = EMPTY;
         
         
-        document.body.appendChild(this.canvas);
+        // document.body.appendChild(this.canvas);
         document.body.appendChild(this.viewport);
 
-        this.canvas.onmousedown = e1 => {
-            this.mouse_pressed = true;
-        }
+        // this.canvas.onmousedown = e1 => {
+        //     this.mouse_pressed = true;
+        // }
 
-        this.canvas.onmouseup = e1 => {
-            this.mouse_pressed = false;
-            this.selected_values = [];
-        }
+        // this.canvas.onmouseup = e1 => {
+        //     this.mouse_pressed = false;
+        //     this.selected_values = [];
+        // }
 
-        this.canvas.onmousemove = (e) => {
-            if (this.mouse_pressed && window.pause) {
-                const rect = e.target.getBoundingClientRect();
-                const x = e.clientX - rect.left; //x position within the element.
-                const y = e.clientY - rect.top;  //y position within the element.
-                const _x = Math.floor(x/BLOCK_WIDTH);
-                const _y = Math.floor(y/BLOCK_WIDTH);
+        // this.canvas.onmousemove = (e) => {
+        //     if (this.mouse_pressed && window.pause) {
+        //         const rect = e.target.getBoundingClientRect();
+        //         const x = e.clientX - rect.left; //x position within the element.
+        //         const y = e.clientY - rect.top;  //y position within the element.
+        //         const _x = Math.floor(x/BLOCK_WIDTH);
+        //         const _y = Math.floor(y/BLOCK_WIDTH);
     
-                let val = _x + "_" + _y;
+        //         let val = _x + "_" + _y;
                 
-                if (!this.selected_values.includes(val)) { 
-                    this.selected_values = [...this.selected_values, val];
-                    this.GROUND = this.GROUND.filter((val) => !(val.x === _x && val.y === _y));
-                    this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
-                    this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
-                    this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
-                    this.WALLS = this.WALLS.filter((val) => !(val.x === _x && val.y === _y));
-                    this.PREDATORS = this.PREDATORS.filter((val) => !(val.x === _x && val.y === _y));
-                    switch(this.selected_value) {
-                        case GROUND:
-                            this.GROUND.push({ x: _x, y: _y});
-                            break;
-                        case BREAK:
-                            this.BREAKS.push({ x: _x, y: _y});
-                            break;
-                        case ROCK:
-                            this.ROCKS.push(new Rock(_y, _x));
-                            break;
-                        case FOOD:
-                            this.STARS.push(new Star(_y, _x));
-                            break;
-                        case WALL:
-                            this.WALLS.push({ x: _x, y: _y });
-                        case SCISSORS:
-                            this.PREDATORS.push(new Predator(_y, _x));
-                            break;   
-                        case PLAYER:
-                            this.player = new Player(_y,_x);
-                            this.player.img.addEventListener('load', e => this.print());
-                            break; 
-                    }
+        //         if (!this.selected_values.includes(val)) { 
+        //             this.selected_values = [...this.selected_values, val];
+        //             this.GROUND = this.GROUND.filter((val) => !(val.x === _x && val.y === _y));
+        //             this.BREAKS = this.BREAKS.filter((val) => !(val.x === _x && val.y === _y));
+        //             this.ROCKS = this.ROCKS.filter((val) => !(val.x === _x && val.y === _y));
+        //             this.STARS = this.STARS.filter((val) => !(val.x === _x && val.y === _y));
+        //             this.WALLS = this.WALLS.filter((val) => !(val.x === _x && val.y === _y));
+        //             this.PREDATORS = this.PREDATORS.filter((val) => !(val.x === _x && val.y === _y));
+        //             switch(this.selected_value) {
+        //                 case GROUND:
+        //                     this.GROUND.push({ x: _x, y: _y});
+        //                     break;
+        //                 case BREAK:
+        //                     this.BREAKS.push({ x: _x, y: _y});
+        //                     break;
+        //                 case ROCK:
+        //                     this.ROCKS.push(new Rock(_y, _x));
+        //                     break;
+        //                 case FOOD:
+        //                     this.STARS.push(new Star(_y, _x));
+        //                     break;
+        //                 case WALL:
+        //                     this.WALLS.push({ x: _x, y: _y });
+        //                 case SCISSORS:
+        //                     this.PREDATORS.push(new Predator(_y, _x));
+        //                     break;   
+        //                 case PLAYER:
+        //                     this.player = new Player(_y,_x);
+        //                     this.player.img.addEventListener('load', e => this.print());
+        //                     break; 
+        //             }
                     
-                    this.world = this.generate();
-                    this.world[this.player.y][this.player.x] = PLAYER;
-                    this.print();
+        //             this.world = this.generate();
+        //             this.world[this.player.y][this.player.x] = PLAYER;
+        //             this.print();
 
-                }
-            }
+        //         }
+        //     }
             
-            // 
-            
-        }
+        // }
         
 
 
@@ -306,8 +304,8 @@ export class World {
     }
 
     print() {
-        this.ctx.fillStyle = "black";
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        // this.ctx.fillStyle = "black";
+        // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         //viewport
         this.ctx_vp.fillStyle = 'black';
@@ -323,25 +321,25 @@ export class World {
             row.forEach((el,j) => { 
                 const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
                 if (el === WALL) { 
-                    this.ctx.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    // this.ctx.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                     if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === BREAK) { 
-                    this.ctx.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    // this.ctx.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                     if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === ROCK) { 
-                    this.ctx.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    // this.ctx.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                     if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === FOOD) { 
-                    this.ctx.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    // this.ctx.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                     if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === GROUND) { 
-                    this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    // this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                     if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el.char === SCISSORS) {
-                    this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    // this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                     if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === 'A') {
-                    this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    // this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                     if (draw_view_y_flag && draw_view_x_flag)this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 }
             })
