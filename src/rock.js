@@ -1,4 +1,5 @@
 import { PLAYER, SCISSORS, EMPTY } from "./constants";
+import { Player } from "./player";
 
 export class Rock {
     constructor(y,x) {

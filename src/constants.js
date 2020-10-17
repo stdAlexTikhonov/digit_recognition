@@ -1,7 +1,7 @@
-export const WIDTH = 20;
-export const HEIGHT = 18;
-export const VIEWPORT_WIDTH = 5;
-export const VIEWPORT_HEIGHT = 5;
+export const WIDTH = 100;
+export const HEIGHT = 50;
+export const VIEWPORT_WIDTH = 30;
+export const VIEWPORT_HEIGHT = 18;
 export const BLOCK_WIDTH = 32;
 
 export const UP = 'UP';
@@ -22,11 +22,11 @@ export const SCISSORS = 'X';
 
 export const elements = [WALL, GROUND, ROCK, BREAK, FOOD];
 
-export const PREDATOR_QUANTITY = 3;
-export const ROCKS_QUANTITY = 10;
-export const STARS_QUANTITY = 10;
-export const BREAKS_QUANTITY = 10;
-export const GROUND_QUANTITY = 250;
+export const PREDATOR_QUANTITY = 30;
+export const ROCKS_QUANTITY = 100;
+export const STARS_QUANTITY = 100;
+export const BREAKS_QUANTITY = 100;
+export const GROUND_QUANTITY = 2500;
 
 
 export const STOP = "STOP";

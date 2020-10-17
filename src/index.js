@@ -83,8 +83,8 @@ export const stopGame = () => {
 
     scores.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
     start_screen.appendChild(scores);
-    if (THE_WORLD.canvas.parentNode) { 
-        document.body.removeChild(THE_WORLD.canvas);
+    if (THE_WORLD.viewport.parentNode) { 
+        // document.body.removeChild(THE_WORLD.canvas);
         document.body.removeChild(THE_WORLD.viewport);
     }
     main.style.display = 'block';
