@@ -5,7 +5,7 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH
 } from "./constants";
 import { Player } from "./player";
 import { Star } from "./star";
@@ -41,12 +41,19 @@ export class World {
         this.canvas.width = WIDTH * BLOCK_WIDTH;
         this.canvas.height = HEIGHT * BLOCK_WIDTH;
         this.ctx = this.canvas.getContext("2d");
+        this.viewport = document.createElement('canvas');
+        this.viewport.id = 'viewport';
+        this.viewport.width = VIEWPORT_WIDTH * BLOCK_WIDTH;
+        this.viewport.height = VIEWPORT_WIDTH * BLOCK_WIDTH;
+        this.ctx_vp = this.viewport.getContext("2d");
         this.selected_values = [];
         this.mouse_pressed = false;
         this.selected_value = EMPTY;
         
         
         document.body.appendChild(this.canvas);
+        document.body.appendChild(this.viewport);
+
         this.canvas.onmousedown = e1 => {
             this.mouse_pressed = true;
         }
@@ -302,6 +309,9 @@ export class World {
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
+        //viewport
+        this.ctx_vp.fillStyle = 'black';
+        this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
 
         this.world.forEach((row,i) => {
             row.forEach((el,j) => { 

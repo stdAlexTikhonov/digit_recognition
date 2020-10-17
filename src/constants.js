@@ -1,5 +1,7 @@
-export const WIDTH = 30;
+export const WIDTH = 20;
 export const HEIGHT = 18;
+export const VIEWPORT_WIDTH = 5;
+export const VIEWPORT_HEIGHT = 5;
 export const BLOCK_WIDTH = 32;
 
 export const UP = 'UP';
