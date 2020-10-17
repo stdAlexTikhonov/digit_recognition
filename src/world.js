@@ -313,22 +313,36 @@ export class World {
         this.ctx_vp.fillStyle = 'black';
         this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
 
+        const viewport_start_x = this.player.x - Math.floor(VIEWPORT_WIDTH/2);
+        const viewport_start_y = this.player.y - Math.floor(VIEWPORT_HEIGHT/2);
+        const viewport_end_x = viewport_start_x + VIEWPORT_WIDTH;
+        const viewport_end_y = viewport_start_y + VIEWPORT_HEIGHT;
+
         this.world.forEach((row,i) => {
+            const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
             row.forEach((el,j) => { 
+                const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
                 if (el === WALL) { 
                     this.ctx.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === BREAK) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === ROCK) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === FOOD) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === GROUND) { 
                     this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el.char === SCISSORS) {
                     this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 } else if (el === 'A') {
                     this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                    if (draw_view_y_flag && draw_view_x_flag)this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                 }
             })
         })
