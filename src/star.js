@@ -1,4 +1,4 @@
-import { PLAYER, SCISSORS, EMPTY } from "./constants";
+import { PLAYER, SCISSORS, EMPTY, STARS_QUANTITY } from "./constants";
 import { Player } from "./player";
 
 export class Star {
@@ -11,7 +11,11 @@ export class Star {
     }
 
     check_way_down(world) {
-        if (this.falling && world[this.y+1][this.x] === PLAYER) { this.killer = true; Player.off = true; }
+        if (this.falling && world[this.y+1][this.x] === PLAYER) { 
+            this.killer = true;
+            Player.off = true; 
+            
+        }
         else if (this.falling && world[this.y+1][this.x].char === SCISSORS) { this.killer = true; }
         this.falling = true;
         return  world[this.y+1] && world[this.y+1][this.x] === EMPTY;
@@ -32,7 +36,11 @@ export class Star {
     }
 
     changeState(world) {
-        if (world[this.y][this.x] === PLAYER) { if (this.still_here) { Star.scores += 1; this.still_here = false; } }
+        if (world[this.y][this.x] === PLAYER) { if (this.still_here) { 
+            Star.scores += 1; 
+            this.still_here = false;
+            if (Star.scores === STARS_QUANTITY) Player.off = true
+         } }
         else if (this.check_way_down(world)) this.y += 1;
         else if (this.move_possible(world)) {
             if (this.check_way_left(world)) this.x -= 1;
