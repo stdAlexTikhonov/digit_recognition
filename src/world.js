@@ -228,7 +228,6 @@ export class World {
 
         this.startTimer();
 
-
     }
 
     startTimer() {
