@@ -40,7 +40,7 @@ export class Player {
         return world[this.y][this.x+1] === ROCK && world[this.y][this.x+2] === EMPTY && this.force;
     }
 
-    changePic(seconds) {
+    changePic() {
 
         if( this.state < 2) this.state +=1;
         else this.state = 0;

@@ -320,28 +320,31 @@ export class World {
             const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
             row.forEach((el,j) => { 
                 const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
-                if (el === WALL) { 
-                    // this.ctx.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if (el === BREAK) { 
-                    // this.ctx.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if (el === ROCK) { 
-                    // this.ctx.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if (el === FOOD) { 
-                    // this.ctx.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if (el === GROUND) { 
-                    // this.ctx.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if (el.char === SCISSORS) {
-                    // this.ctx.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                    if (draw_view_y_flag && draw_view_x_flag) this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                } else if (el === 'A') {
-                    // this.ctx.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, j*BLOCK_WIDTH, i*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                    if (draw_view_y_flag && draw_view_x_flag)this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                if (draw_view_y_flag && draw_view_x_flag) {
+                    if (el.char === SCISSORS) this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            
+                    switch(el) {
+                        case WALL:
+                            this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
+                        case BREAK:
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
+                        case ROCK:
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
+                        case FOOD:
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
+                        case GROUND:
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
+                        case PLAYER:
+                            this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break
+                    }
                 }
+                
             })
         })
 
@@ -379,7 +382,7 @@ export class World {
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player.force));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.player.changeState(this.world);
-        this.player.changePic(this.seconds);
+        this.player.changePic();
         this.check_predators();
         this.check_food();
         this.check_rocks();
