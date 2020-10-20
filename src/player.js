@@ -1,7 +1,7 @@
 import { 
     ROCK, SCISSORS, EMPTY, LEFT, RIGHT,
     UP, DOWN, STOP, MOVE_LEFT, MOVE_RIGHT,
-    MOVE_UP, MOVE_DOWN 
+    MOVE_UP, MOVE_DOWN, PLAYER 
 } from "./constants"
 
 import sprite from './assets/merphy/sprite.png';
@@ -21,11 +21,12 @@ export class Player {
         this.img.height = 32;
         this.merphy_state = STOP;
         this.dy = 0;
+        this.char = PLAYER
         
     }
 
     check(nxt, world) {
-        return [EMPTY, '*', '.'].includes(world[nxt.y][nxt.x]);
+        return [EMPTY, '*', '.'].includes(world[nxt.y][nxt.x].char);
     }
 
     check_predator(nxt, world) {
@@ -33,11 +34,11 @@ export class Player {
     }
 
     check_force_move_left(world) {
-        return world[this.y][this.x-1] === ROCK && world[this.y][this.x-2] === EMPTY && this.force;
+        return world[this.y][this.x-1].char === ROCK && world[this.y][this.x-2].char === EMPTY && this.force;
     }
 
     check_force_move_right(world) {
-        return world[this.y][this.x+1] === ROCK && world[this.y][this.x+2] === EMPTY && this.force;
+        return world[this.y][this.x+1].char === ROCK && world[this.y][this.x+2].char === EMPTY && this.force;
     }
 
     changePic() {
@@ -117,7 +118,7 @@ export class Player {
                 else if (this.check({x: this.x, y: this.y + 1}, world)) {
                     this.y += 1;
                     this.merphy_state = MOVE_DOWN;
-                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
+                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
                 } else this.merphy_state = STOP;
                 break;
             case LEFT:
@@ -127,7 +128,7 @@ export class Player {
                 else if (this.check({x: this.x - 1, y: this.y}, world)) {
                     this.merphy_state = MOVE_LEFT;
                     this.x -= 1;
-                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
+                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
                 } else if (this.check_force_move_left(world)) this.x -= 1;
                 else this.merphy_state = STOP;
                 break;
@@ -138,7 +139,7 @@ export class Player {
                 else if (this.check({x: this.x + 1, y: this.y}, world)) {
                     this.merphy_state = MOVE_RIGHT;
                     this.x += 1;
-                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
+                    if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
                 } else if (this.check_force_move_right(world)) this.x += 1;
                 else this.merphy_state = STOP;
                 break;

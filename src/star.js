@@ -1,4 +1,4 @@
-import { PLAYER, SCISSORS, EMPTY, STARS_QUANTITY } from "./constants";
+import { PLAYER, SCISSORS, EMPTY, STARS_QUANTITY, FOOD } from "./constants";
 import { Player } from "./player";
 
 export class Star {
@@ -8,35 +8,36 @@ export class Star {
         this.still_here = true;
         this.falling = false;
         this.killer = false;
+        this.char = FOOD;
     }
 
     check_way_down(world) {
-        if (this.falling && world[this.y+1][this.x] === PLAYER) { 
+        if (this.falling && world[this.y+1][this.x].char === PLAYER) { 
             this.killer = true;
             Player.off = true; 
             
         }
         else if (this.falling && world[this.y+1][this.x].char === SCISSORS) { this.killer = true; }
         this.falling = true;
-        return  world[this.y+1] && world[this.y+1][this.x] === EMPTY;
+        return  world[this.y+1] && world[this.y+1][this.x].char === EMPTY;
     }
 
     move_possible(world) {
-        return world[this.y+1] && ['+', 'O', '*'].includes(world[this.y+1][this.x]) && !['O', '*'].includes(world[this.y-1][this.x])
+        return world[this.y+1] && ['+', 'O', '*'].includes(world[this.y+1][this.x].char) && !['O', '*'].includes(world[this.y-1][this.x].char)
     }
 
     check_way_left(world) {
         this.falling = true;
-        return world[this.y][this.x-1] === EMPTY && world[this.y+1][this.x-1] === EMPTY && !['O', '*'].includes(world[this.y-1][this.x-1]);
+        return world[this.y][this.x-1].char === EMPTY && world[this.y+1][this.x-1].char === EMPTY && !['O', '*'].includes(world[this.y-1][this.x-1].char);
     }
 
     check_way_right(world) {
         this.falling = true;
-        return world[this.y][this.x+1] === EMPTY && world[this.y+1][this.x+1] === EMPTY && !['O', '*'].includes(world[this.y-1][this.x+1]);
+        return world[this.y][this.x+1].char === EMPTY && world[this.y+1][this.x+1].char === EMPTY && !['O', '*'].includes(world[this.y-1][this.x+1].char);
     }
 
     changeState(world) {
-        if (world[this.y][this.x] === PLAYER) { if (this.still_here) { 
+        if (world[this.y][this.x].char === PLAYER) { if (this.still_here) { 
             Star.scores += 1; 
             this.still_here = false;
             if (Star.scores === STARS_QUANTITY) Player.off = true

@@ -191,7 +191,7 @@ export class World {
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
             const bip = this.rndomizer(); //break init position
-            this.BREAKS.push(bip);
+            this.BREAKS.push({y: bip.y, x: bip.x, char: BREAK});
         }
 
         //Predators
@@ -221,7 +221,7 @@ export class World {
         this.GROUND = [];
         for (let i = 0; i < GROUND_QUANTITY; i++) {
             const rip = this.rndomizer(); //predator init position
-            this.GROUND.push({y: rip.y, x: rip.x});
+            this.GROUND.push({y: rip.y, x: rip.x, char: GROUND});
         }
 
 
@@ -257,11 +257,11 @@ export class World {
     }
 
     generate() {
-        const FIRST_ROW = new Array(this.width).fill(WALL);
-        const LAST_ROW = new Array(this.width).fill(WALL);
+        const FIRST_ROW = new Array(this.width).fill({ char: WALL});
+        const LAST_ROW = new Array(this.width).fill({ char: WALL});
 
-        const MIDDLE = new Array(this.width).fill(EMPTY);
-        MIDDLE[0] = WALL; MIDDLE[this.width-1] = WALL;
+        const MIDDLE = new Array(this.width).fill({char: EMPTY});
+        MIDDLE[0] = { char: WALL } ; MIDDLE[this.width-1] = { char: WALL};
 
         const WORLD = new Array(this.height)
 
@@ -270,19 +270,19 @@ export class World {
         WORLD[0] = FIRST_ROW;
         WORLD[this.height-1] = LAST_ROW;
 
-        this.GROUND.forEach(P => WORLD[P.y][P.x] = GROUND);
+        this.GROUND.forEach(G => WORLD[G.y][G.x] = G);
 
-        this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = EMPTY);
+        this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = { char: EMPTY});
 
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P);
 
-        this.ROCKS.forEach(R => WORLD[R.y][R.x] = ROCK);
+        this.ROCKS.forEach(R => WORLD[R.y][R.x] = R);
 
-        this.STARS.forEach(S => WORLD[S.y][S.x] = FOOD);
+        this.STARS.forEach(S => WORLD[S.y][S.x] = S);
 
-        this.BREAKS.forEach(B => WORLD[B.y][B.x] = BREAK);
+        this.BREAKS.forEach(B => WORLD[B.y][B.x] = B);
 
-        this.WALLS.forEach(W => WORLD[W.y][W.x] = WALL);
+        this.WALLS.forEach(W => WORLD[W.y][W.x] = W);
         return WORLD;
     }
 
@@ -321,9 +321,14 @@ export class World {
             row.forEach((el,j) => { 
                 const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
                 if (draw_view_y_flag && draw_view_x_flag) {
-                    if (el.char === SCISSORS) this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                            
-                    switch(el) {
+
+                    switch (el.char) {
+                        case SCISSORS:
+                            this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
+                        case GROUND:
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
                         case WALL:
                             this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
@@ -336,13 +341,12 @@ export class World {
                         case FOOD:
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
-                        case GROUND:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                            break;
                         case PLAYER:
                             this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
-                            break
+                            break;
                     }
+               
+                               
                 }
                 
             })
@@ -369,7 +373,7 @@ export class World {
             
             Player.flag = false;
         } else if (Player.flag) {
-            this.world[this.player.y][this.player.x] = PLAYER;
+            this.world[this.player.y][this.player.x] = this.player;
         } else {
             stopGame();
         }

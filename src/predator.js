@@ -26,19 +26,19 @@ export class Predator {
 
 
     looking_around(world) {
-        this.dir_left = world[this.y][this.x-1] === EMPTY && !"*O".includes(world[this.y-1][this.x-1]);
-        this.dir_up = world[this.y-1][this.x] === EMPTY;
-        this.dir_right = world[this.y][this.x+1] === EMPTY && !"*O".includes(world[this.y-1][this.x+1]);
-        this.dir_down = world[this.y+1][this.x] === EMPTY;
+        this.dir_left = world[this.y][this.x-1].char === EMPTY && !"*O".includes(world[this.y-1][this.x-1].char);
+        this.dir_up = world[this.y-1][this.x].char === EMPTY;
+        this.dir_right = world[this.y][this.x+1].char === EMPTY && !"*O".includes(world[this.y-1][this.x+1].char);
+        this.dir_down = world[this.y+1][this.x].char === EMPTY;
     }
 
     find_player(world) {
         let FOUND_PLAYER = false;
 
-        const up = world[this.y-1][this.x] === PLAYER;
-        const down = world[this.y+1][this.x] === PLAYER;
-        const left = world[this.y][this.x-1] === PLAYER;
-        const right = world[this.y][this.x+1] === PLAYER;
+        const up = world[this.y-1][this.x].char === PLAYER;
+        const down = world[this.y+1][this.x].char === PLAYER;
+        const left = world[this.y][this.x-1].char === PLAYER;
+        const right = world[this.y][this.x+1].char === PLAYER;
         switch (this.dir) {
             case UP:
                 FOUND_PLAYER = up;
@@ -61,7 +61,7 @@ export class Predator {
     }
 
     find_rock(world) {
-        return world[this.y-1][this.x] === ROCK;
+        return world[this.y-1][this.x].char === ROCK;
     }
 
 
@@ -126,16 +126,16 @@ export class Predator {
 
         switch (this.dir) {
             case DOWN:
-                if (this.flag && world[this.y+1][this.x] === EMPTY) this.y += 1;
+                if (this.flag && world[this.y+1][this.x].char === EMPTY) this.y += 1;
                 break;
             case RIGHT:
-                if (this.flag && world[this.y][this.x+1] === EMPTY) this.x += 1;
+                if (this.flag && world[this.y][this.x+1].char === EMPTY) this.x += 1;
                 break;
             case UP:
-                if (this.flag && world[this.y-1][this.x] === EMPTY) this.y -= 1;
+                if (this.flag && world[this.y-1][this.x].char === EMPTY) this.y -= 1;
                 break;
             case LEFT:
-                if (this.flag && world[this.y][this.x-1] === EMPTY) this.x -= 1;
+                if (this.flag && world[this.y][this.x-1].char === EMPTY) this.x -= 1;
                 break;
         }
 
