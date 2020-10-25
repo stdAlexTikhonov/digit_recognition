@@ -5,7 +5,7 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT
 } from "./constants";
 import { Player } from "./player";
 import { Star } from "./star";
@@ -308,7 +308,7 @@ export class World {
         // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         //viewport
-        console.log(data);
+        const value = data/STEPS;//кол-во кадро на один tile
         this.ctx_vp.fillStyle = 'black';
         this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
 
@@ -323,8 +323,8 @@ export class World {
             row.forEach((el,j) => { 
                 const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
                 // if (draw_view_y_flag && draw_view_x_flag) {
-                    const pos_x = j*BLOCK_WIDTH;//(j - viewport_start_x)*BLOCK_WIDTH;
-                    const pos_y = i*BLOCK_WIDTH;//(i - viewport_start_y)*BLOCK_WIDTH;
+                    let pos_x = j*BLOCK_WIDTH;//(j - viewport_start_x)*BLOCK_WIDTH;
+                    let pos_y = i*BLOCK_WIDTH;//(i - viewport_start_y)*BLOCK_WIDTH;
 
                     switch (el.char) {
                         case SCISSORS:
@@ -346,6 +346,21 @@ export class World {
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case PLAYER:
+                            switch(this.player.merphy_state) {
+                                case MOVE_RIGHT:
+                                    pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case MOVE_LEFT:
+                                    pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case MOVE_UP:
+                                    pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case MOVE_DOWN:
+                                    pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+
+                            }
                             this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                     }
