@@ -17,7 +17,6 @@ export class Predator {
         this.dir_up = false;
         this.dir_right = false;
         this.dir = DOWN;
-        this.flag = false;
         this.still_alive = true;
         this.img = new Image();
         this.img.src = sprite3;
@@ -110,7 +109,7 @@ export class Predator {
 
     changeState(world) {
         this.state = this.state < 7 ? this.state + 1 : 0;
-        this.flag = !this.flag;
+   
         if (this.find_rock(world))
             this.still_alive = false;
         
@@ -121,21 +120,21 @@ export class Predator {
             Player.off = true;
         }
 
-        this.flag && this.looking_around(world);
-        this.flag && this.check_dir();
+         this.looking_around(world);
+         this.check_dir();
 
         switch (this.dir) {
             case DOWN:
-                if (this.flag && world[this.y+1][this.x].char === EMPTY) this.y += 1;
+                if (world[this.y+1][this.x].char === EMPTY) this.y += 1;
                 break;
             case RIGHT:
-                if (this.flag && world[this.y][this.x+1].char === EMPTY) this.x += 1;
+                if (world[this.y][this.x+1].char === EMPTY) this.x += 1;
                 break;
             case UP:
-                if (this.flag && world[this.y-1][this.x].char === EMPTY) this.y -= 1;
+                if (world[this.y-1][this.x].char === EMPTY) this.y -= 1;
                 break;
             case LEFT:
-                if (this.flag && world[this.y][this.x-1].char === EMPTY) this.x -= 1;
+                if (world[this.y][this.x-1].char === EMPTY) this.x -= 1;
                 break;
         }
 

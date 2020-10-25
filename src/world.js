@@ -2,7 +2,7 @@ import { stopGame } from "./index"
 import "./user";
 
 import { 
-    WIDTH, HEIGHT, BLOCK_WIDTH,
+    WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
     GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT
@@ -306,7 +306,6 @@ export class World {
     print(value) {
         // this.ctx.fillStyle = "black";
         // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
         //viewport
         this.ctx_vp.fillStyle = 'black';
         this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
@@ -327,6 +326,20 @@ export class World {
 
                     switch (el.char) {
                         case SCISSORS:
+                            switch(el.dir) {
+                                case RIGHT:
+                                    pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case LEFT:
+                                    pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case UP:
+                                    pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case DOWN:
+                                    pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                            }
                             this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case GROUND:
@@ -358,7 +371,6 @@ export class World {
                                 case MOVE_DOWN:
                                     pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                                     break;
-
                             }
                             this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
