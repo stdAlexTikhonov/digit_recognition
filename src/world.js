@@ -303,12 +303,11 @@ export class World {
         return pos;
     }
 
-    print(data) {
+    print(value) {
         // this.ctx.fillStyle = "black";
         // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         //viewport
-        const value = data/STEPS;//кол-во кадро на один tile
         this.ctx_vp.fillStyle = 'black';
         this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
 

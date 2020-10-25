@@ -45,16 +45,20 @@ const startGame = () => {
     draw();
 }
 
+let frame = 0;
+
 const draw = () => {
     
-      if (frames % 5 === 0) {
-        if (!window.pause) {
-            if (frames % 25 === 0) THE_WORLD.tick();
-            // show.innerText = THE_WORLD.print();
-            prevStates.push(THE_WORLD.print(frames % 25))
-            if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
-        }
-      }  
+ 
+        // console.log(frame);
+    if (!window.pause) {
+        if (frames % 5 === 0) THE_WORLD.tick();
+        // show.innerText = THE_WORLD.print();
+        prevStates.push(THE_WORLD.print(frame))
+        if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
+        frame = frame < 4 ? frame + 1 : 0;
+    }
+     
      
       if (!window.pause) window.myReq = window.requestAnimationFrame(draw);   
    
