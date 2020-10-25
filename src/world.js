@@ -321,9 +321,9 @@ export class World {
             const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
             row.forEach((el,j) => { 
                 const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
-                if (draw_view_y_flag && draw_view_x_flag) {
-                    const pos_x = (j - viewport_start_x)*BLOCK_WIDTH;
-                    const pos_y = (i - viewport_start_y)*BLOCK_WIDTH;
+                // if (draw_view_y_flag && draw_view_x_flag) {
+                    const pos_x = j*BLOCK_WIDTH;//(j - viewport_start_x)*BLOCK_WIDTH;
+                    const pos_y = i*BLOCK_WIDTH;//(i - viewport_start_y)*BLOCK_WIDTH;
 
                     switch (el.char) {
                         case SCISSORS:
@@ -350,7 +350,7 @@ export class World {
                     }
                
                                
-                }
+                // }
                 
             })
         })
