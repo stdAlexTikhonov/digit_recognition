@@ -49,9 +49,9 @@ const draw = () => {
     
       if (frames % 5 === 0) {
         if (!window.pause) {
-            THE_WORLD.tick();
+            if (frames % 25 === 0) THE_WORLD.tick();
             // show.innerText = THE_WORLD.print();
-            prevStates.push(THE_WORLD.print())
+            prevStates.push(THE_WORLD.print(frames % 25))
             if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
         }
       }  

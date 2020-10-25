@@ -303,11 +303,12 @@ export class World {
         return pos;
     }
 
-    print() {
+    print(data) {
         // this.ctx.fillStyle = "black";
         // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         //viewport
+        console.log(data);
         this.ctx_vp.fillStyle = 'black';
         this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
 
