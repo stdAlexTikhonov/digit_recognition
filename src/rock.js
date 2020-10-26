@@ -8,6 +8,8 @@ export class Rock {
         this.killer = false;
         this.falling = false;
         this.char = ROCK;
+        this.right = false;
+        this.left = false;
     }
 
     check_way_down(world) {
@@ -40,20 +42,25 @@ export class Rock {
     }
 
     changeState(world, force) {
+        this.right = false;
+        this.left = false;
         if (world[this.y][this.x].char === PLAYER) { this.killer = true; Player.off = true; }
         if (this.check_way_down(world)) this.y += 1;
         else if (this.check_force_move_left(world) && force) {
             this.x -= 1
+            this.left = true;
         }
         else if (this.check_force_move_right(world) && force) {
             this.x += 1
+            this.right = true;
         }
         else if (this.move_possible(world)) {
-            if (this.check_way_left(world)) this.x -= 1;
-            else if (this.check_way_right(world)) this.x += 1;
-            else this.falling = false;
+            if (this.check_way_left(world)) { this.left = true; this.x -= 1; }
+            else if (this.check_way_right(world)) { this.right = true; this.x += 1; }
+            else { this.falling = false; this.right = false; this.left = false; }
         } else {
             this.falling = false;
+            
         }
 
     }

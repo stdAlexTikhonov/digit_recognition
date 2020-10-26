@@ -5,7 +5,7 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT
 } from "./constants";
 import { Player } from "./player";
 import { Star } from "./star";
@@ -352,17 +352,25 @@ export class World {
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
+                            if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case FOOD:
+                            if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case PLAYER:
                             switch(this.player.merphy_state) {
                                 case MOVE_RIGHT:
+                                case FORCE_RIGHT:
                                     pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                                     break;
                                 case MOVE_LEFT:
+                                case FORCE_LEFT:
                                     pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                                     break;
                                 case MOVE_UP:
