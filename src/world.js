@@ -421,7 +421,7 @@ export class World {
 
     tick() {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
-        this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player.force));
+        this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.player.changeState(this.world);
         this.player.changePic();

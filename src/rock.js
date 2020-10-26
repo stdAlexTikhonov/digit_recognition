@@ -1,4 +1,4 @@
-import { PLAYER, SCISSORS, EMPTY, ROCK } from "./constants";
+import { PLAYER, SCISSORS, EMPTY, ROCK, LEFT, RIGHT } from "./constants";
 import { Player } from "./player";
 
 export class Rock {
@@ -41,16 +41,16 @@ export class Rock {
         return world[this.y][this.x+1].char === EMPTY && world[this.y][this.x-1].char === PLAYER;
     }
 
-    changeState(world, force) {
+    changeState(world, player) {
         this.right = false;
         this.left = false;
         if (world[this.y][this.x].char === PLAYER) { this.killer = true; Player.off = true; }
         if (this.check_way_down(world)) this.y += 1;
-        else if (this.check_force_move_left(world) && force) {
+        else if (this.check_force_move_left(world) && player.force && player.dir === LEFT) {
             this.x -= 1
             this.left = true;
         }
-        else if (this.check_force_move_right(world) && force) {
+        else if (this.check_force_move_right(world) && player.force && player.dir === RIGHT) {
             this.x += 1
             this.right = true;
         }
