@@ -10,7 +10,7 @@ import { Star } from "./star";
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,
     ROCKS_QUANTITY, STARS_QUANTITY,
-    BREAKS_QUANTITY,
+    BREAKS_QUANTITY, STEPS
 } from "./constants";
 
 let frames = 0;
@@ -45,16 +45,21 @@ const startGame = () => {
     draw();
 }
 
+let frame = 0;
+
 const draw = () => {
     
-      if (frames % 5 === 0) {
-        if (!window.pause) {
-            THE_WORLD.tick();
-            // show.innerText = THE_WORLD.print();
-            prevStates.push(THE_WORLD.print())
-            if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
-        }
-      }  
+ 
+        // console.log(frame);
+    if (!window.pause) {
+        if (frames % STEPS === 0) THE_WORLD.tick(); 
+            
+        // show.innerText = THE_WORLD.print();
+        prevStates.push(THE_WORLD.print(frame))
+        if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
+        frame = frame < STEPS - 1 ? frame + 1 : 0;
+    }
+     
      
       if (!window.pause) window.myReq = window.requestAnimationFrame(draw);   
    

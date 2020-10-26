@@ -2,10 +2,10 @@ import { stopGame } from "./index"
 import "./user";
 
 import { 
-    WIDTH, HEIGHT, BLOCK_WIDTH,
+    WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT
 } from "./constants";
 import { Player } from "./player";
 import { Star } from "./star";
@@ -303,10 +303,9 @@ export class World {
         return pos;
     }
 
-    print() {
+    print(value) {
         // this.ctx.fillStyle = "black";
         // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
         //viewport
         this.ctx_vp.fillStyle = 'black';
         this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
@@ -316,38 +315,77 @@ export class World {
         const viewport_end_x = viewport_start_x + VIEWPORT_WIDTH;
         const viewport_end_y = viewport_start_y + VIEWPORT_HEIGHT;
 
+
         this.world.forEach((row,i) => {
             const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
             row.forEach((el,j) => { 
                 const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
-                if (draw_view_y_flag && draw_view_x_flag) {
+                // if (draw_view_y_flag && draw_view_x_flag) {
+                    let pos_x = j*BLOCK_WIDTH;//(j - viewport_start_x)*BLOCK_WIDTH;
+                    let pos_y = i*BLOCK_WIDTH;//(i - viewport_start_y)*BLOCK_WIDTH;
 
                     switch (el.char) {
                         case SCISSORS:
-                            this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            switch(el.dir) {
+                                case RIGHT:
+                                    pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case LEFT:
+                                    pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case UP:
+                                    pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case DOWN:
+                                    pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                            }
+                            this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case GROUND:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case WALL:
-                            this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case BREAK:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case FOOD:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, (j-viewport_start_x)*BLOCK_WIDTH, (i-viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case PLAYER:
-                            this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, (j - viewport_start_x)*BLOCK_WIDTH, (i - viewport_start_y)*BLOCK_WIDTH,BLOCK_WIDTH, BLOCK_WIDTH);
+                            switch(this.player.merphy_state) {
+                                case MOVE_RIGHT:
+                                case FORCE_RIGHT:
+                                    pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case MOVE_LEFT:
+                                case FORCE_LEFT:
+                                    pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case MOVE_UP:
+                                    pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                                case MOVE_DOWN:
+                                    pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                    break;
+                            }
+                            this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                     }
                
                                
-                }
+                // }
                 
             })
         })
@@ -383,7 +421,7 @@ export class World {
 
     tick() {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
-        this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player.force));
+        this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.player.changeState(this.world);
         this.player.changePic();

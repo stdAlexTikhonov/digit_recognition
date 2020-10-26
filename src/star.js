@@ -7,6 +7,8 @@ export class Star {
         this.y = y;
         this.still_here = true;
         this.falling = false;
+        this.right = false;
+        this.left = false;
         this.killer = false;
         this.char = FOOD;
     }
@@ -37,6 +39,8 @@ export class Star {
     }
 
     changeState(world) {
+        this.right = false;
+        this.left = false;
         if (world[this.y][this.x].char === PLAYER) { if (this.still_here) { 
             Star.scores += 1; 
             this.still_here = false;
@@ -44,8 +48,8 @@ export class Star {
          } }
         else if (this.check_way_down(world)) this.y += 1;
         else if (this.move_possible(world)) {
-            if (this.check_way_left(world)) this.x -= 1;
-            else if (this.check_way_right(world)) this.x += 1;
+            if (this.check_way_left(world)) { this.x -= 1; this.left = true; }
+            else if (this.check_way_right(world)) { this.x += 1; this.right = true; }
             else this.falling = false;
         }
         else this.falling = false;
