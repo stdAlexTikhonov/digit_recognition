@@ -315,14 +315,29 @@ export class World {
         const viewport_end_x = viewport_start_x + VIEWPORT_WIDTH;
         const viewport_end_y = viewport_start_y + VIEWPORT_HEIGHT;
 
-
+        debugger;
         this.world.forEach((row,i) => {
             const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
             row.forEach((el,j) => { 
                 const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
-                // if (draw_view_y_flag && draw_view_x_flag) {
-                    let pos_x = j*BLOCK_WIDTH;//(j - viewport_start_x)*BLOCK_WIDTH;
-                    let pos_y = i*BLOCK_WIDTH;//(i - viewport_start_y)*BLOCK_WIDTH;
+                if (draw_view_y_flag && draw_view_x_flag) {
+                    let pos_x = (j - viewport_start_x)*BLOCK_WIDTH;
+                    let pos_y = (i - viewport_start_y)*BLOCK_WIDTH;
+
+                    switch(this.player.merphy_state) {
+                        case MOVE_RIGHT:
+                            pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            break;
+                        case MOVE_LEFT:
+                            pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            break;
+                        case MOVE_UP:
+                            pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            break;
+                        case MOVE_DOWN:
+                            pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            break;
+                    }
 
                     switch (el.char) {
                         case SCISSORS:
@@ -349,9 +364,11 @@ export class World {
                             this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case BREAK:
+                            
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
+                            
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
@@ -385,7 +402,7 @@ export class World {
                     }
                
                                
-                // }
+                }
                 
             })
         })
@@ -425,11 +442,11 @@ export class World {
         this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.player.changeState(this.world);
         this.player.changePic();
-        this.check_predators();
         this.check_food();
         this.check_rocks();
         this.world = this.generate();
         this.check_player();
+        this.check_predators();
     }
 
 }
