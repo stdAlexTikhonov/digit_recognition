@@ -420,16 +420,17 @@ export class World {
     }
 
     tick() {
+        debugger;
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
         this.player.changeState(this.world);
         this.player.changePic();
-        this.check_predators();
         this.check_food();
         this.check_rocks();
         this.world = this.generate();
         this.check_player();
+        this.check_predators();
     }
 
 }
