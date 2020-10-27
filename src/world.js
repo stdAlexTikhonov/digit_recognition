@@ -5,7 +5,7 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, REMOTE_PLAYER,
 } from "./constants";
 import { Player } from "./player";
 import { Star } from "./star";
@@ -224,6 +224,11 @@ export class World {
             this.GROUND.push({y: rip.y, x: rip.x, char: GROUND});
         }
 
+        this.PLAYERS = [];
+        for (let i = 0; i < PLAYERS_QUANTITY; i++) {
+            const pp = this.rndomizer();//player position
+            this.PLAYERS.push({y: pp.y, x: pp.x, char: REMOTE_PLAYER});
+        }
 
         const pp = this.rndomizer();//player position
 
@@ -283,6 +288,8 @@ export class World {
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = B);
 
         this.WALLS.forEach(W => WORLD[W.y][W.x] = W);
+
+        this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
         return WORLD;
     }
 
@@ -364,7 +371,6 @@ export class World {
                             this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case BREAK:
-                            
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
@@ -399,6 +405,10 @@ export class World {
                             }
                             this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
+                        case REMOTE_PLAYER:
+                            this.ctx_vp.drawImage(this.player.img, 0, BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
+
                     }
                
                                

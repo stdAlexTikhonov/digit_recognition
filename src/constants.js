@@ -14,6 +14,7 @@ export const NO_WAY = 'NO_WAY';
 export const DIRS = [NO_WAY, UP, DOWN, LEFT, RIGHT];
 
 export const PLAYER = 'A';
+export const REMOTE_PLAYER = 'B';
 export const ROCK = 'O';
 export const FOOD = '*';
 export const BREAK = '+';
@@ -29,6 +30,7 @@ export const ROCKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const STARS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const BREAKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const GROUND_QUANTITY = 300 * MAP_SIZE_CONSTANT;//+0
+export const PLAYERS_QUANTITY = 2;
 
 
 export const STOP = "STOP";
