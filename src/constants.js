@@ -1,5 +1,6 @@
-export const WIDTH = 100;
-export const HEIGHT = 50;
+export const MAP_SIZE_CONSTANT = 1;
+export const WIDTH = 30 * MAP_SIZE_CONSTANT;
+export const HEIGHT = 18 * MAP_SIZE_CONSTANT;
 export const VIEWPORT_WIDTH = 30;
 export const VIEWPORT_HEIGHT = 18;
 export const BLOCK_WIDTH = 32;
@@ -23,11 +24,11 @@ export const SCISSORS = 'X';
 
 export const elements = [WALL, GROUND, ROCK, BREAK, FOOD];
 
-export const PREDATOR_QUANTITY = 30;//+0
-export const ROCKS_QUANTITY = 100;//+0
-export const STARS_QUANTITY = 100;//+0
-export const BREAKS_QUANTITY = 100;//+0
-export const GROUND_QUANTITY = 2500;//+0
+export const PREDATOR_QUANTITY = 3 * MAP_SIZE_CONSTANT;//+0
+export const ROCKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
+export const STARS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
+export const BREAKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
+export const GROUND_QUANTITY = 300 * MAP_SIZE_CONSTANT;//+0
 
 
 export const STOP = "STOP";
