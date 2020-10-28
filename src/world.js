@@ -49,6 +49,7 @@ export class World {
         this.selected_values = [];
         this.mouse_pressed = false;
         this.selected_value = EMPTY;
+        this.ws = new WebSocket("ws://localhost:3000");
         
         
         
@@ -234,17 +235,17 @@ export class World {
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.y,pp.x);
-        this.player.ws.onopen = () => this.player.ws.send(JSON.stringify(pp));
+        this.ws.onopen = () => this.ws.send(JSON.stringify(pp));
 
         this.world = this.generate();
 
         this.startTimer();
 
-        this.player.ws.onmessage = response => {
+        this.ws.onmessage = response => {
             
             try {
                 const res = JSON.parse(response.data);
-                if (res.x !== this.player.x) this.PLAYERS.push({y: res.y, x: res.x, char: REMOTE_PLAYER});
+                console.log(res);
             } catch (e) {
                 console.log(response.data);
             }
@@ -304,7 +305,7 @@ export class World {
 
         this.WALLS.forEach(W => WORLD[W.y][W.x] = W);
 
-        this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
+        // this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
         return WORLD;
     }
 
@@ -419,9 +420,9 @@ export class World {
                             }
                             this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
-                        case REMOTE_PLAYER:
-                            this.ctx_vp.drawImage(this.player.img, 0, BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
-                            break;
+                        // case REMOTE_PLAYER:
+                        //     this.ctx_vp.drawImage(this.player.img, 0, BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                        //     break;
 
                     }
                

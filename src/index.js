@@ -104,6 +104,7 @@ start_screen.style.width = '460px';
 start_screen.style.height = '470px';
 start_screen.style.flexDirection = 'column';
 start_screen.style.justifyContent = 'center';
+start_screen.style.alignItems = 'center';
 start_screen.style.backgroundColor = 'rgba(255,255,255,0.7)';
 
 
@@ -118,9 +119,9 @@ start_btn.style.border = '1px solid lightgreen';
 start_btn.style.fontFamily = 'Tahoma';
 start_btn.style.fontWeight = 'bold';
 start_btn.style.color = 'lightgreen';
-start_btn.style.margin = 'auto';
 start_btn.style.cursor = 'pointer';
 start_btn.style.padding = '15px';
+start_btn.style.margin = '5px';
 
 const scores = document.createElement('div');
 scores.style.fontFamily = 'Tahoma';
@@ -128,14 +129,20 @@ scores.style.fontSize = '15px';
 scores.style.margin = 'auto';
 
 
-
+const connect_to = start_btn.cloneNode(true);
+connect_to.innerHTML = 'CONNECT TO ...';
 
 start_screen.appendChild(start_btn);
+start_screen.appendChild(connect_to);
 main.appendChild(start_screen);
 
 start_btn.onclick = () => {
     start_screen.style.display = 'none';
     startGame();
+}
+
+connect_to.onclick = () => {
+    alert("Connection");
 }
 
 
