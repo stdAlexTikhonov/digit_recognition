@@ -1,7 +1,15 @@
 const WebSocket = require('ws');
 const server = new WebSocket.Server({ port: 3000});
 
-const players = [];
+const generateUID = () => {
+  return (
+    "_" +
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+};
+
+const players = {};
 
 server.on('connection', ws => {
    
@@ -11,29 +19,25 @@ server.on('connection', ws => {
             ws.close();
         }
          else {
-
+          let have_already;
           try {
-            const player = JSON.parse(message);
-            const have_already = players.some(pl => pl.x === player.x && pl.y === player.y);
-            if (have_already) {
-              
-            }
-            else {
-              players.push(player);
-              client.send(JSON.stringify(players)); 
-            }
+            // const player = JSON.parse(message);
+            // have_already = players.values().some(pl => pl.x === player.x && pl.y === player.y);
+            // players[player.id] = ({ x: player.x, y: player.y});
+            console.log("messsage")
           } catch(e) {
-            client.send(message);
+            console.error(e);
           }
-            server.clients.forEach(client => {
+          server.clients.forEach(client => {
 
-                if (client.readyState === WebSocket.OPEN) {
-                  
-                    
-                }
-            })
+              if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(players));
+              }
+          })
         }
         
     })
-    ws.send("Welcome to server");
+    const new_player = generateUID();
+    players[new_player] = null;
+    ws.send(JSON.stringify({token: new_player}));
 })

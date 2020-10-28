@@ -23,6 +23,13 @@ function random() {
     return x - Math.floor(x);
 }
 
+export const generateUID = () => {
+    return (
+      "_" +
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15)
+    );
+  };
 
 export class World {
 
@@ -235,7 +242,8 @@ export class World {
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.y,pp.x);
-        this.ws.onopen = () => this.ws.send(JSON.stringify(pp));
+  
+        this.ws.onopen = () => this.ws.send(this.player.token);
 
         this.world = this.generate();
 
@@ -245,9 +253,10 @@ export class World {
             
             try {
                 const res = JSON.parse(response.data);
+                if (res.token && !this.player.token) { this.player.token = res.token; }
                 console.log(res);
             } catch (e) {
-                console.log(response.data);
+                
             }
             
         }
