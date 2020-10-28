@@ -14,6 +14,7 @@ document.onkeydown = e => {
             else THE_WORLD.player.dir = LEFT;
             break;
         case 38:
+            THE_WORLD.player.ws.send(UP);
             if (THE_WORLD.player.dir === UP) THE_WORLD.player.force = true;
             else THE_WORLD.player.dir = UP;
             break;

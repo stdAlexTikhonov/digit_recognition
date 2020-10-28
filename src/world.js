@@ -51,6 +51,7 @@ export class World {
         this.selected_value = EMPTY;
         
         
+        
         // document.body.appendChild(this.canvas);
         document.body.appendChild(this.viewport);
 
@@ -225,20 +226,34 @@ export class World {
         }
 
         this.PLAYERS = [];
-        for (let i = 0; i < PLAYERS_QUANTITY; i++) {
-            const pp = this.rndomizer();//player position
-            this.PLAYERS.push({y: pp.y, x: pp.x, char: REMOTE_PLAYER});
-        }
+        // for (let i = 0; i < PLAYERS_QUANTITY; i++) {
+        //     const pp = this.rndomizer();//player position
+        //     this.PLAYERS.push({y: pp.y, x: pp.x, char: REMOTE_PLAYER});
+        // }
 
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.y,pp.x);
+        this.player.ws.onopen = () => this.player.ws.send(JSON.stringify(pp));
 
         this.world = this.generate();
 
         this.startTimer();
 
+        this.player.ws.onmessage = response => {
+            
+            try {
+                const res = JSON.parse(response.data);
+                if (res.x !== this.player.x) this.PLAYERS.push({y: res.y, x: res.x, char: REMOTE_PLAYER});
+            } catch (e) {
+                console.log(response.data);
+            }
+            
+        }
+
     }
+
+
 
     startTimer() {
         this.timer = setTimeout(() => {
@@ -322,7 +337,6 @@ export class World {
         const viewport_end_x = viewport_start_x + VIEWPORT_WIDTH;
         const viewport_end_y = viewport_start_y + VIEWPORT_HEIGHT;
 
-        debugger;
         this.world.forEach((row,i) => {
             const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
             row.forEach((el,j) => { 

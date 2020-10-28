@@ -22,6 +22,8 @@ export class Player {
         this.merphy_state = STOP;
         this.dy = 0;
         this.char = PLAYER
+        this.ws = new WebSocket("ws://localhost:3000");
+
         
     }
 
@@ -97,6 +99,7 @@ export class Player {
     }
 
     changeState(world) {
+        // this.ws.send(this.dir);
         if (Player.off) return false;
         
         switch  (this.dir) {
