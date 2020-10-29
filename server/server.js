@@ -21,23 +21,36 @@ server.on('connection', ws => {
          else {
           let have_already;
           try {
-            // const player = JSON.parse(message);
+            const data = JSON.parse(message);
+
+            switch(data.method) {
+              case "SET_PLAYER_POSITION":
+                players[data.token] = data.player;
+                console.log(`Position for player ${data.token} setted`);
+                break;
+            }
+
             // have_already = players.values().some(pl => pl.x === player.x && pl.y === player.y);
             // players[player.id] = ({ x: player.x, y: player.y});
-            console.log("messsage")
+
+            server.clients.forEach(client => {
+
+              if (client.readyState === WebSocket.OPEN) {
+                switch(data.method) {
+                  case "SET_PLAYER_POSITION":
+                    client.send(JSON.stringify({ method: "SET_PLAYERS", players: players }));
+                    break;
+                }
+              }
+            })
+         
           } catch(e) {
             console.error(e);
           }
-          server.clients.forEach(client => {
 
-              if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(players));
-              }
-          })
         }
         
     })
-    const new_player = generateUID();
-    players[new_player] = null;
-    ws.send(JSON.stringify({token: new_player}));
+   
+    ws.send("Welcome to server!");
 })

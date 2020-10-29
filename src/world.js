@@ -5,7 +5,7 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, REMOTE_PLAYER,
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, REMOTE_PLAYER, STOP
 } from "./constants";
 import { Player } from "./player";
 import { Star } from "./star";
@@ -242,8 +242,9 @@ export class World {
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.y,pp.x);
+        this.player.token = generateUID();
   
-        this.ws.onopen = () => this.ws.send(this.player.token);
+        this.ws.onopen = () => this.ws.send(JSON.stringify({method: "SET_PLAYER_POSITION", token: this.player.token, player: this.player}));
 
         this.world = this.generate();
 
@@ -253,8 +254,11 @@ export class World {
             
             try {
                 const res = JSON.parse(response.data);
-                if (res.token && !this.player.token) { this.player.token = res.token; }
-                console.log(res);
+                switch(res.method) {
+                    case "SET_PLAYERS":
+                        console.log(res.players)
+                        break;
+                }
             } catch (e) {
                 
             }
