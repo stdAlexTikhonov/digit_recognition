@@ -267,7 +267,11 @@ export class World {
                         break;
                     case "CD":
                         this.PLAYERS.forEach(player => {
-                            if (res.token === player.token) player.dir = res.dir;
+                            if (res.token === player.token) { 
+                                player.dir = res.dir;
+                                player.x = res.x;
+                                player.y = res.y;
+                             }
                         })
                         break;
 
