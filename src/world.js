@@ -321,6 +321,11 @@ export class World {
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = { char: EMPTY});
 
+        this.PLAYERS.forEach(P => { 
+            P.EMPTIES.forEach(P => WORLD[P.y][P.x] = { char: EMPTY});
+            WORLD[P.y][P.x] = P 
+        });
+
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P);
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = R);
