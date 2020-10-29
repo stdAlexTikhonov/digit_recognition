@@ -259,10 +259,16 @@ export class World {
                         //remove current client
                         delete res.players[this.player.token];
                         const filtered = Object.values(res.players);
-                        this.PLAYERS = filtered.map(pl => new Player(pl.y, pl.x));
+                        this.PLAYERS = filtered.map(pl => { 
+                            const new_pl = new Player(pl.y, pl.x);
+                            new_pl.token = pl.token;
+                            return new_pl;
+                        });
                         break;
                     case "CD":
-                        console.log(response.data)
+                        this.PLAYERS.forEach(player => {
+                            if (res.token === player.token) player.dir = res.dir;
+                        })
                         break;
 
                 }
@@ -485,6 +491,10 @@ export class World {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
+        this.PLAYERS.forEach(PLAYER => {
+            PLAYER.changeState(this.world);
+            PLAYER.changePic();
+        });
         this.player.changeState(this.world);
         this.player.changePic();
         this.check_food();
