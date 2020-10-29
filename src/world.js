@@ -256,11 +256,18 @@ export class World {
                 const res = JSON.parse(response.data);
                 switch(res.method) {
                     case "SET_PLAYERS":
-                        console.log(res.players)
+                        //remove current client
+                        delete res.players[this.player.token];
+                        const filtered = Object.values(res.players);
+                        this.PLAYERS = filtered.map(pl => new Player(pl.y, pl.x));
                         break;
+                    case "CD":
+                        console.log(response.data)
+                        break;
+
                 }
             } catch (e) {
-                
+                console.log(e);
             }
             
         }
@@ -318,7 +325,7 @@ export class World {
 
         this.WALLS.forEach(W => WORLD[W.y][W.x] = W);
 
-        // this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
+        this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
         return WORLD;
     }
 
@@ -415,7 +422,7 @@ export class World {
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case PLAYER:
-                            switch(this.player.merphy_state) {
+                            switch(el.merphy_state) {
                                 case MOVE_RIGHT:
                                 case FORCE_RIGHT:
                                     pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
@@ -431,7 +438,7 @@ export class World {
                                     pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                                     break;
                             }
-                            this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, el.state * BLOCK_WIDTH, el.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         // case REMOTE_PLAYER:
                         //     this.ctx_vp.drawImage(this.player.img, 0, BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);

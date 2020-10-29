@@ -40,6 +40,9 @@ server.on('connection', ws => {
                   case "SET_PLAYER_POSITION":
                     client.send(JSON.stringify({ method: "SET_PLAYERS", players: players }));
                     break;
+                  case "CD":
+                    client.send(message);
+                    break;
                 }
               }
             })
