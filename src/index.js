@@ -41,7 +41,7 @@ const startGame = () => {
     prevStates.push(THE_WORLD.print());
     main.style.display = 'none';
     window.pause = false;
- 
+    THE_WORLD.audio.play();
     draw();
 }
 
@@ -82,6 +82,7 @@ window.onkeydown = (e) => {
 
 export const stopGame = () => {
     THE_WORLD.stopTimer(); 
+    THE_WORLD.audio.pause()
     THE_WORLD.ws.send(JSON.stringify({ method: "CLOSE", token: THE_WORLD.player.token}));
   
     window.cancelAnimationFrame(window.myReq);
