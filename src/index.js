@@ -52,7 +52,7 @@ const draw = () => {
  
         // console.log(frame);
     if (!window.pause) {
-        if (frames % STEPS === 0) THE_WORLD.tick(); 
+        if (frames % STEPS === 0 && THE_WORLD.start) THE_WORLD.tick(); 
             
         // show.innerText = THE_WORLD.print();
         prevStates.push(THE_WORLD.print(frame))
@@ -83,7 +83,7 @@ window.onkeydown = (e) => {
 export const stopGame = () => {
     THE_WORLD.stopTimer(); 
     THE_WORLD.ws.send(JSON.stringify({ method: "CLOSE", token: THE_WORLD.player.token}));
-    console.log('hello', THE_WORLD.player.token);
+  
     window.cancelAnimationFrame(window.myReq);
     window.pause = true;
     start_screen.style.display = 'flex';

@@ -43,6 +43,9 @@ server.on('connection', ws => {
               case "CD":
                 client.send(message);
                 break;
+              case "CLOSE":
+                client.send(JSON.stringify({ method: "CLOSE", players: players }));
+                break;
             }
           }
         })

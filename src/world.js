@@ -43,6 +43,7 @@ export class World {
         this.img.src = sprite2;
         this.timer = null;
         this.pause = false;
+        this.start = false;
         // this.canvas = document.createElement('canvas');
         // this.canvas.id = 'canvas';
         // this.canvas.width = WIDTH * BLOCK_WIDTH;
@@ -56,7 +57,7 @@ export class World {
         this.selected_values = [];
         this.mouse_pressed = false;
         this.selected_value = EMPTY;
-        this.ws = new WebSocket("ws://localhost:3000");
+        this.ws = new WebSocket("ws://192.168.0.172:3000");
         
         
         
@@ -248,7 +249,7 @@ export class World {
 
         this.world = this.generate();
 
-        this.startTimer();
+        
 
         this.ws.onmessage = response => {
             
@@ -264,6 +265,7 @@ export class World {
                             new_pl.token = pl.token;
                             return new_pl;
                         });
+                        if (Object.keys(res.players).length === PLAYERS_QUANTITY - 1) this.start = true;
                         break;
                     case "CD":
                         this.PLAYERS.forEach(player => {
@@ -273,6 +275,16 @@ export class World {
                                 player.y = res.y;
                              }
                         })
+                        break;
+                    case "CLOSE":
+                        //remove current client
+                        delete res.players[this.player.token];
+                        const filtered1 = Object.values(res.players);
+                        this.PLAYERS = filtered1.map(pl => { 
+                            const new_pl = new Player(pl.y, pl.x);
+                            new_pl.token = pl.token;
+                            return new_pl;
+                        });
                         break;
 
                 }
