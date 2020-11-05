@@ -5,7 +5,7 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
     DIRS, PLAYER, ROCK, FOOD, BREAK,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, REMOTE_PLAYER, STOP
 } from "./constants";
 import { Player } from "./player";
 import { Star } from "./star";
@@ -23,6 +23,13 @@ function random() {
     return x - Math.floor(x);
 }
 
+export const generateUID = () => {
+    return (
+      "_" +
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15)
+    );
+  };
 
 export class World {
 
@@ -36,6 +43,7 @@ export class World {
         this.img.src = sprite2;
         this.timer = null;
         this.pause = false;
+        this.start = false;
         // this.canvas = document.createElement('canvas');
         // this.canvas.id = 'canvas';
         // this.canvas.width = WIDTH * BLOCK_WIDTH;
@@ -49,6 +57,8 @@ export class World {
         this.selected_values = [];
         this.mouse_pressed = false;
         this.selected_value = EMPTY;
+        this.ws = new WebSocket("ws://192.168.0.172:3000");
+        
         
         
         // document.body.appendChild(this.canvas);
@@ -224,16 +234,69 @@ export class World {
             this.GROUND.push({y: rip.y, x: rip.x, char: GROUND});
         }
 
+        this.PLAYERS = [];
+        // for (let i = 0; i < PLAYERS_QUANTITY; i++) {
+        //     const pp = this.rndomizer();//player position
+        //     this.PLAYERS.push({y: pp.y, x: pp.x, char: REMOTE_PLAYER});
+        // }
 
         const pp = this.rndomizer();//player position
 
         this.player = new Player(pp.y,pp.x);
+        this.player.token = generateUID();
+  
+        this.ws.onopen = () => this.ws.send(JSON.stringify({method: "SET_PLAYER_POSITION", token: this.player.token, player: this.player}));
 
         this.world = this.generate();
 
-        this.startTimer();
+        
+
+        this.ws.onmessage = response => {
+            
+            try {
+                const res = JSON.parse(response.data);
+                switch(res.method) {
+                    case "SET_PLAYERS":
+                        //remove current client
+                        delete res.players[this.player.token];
+                        const filtered = Object.values(res.players);
+                        this.PLAYERS = filtered.map(pl => { 
+                            const new_pl = new Player(pl.y, pl.x);
+                            new_pl.token = pl.token;
+                            return new_pl;
+                        });
+                        if (Object.keys(res.players).length === PLAYERS_QUANTITY - 1) this.start = true;
+                        break;
+                    case "CD":
+                        this.PLAYERS.forEach(player => {
+                            if (res.token === player.token) { 
+                                player.dir = res.dir;
+                                player.x = res.x;
+                                player.y = res.y;
+                             }
+                        })
+                        break;
+                    case "CLOSE":
+                        //remove current client
+                        delete res.players[this.player.token];
+                        const filtered1 = Object.values(res.players);
+                        this.PLAYERS = filtered1.map(pl => { 
+                            const new_pl = new Player(pl.y, pl.x);
+                            new_pl.token = pl.token;
+                            return new_pl;
+                        });
+                        break;
+
+                }
+            } catch (e) {
+                console.log(e);
+            }
+            
+        }
 
     }
+
+
 
     startTimer() {
         this.timer = setTimeout(() => {
@@ -274,6 +337,11 @@ export class World {
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = { char: EMPTY});
 
+        this.PLAYERS.forEach(P => { 
+            P.EMPTIES.forEach(P => WORLD[P.y][P.x] = { char: EMPTY});
+            WORLD[P.y][P.x] = P 
+        });
+
         this.PREDATORS.forEach(P => WORLD[P.y][P.x] = P);
 
         this.ROCKS.forEach(R => WORLD[R.y][R.x] = R);
@@ -283,6 +351,8 @@ export class World {
         this.BREAKS.forEach(B => WORLD[B.y][B.x] = B);
 
         this.WALLS.forEach(W => WORLD[W.y][W.x] = W);
+
+        this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
         return WORLD;
     }
 
@@ -315,7 +385,6 @@ export class World {
         const viewport_end_x = viewport_start_x + VIEWPORT_WIDTH;
         const viewport_end_y = viewport_start_y + VIEWPORT_HEIGHT;
 
-        debugger;
         this.world.forEach((row,i) => {
             const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
             row.forEach((el,j) => { 
@@ -364,7 +433,6 @@ export class World {
                             this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case BREAK:
-                            
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
@@ -381,7 +449,7 @@ export class World {
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case PLAYER:
-                            switch(this.player.merphy_state) {
+                            switch(el.merphy_state) {
                                 case MOVE_RIGHT:
                                 case FORCE_RIGHT:
                                     pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
@@ -397,8 +465,12 @@ export class World {
                                     pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                                     break;
                             }
-                            this.ctx_vp.drawImage(this.player.img, this.player.state * BLOCK_WIDTH, this.player.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, el.state * BLOCK_WIDTH, el.dy * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
+                        // case REMOTE_PLAYER:
+                        //     this.ctx_vp.drawImage(this.player.img, 0, BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                        //     break;
+
                     }
                
                                
@@ -440,6 +512,10 @@ export class World {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
+        this.PLAYERS.forEach(PLAYER => {
+            PLAYER.changeState(this.world);
+            PLAYER.changePic();
+        });
         this.player.changeState(this.world);
         this.player.changePic();
         this.check_food();

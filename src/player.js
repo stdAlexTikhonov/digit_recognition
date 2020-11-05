@@ -23,10 +23,12 @@ export class Player {
         this.dy = 0;
         this.char = PLAYER
         
+
+        
     }
 
     check(nxt, world) {
-        return [EMPTY, '*', '.'].includes(world[nxt.y][nxt.x].char);
+        return [EMPTY, '*', '.', 'A'].includes(world[nxt.y][nxt.x].char);
     }
 
     check_predator(nxt, world) {
