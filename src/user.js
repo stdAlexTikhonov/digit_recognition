@@ -12,12 +12,12 @@ document.onkeydown = e => {
                 THE_WORLD.player.merphy_state = FORCE_LEFT;
             }
             else THE_WORLD.player.dir = LEFT;
-            THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
             break;
         case 38:
             if (THE_WORLD.player.dir === UP) THE_WORLD.player.force = true;
             else THE_WORLD.player.dir = UP;
-            THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: UP, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: UP, token: THE_WORLD.player.token, x: player.x, y: player.y }))
             break;
         case 39:
             if (THE_WORLD.player.dir === RIGHT) { 
@@ -25,12 +25,12 @@ document.onkeydown = e => {
                 THE_WORLD.player.merphy_state = FORCE_RIGHT;
             }
             else THE_WORLD.player.dir = RIGHT;
-            THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
             break;
         case 40:
             if (THE_WORLD.player.dir === DOWN) THE_WORLD.player.force = true;
             else THE_WORLD.player.dir = DOWN;
-            THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: DOWN, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: DOWN, token: THE_WORLD.player.token, x: player.x, y: player.y }))
             break;
         case 190:
             if (window.pause) {
