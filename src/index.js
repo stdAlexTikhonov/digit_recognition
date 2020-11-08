@@ -42,6 +42,7 @@ const startGame = (ip, players_quantity) => {
     main.style.display = 'none';
     window.pause = false;
     THE_WORLD.audio.play();
+    THE_WORLD.startTimer();
     draw();
 }
 
