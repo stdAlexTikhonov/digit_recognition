@@ -30,7 +30,6 @@ export const ROCKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const STARS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const BREAKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const GROUND_QUANTITY = 300 * MAP_SIZE_CONSTANT;//+0
-export const PLAYERS_QUANTITY = 2;
 
 
 export const STOP = "STOP";
@@ -42,4 +41,4 @@ export const MOVE_UP = "MOVE_UP";
 export const MOVE_DOWN = "MOVE_DOWN";
 
 export const FRAME = 9;
-export const SEED = 2;
+export const SEED = 1;

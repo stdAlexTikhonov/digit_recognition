@@ -34,7 +34,7 @@ export const generateUID = () => {
 
 export class World {
 
-    constructor(height, width, predators_q, rocks, stars, breaks) {
+    constructor(height, width, predators_q, rocks, stars, breaks, ip, players_quantity) {
         this.rand_positions = [];
         this.height = height;
         this.width = width;
@@ -44,7 +44,8 @@ export class World {
         this.img.src = sprite2;
         this.timer = null;
         this.pause = false;
-        this.start = false;
+        this.start = !ip;
+        this.ip = ip;
         this.audio = new Audio(background_audio);
         // this.canvas = document.createElement('canvas');
         // this.canvas.id = 'canvas';
@@ -59,7 +60,7 @@ export class World {
         this.selected_values = [];
         this.mouse_pressed = false;
         this.selected_value = EMPTY;
-        this.ws = new WebSocket("ws://192.168.0.172:3000");
+        this.ws = ip && new WebSocket(`ws://${ip}:3000`);
         
         
         
@@ -247,13 +248,13 @@ export class World {
         this.player = new Player(pp.y,pp.x);
         this.player.token = generateUID();
   
-        this.ws.onopen = () => this.ws.send(JSON.stringify({method: "SET_PLAYER_POSITION", token: this.player.token, player: this.player}));
+        if (ip) this.ws.onopen = () => this.ws.send(JSON.stringify({method: "SET_PLAYER_POSITION", token: this.player.token, player: this.player}));
 
         this.world = this.generate();
 
         
 
-        this.ws.onmessage = response => {
+        if (ip) this.ws.onmessage = response => {
             
             try {
                 const res = JSON.parse(response.data);
@@ -267,7 +268,7 @@ export class World {
                             new_pl.token = pl.token;
                             return new_pl;
                         });
-                        if (Object.keys(res.players).length === PLAYERS_QUANTITY - 1) this.start = true;
+                        if (Object.keys(res.players).length === players_quantity - 1) this.start = true;
                         break;
                     case "CD":
                         this.PLAYERS.forEach(player => {
@@ -339,7 +340,7 @@ export class World {
 
         this.player.EMPTIES.forEach(P => WORLD[P.y][P.x] = { char: EMPTY});
 
-        this.PLAYERS.forEach(P => { 
+        this.ip && this.PLAYERS.forEach(P => { 
             P.EMPTIES.forEach(P => WORLD[P.y][P.x] = { char: EMPTY});
             WORLD[P.y][P.x] = P 
         });
@@ -514,7 +515,7 @@ export class World {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
-        this.PLAYERS.forEach(PLAYER => {
+        this.ip && this.PLAYERS.forEach(PLAYER => {
             PLAYER.changeState(this.world);
             PLAYER.changePic();
         });

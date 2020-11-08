@@ -32,8 +32,8 @@ document.body.appendChild(main);
 window.pause = false;
 window.myReq = null;
 export let THE_WORLD;
-const startGame = () => {
-    THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY);
+const startGame = (ip, players_quantity) => {
+    THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY, ip, players_quantity);
     Player.off = false;
     Player.flag = true;
     Star.scores = 0;
@@ -83,7 +83,7 @@ window.onkeydown = (e) => {
 export const stopGame = () => {
     THE_WORLD.stopTimer(); 
     THE_WORLD.audio.pause()
-    THE_WORLD.ws.send(JSON.stringify({ method: "CLOSE", token: THE_WORLD.player.token}));
+    THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CLOSE", token: THE_WORLD.player.token}));
   
     window.cancelAnimationFrame(window.myReq);
     window.pause = true;
@@ -145,7 +145,9 @@ start_btn.onclick = () => {
 }
 
 connect_to.onclick = () => {
-    alert("Connection");
+    const ip = prompt("Enter ip adress");
+    const players_quantity = prompt("Enter players quantity");
+    startGame(ip, players_quantity);
 }
 
 
