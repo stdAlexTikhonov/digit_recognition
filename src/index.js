@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-
+import background_audio from './assets/audio/back.mp3';
 import { World } from "./world";
 import { Player } from "./player"; 
 import { Star } from "./star"; 
@@ -12,6 +12,8 @@ import {
     ROCKS_QUANTITY, STARS_QUANTITY,
     BREAKS_QUANTITY, STEPS
 } from "./constants";
+
+const audio = new Audio(background_audio);
 
 let frames = 0;
 const show = document.createElement('pre');
@@ -41,7 +43,6 @@ const startGame = (ip, players_quantity) => {
     prevStates.push(THE_WORLD.print());
     main.style.display = 'none';
     window.pause = false;
-    THE_WORLD.audio.play();
     THE_WORLD.startTimer();
     draw();
 }
@@ -83,7 +84,6 @@ window.onkeydown = (e) => {
 
 export const stopGame = () => {
     THE_WORLD.stopTimer(); 
-    THE_WORLD.audio.pause()
     THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CLOSE", token: THE_WORLD.player.token}));
   
     window.cancelAnimationFrame(window.myReq);
@@ -143,6 +143,8 @@ main.appendChild(start_screen);
 start_btn.onclick = () => {
     start_screen.style.display = 'none';
     startGame();
+    audio.play();
+
 }
 
 connect_to.onclick = () => {

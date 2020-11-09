@@ -1,6 +1,5 @@
 import { stopGame } from "./index"
 import "./user";
-import background_audio from './assets/audio/back.mp3';
 
 import { 
     WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
@@ -46,7 +45,6 @@ export class World {
         this.pause = false;
         this.start = !ip;
         this.ip = ip;
-        this.audio = new Audio(background_audio);
         // this.canvas = document.createElement('canvas');
         // this.canvas.id = 'canvas';
         // this.canvas.width = WIDTH * BLOCK_WIDTH;
