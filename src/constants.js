@@ -4,7 +4,7 @@ export const HEIGHT = 18 * MAP_SIZE_CONSTANT;
 export const VIEWPORT_WIDTH = 30;
 export const VIEWPORT_HEIGHT = 18;
 export const BLOCK_WIDTH = 32;
-export const STEPS = 6;
+export const STEPS = 15;
 
 export const UP = 'UP';
 export const DOWN = 'DOWN';
