@@ -69,30 +69,39 @@ export class Predator {
     check_dir() {
         switch (this.dir) {
             case DOWN:
-                if (this.dir_left) return LEFT;
-                else if (this.dir_down) return DOWN;
-                else if (this.dir_right) return RIGHT;
-                else return UP;
+                if (this.dir_left) this.dir = LEFT;
+                else if (this.dir_down) this.dir = DOWN;
+                else if (this.dir_right) this.dir = RIGHT;
+                else this.dir = UP;
+                this.prev_dir = DOWN;
+                break;
             case RIGHT:
-                if (this.dir_down) return DOWN;
-                else if (this.dir_right) return RIGHT;
-                else if (this.dir_up) return UP;
-                else return LEFT;
+                if (this.dir_down) this.dir = DOWN;
+                else if (this.dir_right) this.dir = RIGHT;
+                else if (this.dir_up) this.dir = UP;
+                else this.dir = LEFT;
+                this.prev_dir = RIGHT;
+                break;
             case UP:
-                if (this.dir_right) return RIGHT;
-                else if (this.dir_up) return UP;
-                else if (this.dir_left) return LEFT;
-                else return DOWN;
+                if (this.dir_right) this.dir = RIGHT;
+                else if (this.dir_up) this.dir = UP;
+                else if (this.dir_left) this.dir = LEFT;
+                else this.dir = DOWN;
+                this.prev_dir = UP;
+                break;
             case LEFT:
-                if (this.dir_up) return UP;
-                else if (this.dir_left) return LEFT;
-                else if (this.dir_down) return DOWN;
-                else return RIGHT;
+                if (this.dir_up) this.dir = UP;
+                else if (this.dir_left) this.dir = LEFT;
+                else if (this.dir_down) this.dir = DOWN;
+                else this.dir = RIGHT;
+                this.prev_dir = LEFT;
+                break;
             case NO_WAY:
-                if (this.dir_up) return UP;
-                else if (this.dir_left) return LEFT;
-                else if (this.dir_down) return DOWN;
-                else if (this.dir_right) return RIGHT;
+                if (this.dir_up) this.dir = UP;
+                else if (this.dir_left) this.dir = LEFT;
+                else if (this.dir_down) this.dir = DOWN;
+                else if (this.dir_right) this.dir = RIGHT;
+                break;
         }
     }
 
@@ -113,10 +122,8 @@ export class Predator {
             Player.off = true;
         }
 
-        this.looking_around(world);
-        this.prev_dir = this.dir;
-        
-        this.dir = this.check_dir();
+         this.looking_around(world);
+         this.check_dir();
         
         switch (this.dir) {
             case DOWN:
