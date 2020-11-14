@@ -411,20 +411,21 @@ export class World {
 
                     switch (el.char) {
                         case SCISSORS:
-                            switch(el.dir) {
-                                case RIGHT:
-                                    pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                                    break;
-                                case LEFT:
-                                    pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                                    break;
-                                case UP:
-                                    pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                                    break;
-                                case DOWN:
-                                    pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                                    break;
-                            }
+                            if (el.animation)
+                                switch(el.dir) {
+                                    case RIGHT:
+                                        pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                        break;
+                                    case LEFT:
+                                        pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                        break;
+                                    case UP:
+                                        pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                        break;
+                                    case DOWN:
+                                        pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                        break;
+                                }
                             this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case GROUND:

@@ -21,6 +21,8 @@ export class Predator {
         this.img = new Image();
         this.img.src = sprite3;
         this.char = SCISSORS;
+        this.prev_dir = null;
+        this.animation = true;
     }
 
 
@@ -67,32 +69,32 @@ export class Predator {
     check_dir() {
         switch (this.dir) {
             case DOWN:
-                if (!this.dir_down) this.dir = NO_WAY;
                 if (this.dir_left) this.dir = LEFT;
                 else if (this.dir_down) this.dir = DOWN;
                 else if (this.dir_right) this.dir = RIGHT;
                 else this.dir = UP;
+                this.prev_dir = DOWN;
                 break;
             case RIGHT:
-                if (!this.dir_right) this.dir = NO_WAY;
                 if (this.dir_down) this.dir = DOWN;
                 else if (this.dir_right) this.dir = RIGHT;
                 else if (this.dir_up) this.dir = UP;
                 else this.dir = LEFT;
+                this.prev_dir = RIGHT;
                 break;
             case UP:
-                if (!this.dir_up) this.dir = NO_WAY;
                 if (this.dir_right) this.dir = RIGHT;
                 else if (this.dir_up) this.dir = UP;
                 else if (this.dir_left) this.dir = LEFT;
                 else this.dir = DOWN;
+                this.prev_dir = UP;
                 break;
             case LEFT:
-                if (!this.dir_left) this.dir = NO_WAY;
                 if (this.dir_up) this.dir = UP;
                 else if (this.dir_left) this.dir = LEFT;
                 else if (this.dir_down) this.dir = DOWN;
                 else this.dir = RIGHT;
+                this.prev_dir = LEFT;
                 break;
             case NO_WAY:
                 if (this.dir_up) this.dir = UP;
@@ -122,7 +124,7 @@ export class Predator {
 
          this.looking_around(world);
          this.check_dir();
-
+        
         switch (this.dir) {
             case DOWN:
                 if (world[this.y+1][this.x].char === EMPTY) this.y += 1;
