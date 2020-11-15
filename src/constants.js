@@ -25,7 +25,7 @@ export const SCISSORS = 'X';
 
 export const elements = [WALL, GROUND, ROCK, BREAK, FOOD];
 
-export const PREDATOR_QUANTITY = 1 * MAP_SIZE_CONSTANT;//+0
+export const PREDATOR_QUANTITY = 3 * MAP_SIZE_CONSTANT;//+0
 export const ROCKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const STARS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
 export const BREAKS_QUANTITY = 10 * MAP_SIZE_CONSTANT;//+0
