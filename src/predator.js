@@ -22,7 +22,7 @@ export class Predator {
         this.img.src = sprite3;
         this.char = SCISSORS;
         this.prev_dir = null;
-        this.animation = false;
+        this.animation = true;
     }
 
 
@@ -67,6 +67,7 @@ export class Predator {
 
 
     check_dir() {
+        this.animation = false;
         switch (this.dir) {
             case DOWN:
                 if (this.dir === this.prev_dir) {
@@ -136,7 +137,8 @@ export class Predator {
 
         this.check_dir();
         
-        if (this.dir === this.prev_dir)
+        if (this.dir === this.prev_dir) {
+            this.animation = true;
             switch (this.dir) {
                 case DOWN:
                     if (world[this.y+1][this.x].char === EMPTY) this.y += 1;
@@ -151,6 +153,7 @@ export class Predator {
                     if (world[this.y][this.x-1].char === EMPTY) this.x -= 1;
                     break;
             }
+        }
 
     }
 
