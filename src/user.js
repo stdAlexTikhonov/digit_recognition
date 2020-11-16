@@ -9,6 +9,7 @@ document.onkeydown = e => {
         case 37:
             if (THE_WORLD.player.dir === LEFT) { 
                 THE_WORLD.player.force = true; 
+                THE_WORLD.player.merphy_state = FORCE_LEFT;
             }
             else THE_WORLD.player.dir = LEFT;
             THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
@@ -21,6 +22,7 @@ document.onkeydown = e => {
         case 39:
             if (THE_WORLD.player.dir === RIGHT) { 
                 THE_WORLD.player.force = true;
+                THE_WORLD.player.merphy_state = FORCE_RIGHT;
             }
             else THE_WORLD.player.dir = RIGHT;
             THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
