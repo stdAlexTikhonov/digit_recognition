@@ -440,7 +440,7 @@ export class World {
                         case ROCK:
                             
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                            else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                            else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH ;
                             else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
@@ -451,6 +451,7 @@ export class World {
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case PLAYER:
+                            
                             switch(el.merphy_state) {
                                 case MOVE_RIGHT:
                                 case FORCE_RIGHT:

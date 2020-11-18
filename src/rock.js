@@ -13,9 +13,12 @@ export class Rock {
     }
 
     check_way_down(world) {
-        if (this.falling && world[this.y+1][this.x].char === PLAYER) { this.killer = true; Player.off = true; }
-        else if (this.falling && world[this.y+1][this.x].char === SCISSORS) { this.killer = true; }
-        this.falling = true;
+        if (this.falling && world[this.y + 1][this.x].char === PLAYER) {
+            this.killer = true; Player.off = true;
+        }
+        else if (this.falling && world[this.y + 1][this.x].char === SCISSORS) {
+            this.killer = true;
+        }
         return  world[this.y+1][this.x].char === EMPTY;
     }
 
@@ -24,12 +27,10 @@ export class Rock {
     }
 
     check_way_left(world) {
-        this.falling = true;
         return world[this.y][this.x-1].char === EMPTY && world[this.y+1][this.x-1].char === EMPTY && !['O', '*'].includes(world[this.y-1][this.x-1].char);
     }
 
     check_way_right(world) {
-        this.falling = true;
         return world[this.y][this.x+1].char === EMPTY && world[this.y+1][this.x+1].char === EMPTY && !['O', '*'].includes(world[this.y-1][this.x+1].char);
     }
 
@@ -45,7 +46,9 @@ export class Rock {
         this.right = false;
         this.left = false;
         if (world[this.y][this.x].char === PLAYER) { this.killer = true; Player.off = true; }
-        if (this.check_way_down(world)) this.y += 1;
+        if (this.check_way_down(world)) {
+            this.falling = true; this.y += 1;
+        }
         else if (this.check_force_move_left(world) && player.force && player.dir === LEFT) {
             this.x -= 1
             this.left = true;

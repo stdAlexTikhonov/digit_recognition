@@ -124,25 +124,23 @@ export class Player {
                 } else this.merphy_state = STOP;
                 break;
             case LEFT:
-                if (this.check_predator({x: this.x - 1, y: this.y}, world))  {
-                    Player.off = true;
-                }
+                if (this.check_predator({x: this.x - 1, y: this.y}, world)) Player.off = true;
                 else if (this.check({x: this.x - 1, y: this.y}, world)) {
                     this.merphy_state = MOVE_LEFT;
                     this.x -= 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
-                } else if (this.check_force_move_left(world)) this.x -= 1;
+                } else if (this.check_force_move_left(world)) {
+                    this.x -= 1; this.merphy_state = MOVE_LEFT;
+                }
                 else this.merphy_state = STOP;
                 break;
             case RIGHT:
-                if (this.check_predator({x: this.x + 1, y: this.y}, world))  {
-                    Player.off = true;
-                }
+                if (this.check_predator({x: this.x + 1, y: this.y}, world)) Player.off = true;
                 else if (this.check({x: this.x + 1, y: this.y}, world)) {
                     this.merphy_state = MOVE_RIGHT;
                     this.x += 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
-                } else if (this.check_force_move_right(world)) this.x += 1;
+                } else if (this.check_force_move_right(world)) { this.x += 1; this.merphy_state = MOVE_RIGHT; }
                 else this.merphy_state = STOP;
                 break;
         }

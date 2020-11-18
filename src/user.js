@@ -7,10 +7,7 @@ document.onkeydown = e => {
     
     switch (e.keyCode) {
         case 37:
-            if (THE_WORLD.player.dir === LEFT) { 
-                THE_WORLD.player.force = true; 
-                THE_WORLD.player.merphy_state = FORCE_LEFT;
-            }
+            if (THE_WORLD.player.dir === LEFT) THE_WORLD.player.force = true; 
             else THE_WORLD.player.dir = LEFT;
             THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
             break;
@@ -20,10 +17,7 @@ document.onkeydown = e => {
             THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: UP, token: THE_WORLD.player.token, x: player.x, y: player.y }))
             break;
         case 39:
-            if (THE_WORLD.player.dir === RIGHT) { 
-                THE_WORLD.player.force = true;
-                THE_WORLD.player.merphy_state = FORCE_RIGHT;
-            }
+            if (THE_WORLD.player.dir === RIGHT) THE_WORLD.player.force = true;
             else THE_WORLD.player.dir = RIGHT;
             THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
             break;
