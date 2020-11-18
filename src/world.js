@@ -387,9 +387,9 @@ export class World {
         const viewport_end_y = viewport_start_y + VIEWPORT_HEIGHT;
 
         this.world.forEach((row,i) => {
-            const draw_view_y_flag = i >= viewport_start_y && i <= viewport_end_y;
+            const draw_view_y_flag = i >= viewport_start_y - 1 && i <= viewport_end_y;
             row.forEach((el,j) => { 
-                const draw_view_x_flag = j >= viewport_start_x && j <= viewport_end_x;
+                const draw_view_x_flag = j >= viewport_start_x - 1  && j <= viewport_end_x;
                 if (draw_view_y_flag && draw_view_x_flag) {
                     let pos_x = (j - viewport_start_x)*BLOCK_WIDTH;
                     let pos_y = (i - viewport_start_y)*BLOCK_WIDTH;
@@ -438,7 +438,6 @@ export class World {
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
-                            
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH ;
                             else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
