@@ -485,7 +485,8 @@ export class World {
     }
 
     check_predators() {
-       
+        const died = this.PREDATORS.find(rock => !rock.still_alive);
+        if (died) this.STARS.push(new Star(died.y, died.x));
         this.PREDATORS = this.PREDATORS.filter(predator => predator.still_alive);
     }
 
@@ -494,6 +495,7 @@ export class World {
     }
 
     check_rocks() {
+        
         this.ROCKS = this.ROCKS.filter(rock => !rock.killer);
     }
 
