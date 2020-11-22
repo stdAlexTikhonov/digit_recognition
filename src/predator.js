@@ -1,7 +1,7 @@
 import { 
     EMPTY, PLAYER, UP, DOWN,
     RIGHT, LEFT, NO_WAY,
-    SCISSORS, ROCK
+    SCISSORS, ROCK, FOOD
 } from "./constants";
 import sprite3 from "./assets/merphy/sprite3.png";
 import { Player } from "./player";
@@ -61,8 +61,8 @@ export class Predator {
         return FOUND_PLAYER;
     }
 
-    find_rock(world) {
-        return world[this.y-1][this.x].char === ROCK;
+    find_death(world) {
+        return world[this.y-1][this.x].char === ROCK || world[this.y-1][this.x].char === FOOD;
     }
 
 
@@ -123,7 +123,7 @@ export class Predator {
     changeState(world) {
         this.state = this.state < 7 ? this.state + 1 : 0;
    
-        if (this.find_rock(world))
+        if (this.find_death(world))
             this.still_alive = false;
         
         if (this.no_way()) this.dir = NO_WAY;
