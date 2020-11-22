@@ -1,6 +1,6 @@
 import { 
     EMPTY, PLAYER, UP, DOWN,
-    RIGHT, LEFT, NO_WAY,
+    RIGHT, LEFT,
     SCISSORS, ROCK, FOOD
 } from "./constants";
 import sprite3 from "./assets/merphy/sprite3.png";
@@ -53,9 +53,6 @@ export class Predator {
             case RIGHT:
                 FOUND_PLAYER = right;
                 break;
-            case NO_WAY:
-                FOUND_PLAYER = up || down || left || right;
-                break;
         }
 
         return FOUND_PLAYER;
@@ -105,14 +102,6 @@ export class Predator {
                 }
                 this.prev_dir = LEFT;
                 break;
-            case NO_WAY:
-                if (this.dir === this.prev_dir) {
-                    if (this.dir_up) this.dir = UP;
-                    else if (this.dir_left) this.dir = LEFT;
-                    else if (this.dir_down) this.dir = DOWN;
-                    else if (this.dir_right) this.dir = RIGHT;
-                }
-                break;
         }
     }
 
@@ -126,7 +115,7 @@ export class Predator {
         if (this.find_death(world))
             this.still_alive = false;
         
-        if (this.no_way()) this.dir = NO_WAY;
+        // this.animation = !this.no_way();
 
         if (this.find_player(world)) {
             this.still_alive = false;
@@ -138,7 +127,8 @@ export class Predator {
         this.check_dir();
         
         if (this.dir === this.prev_dir) {
-            this.animation = true;
+            debugger;
+            this.animation = this.no_way() ? false : true;
             switch (this.dir) {
                 case DOWN:
                     if (world[this.y+1][this.x].char === EMPTY) this.y += 1;

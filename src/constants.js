@@ -10,8 +10,7 @@ export const UP = 'UP';
 export const DOWN = 'DOWN';
 export const LEFT = 'LEFT';
 export const RIGHT = 'RIGHT';
-export const NO_WAY = 'NO_WAY';
-export const DIRS = [NO_WAY, UP, DOWN, LEFT, RIGHT];
+export const DIRS = [null, UP, DOWN, LEFT, RIGHT];
 
 export const PLAYER = 'A';
 export const REMOTE_PLAYER = 'B';
