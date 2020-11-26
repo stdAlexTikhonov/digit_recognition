@@ -127,7 +127,6 @@ export class Predator {
         this.check_dir();
         
         if (this.dir === this.prev_dir) {
-            debugger;
             this.animation = this.no_way() ? false : true;
             switch (this.dir) {
                 case DOWN:
