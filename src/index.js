@@ -23,11 +23,10 @@ const main = document.createElement('div');
 document.body.style.display = 'flex';
 document.body.style.alignItems = 'center';
 document.body.style.justifyContent = 'center';
+document.body.style.background = 'black';
 main.style.margin = 'auto';
 main.style.fontFamily = 'Roboto';
 main.style.position = 'relative';
-main.style.width = '460px';
-main.style.height = '470px';
 main.id = 'main';
 // main.appendChild(show);
 document.body.appendChild(main);
@@ -101,15 +100,9 @@ export const stopGame = () => {
 
 const start_screen = document.createElement('div');
 start_screen.style.display = 'flex';
-start_screen.style.position = 'absolute';
-start_screen.style.top = 0;
-start_screen.style.left = 0;
-start_screen.style.width = '460px';
-start_screen.style.height = '470px';
 start_screen.style.flexDirection = 'column';
 start_screen.style.justifyContent = 'center';
 start_screen.style.alignItems = 'center';
-start_screen.style.backgroundColor = 'rgba(255,255,255,0.7)';
 
 
 
@@ -133,11 +126,7 @@ scores.style.fontSize = '15px';
 scores.style.margin = 'auto';
 
 
-const connect_to = start_btn.cloneNode(true);
-connect_to.innerHTML = 'CONNECT TO ...';
-
 start_screen.appendChild(start_btn);
-start_screen.appendChild(connect_to);
 main.appendChild(start_screen);
 
 start_btn.onclick = () => {
@@ -147,11 +136,6 @@ start_btn.onclick = () => {
 
 }
 
-connect_to.onclick = () => {
-    const ip = prompt("Enter ip adress");
-    const players_quantity = prompt("Enter players quantity");
-    startGame(ip, players_quantity);
-}
 
 
 

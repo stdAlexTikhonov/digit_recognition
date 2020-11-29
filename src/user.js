@@ -53,7 +53,7 @@ document.onkeydown = e => {
 
 document.onkeyup = e => {
     if (e.shiftKey === false) { frame = FRAME; }
-    THE_WORLD.player.force = false;
+    
 }
 let pointerX, pointerY;
 document.onpointerdown = e => {
@@ -62,7 +62,6 @@ document.onpointerdown = e => {
 };
 
 document.onpointerup = e => {
-    THE_WORLD.player.force = false;
     const diffLeft = e.offsetX - pointerX;
     const diffUp = e.offsetY - pointerY;
     const vertical = Math.abs(diffLeft) < Math.abs(diffUp);
