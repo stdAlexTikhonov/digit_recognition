@@ -3,7 +3,7 @@ import "./user";
 
 import { 
     WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
-    DIRS, PLAYER, ROCK, FOOD, BREAK,
+    DIRS, PLAYER, ROCK, FOOD, BREAK, EXIT,
     WALL, GROUND, EMPTY, SCISSORS, elements,
     GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, REMOTE_PLAYER, STOP
 } from "./constants";
@@ -245,6 +245,9 @@ export class World {
 
         this.player = new Player(pp.y,pp.x);
         this.player.token = generateUID();
+
+        const ext = this.rndomizer();
+        this.EXIT = { x: ext.x, y: ext.y, char: EXIT };
   
         if (ip) this.ws.onopen = () => this.ws.send(JSON.stringify({method: "SET_PLAYER_POSITION", token: this.player.token, player: this.player}));
 
@@ -354,6 +357,8 @@ export class World {
         this.WALLS.forEach(W => WORLD[W.y][W.x] = W);
 
         this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
+
+        WORLD[this.EXIT.y][this.EXIT.x] = this.EXIT;
         return WORLD;
     }
 
@@ -472,7 +477,9 @@ export class World {
                         // case REMOTE_PLAYER:
                         //     this.ctx_vp.drawImage(this.player.img, 0, BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                         //     break;
-
+                        case EXIT:
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*5, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
                     }
                
                                

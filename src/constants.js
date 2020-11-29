@@ -21,6 +21,7 @@ export const WALL = '#';
 export const GROUND = '.';
 export const EMPTY = ' ';
 export const SCISSORS = 'X';
+export const EXIT = 'E';
 
 export const elements = [WALL, GROUND, ROCK, BREAK, FOOD];
 
