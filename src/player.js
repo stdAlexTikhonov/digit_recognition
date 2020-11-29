@@ -145,6 +145,8 @@ export class Player {
                 break;
         }
 
+        this.force = false;
+
     }
 
 }
