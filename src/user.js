@@ -61,7 +61,8 @@ document.onpointerdown = e => {
     pointerY = e.offsetY;
 };
 
-document.onpointermove = e => {
+document.onpointerup = e => {
+    THE_WORLD.player.force = false;
     const diffLeft = e.offsetX - pointerX;
     const diffUp = e.offsetY - pointerY;
     const vertical = Math.abs(diffLeft) < Math.abs(diffUp);
