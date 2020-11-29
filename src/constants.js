@@ -1,8 +1,8 @@
 export const MAP_SIZE_CONSTANT = 1;
 export const WIDTH = 30 * MAP_SIZE_CONSTANT;
 export const HEIGHT = 18 * MAP_SIZE_CONSTANT;
-export const VIEWPORT_WIDTH = 10;
-export const VIEWPORT_HEIGHT = 18;
+export const VIEWPORT_WIDTH = 11;
+export const VIEWPORT_HEIGHT = 20;
 export const BLOCK_WIDTH = 32;
 export const STEPS = 6;
 
