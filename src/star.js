@@ -44,7 +44,6 @@ export class Star {
         if (world[this.y][this.x].char === PLAYER) { if (this.still_here) { 
             Star.scores += 1; 
             this.still_here = false;
-            if (Star.scores === STARS_QUANTITY) Player.off = true
          } }
         else if (this.check_way_down(world)) this.y += 1;
         else if (this.move_possible(world)) {

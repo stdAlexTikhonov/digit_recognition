@@ -1,7 +1,7 @@
 import { 
     ROCK, SCISSORS, EMPTY, LEFT, RIGHT,
     UP, DOWN, STOP, MOVE_LEFT, MOVE_RIGHT,
-    MOVE_UP, MOVE_DOWN, PLAYER 
+    MOVE_UP, MOVE_DOWN, PLAYER, EXIT
 } from "./constants"
 
 import sprite from './assets/merphy/sprite.png';
@@ -41,6 +41,22 @@ export class Player {
 
     check_force_move_right(world) {
         return world[this.y][this.x+1].char === ROCK && world[this.y][this.x+2].char === EMPTY && this.force;
+    }
+
+    check_exit_right(world) {
+        return world[this.y][this.x+1].char === EXIT && this.force;
+    }
+
+    check_exit_left(world) {
+        return world[this.y][this.x-1].char === EXIT && this.force;
+    }
+
+    check_exit_up(world) {
+        return world[this.y-1][this.x].char === EXIT && this.force;
+    }
+
+    check_exit_down(world) {
+        return world[this.y+1][this.x].char === EXIT && this.force;
     }
 
     changePic() {
@@ -111,6 +127,7 @@ export class Player {
                     this.y -= 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y});
                 }
+                else if (this.check_exit_up(world)) Player.off = true;
                 else this.merphy_state = STOP;
                 break;
             case DOWN:
@@ -121,7 +138,8 @@ export class Player {
                     this.y += 1;
                     this.merphy_state = MOVE_DOWN;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
-                } else this.merphy_state = STOP;
+                } else if (this.check_exit_down(world)) Player.off = true;
+                else this.merphy_state = STOP;
                 break;
             case LEFT:
                 if (this.check_predator({x: this.x - 1, y: this.y}, world)) Player.off = true;
@@ -132,6 +150,7 @@ export class Player {
                 } else if (this.check_force_move_left(world)) {
                     this.x -= 1; this.merphy_state = MOVE_LEFT;
                 }
+                else if (this.check_exit_left(world)) Player.off = true;
                 else this.merphy_state = STOP;
                 break;
             case RIGHT:
@@ -141,6 +160,7 @@ export class Player {
                     this.x += 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
                 } else if (this.check_force_move_right(world)) { this.x += 1; this.merphy_state = MOVE_RIGHT; }
+                else if (this.check_exit_right(world)) Player.off = true;
                 else this.merphy_state = STOP;
                 break;
         }
