@@ -13,7 +13,7 @@ import {
     BREAKS_QUANTITY, STEPS
 } from "./constants";
 
-const audio = new Audio(background_audio);
+export const audio = new Audio(background_audio);
 
 let frames = 0;
 const show = document.createElement('pre');

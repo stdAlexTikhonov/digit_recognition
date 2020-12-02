@@ -1,4 +1,4 @@
-import { draw } from "../../index";
+import { draw, audio } from "../../index";
 export const pause = document.createElement('i');
 pause.className = "material-icons waves-effect waves-light";
 pause.innerHTML = 'pause';
@@ -11,8 +11,10 @@ pause.onclick = _ => {
   if (window.pause) {
     window.pause = false;
     pause.innerHTML = 'pause';
+    audio.play();
     draw();
   } else {
+    audio.pause();
     window.pause = true;  
     pause.innerHTML = 'play_arrow';
     window.cancelAnimationFrame(window.myReq);
