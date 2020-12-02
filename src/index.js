@@ -15,9 +15,7 @@ import {
 export const audio = new Audio(background_audio);
 
 let frames = 0;
-const show = document.createElement('pre');
 window.prevStates = [];
-show.style.margin = 0;
 const main = document.createElement('div');
 document.body.style.display = 'flex';
 document.body.style.alignItems = 'center';
@@ -27,8 +25,9 @@ main.style.margin = 'auto';
 main.style.fontFamily = 'Roboto';
 main.style.position = 'relative';
 main.id = 'main';
-// main.appendChild(show);
 document.body.appendChild(main);
+
+
 window.pause = false;
 window.myReq = null;
 export let THE_WORLD;
@@ -37,9 +36,8 @@ const startGame = (ip, players_quantity) => {
     Player.off = false;
     Player.flag = true;
     Star.scores = 0;
-    show.innerText = THE_WORLD.print();
     prevStates.push(THE_WORLD.print());
-    main.style.display = 'none';
+    document.body.removeChild(main);
     window.pause = false;
     THE_WORLD.startTimer();
     draw();
@@ -49,12 +47,9 @@ let frame = 0;
 
 export const draw = () => {
     
- 
-        // console.log(frame);
     if (!window.pause) {
         if (frames % STEPS === 0 && THE_WORLD.start) THE_WORLD.tick(); 
             
-        // show.innerText = THE_WORLD.print();
         prevStates.push(THE_WORLD.print(frame))
         if (prevStates.length > 10) prevStates = prevStates.slice(1, prevStates.length)
         frame = frame < STEPS - 1 ? frame + 1 : 0;
@@ -86,15 +81,13 @@ export const stopGame = () => {
   
     window.cancelAnimationFrame(window.myReq);
     window.pause = true;
-    start_screen.style.display = 'flex';
 
     scores.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
     start_screen.appendChild(scores);
-    if (THE_WORLD.container.parentNode) { 
-        // document.body.removeChild(THE_WORLD.canvas);
+    THE_WORLD.container.parentNode &&
         document.body.removeChild(THE_WORLD.container);
-    }
-    main.style.display = 'block';
+    
+    document.body.appendChild(main);
 }
 
 const start_screen = document.createElement('div');
@@ -128,11 +121,9 @@ scores.style.margin = 'auto';
 
 start_screen.appendChild(start_btn);
 
-
 main.appendChild(start_screen);
 
 start_btn.onclick = () => {
-    start_screen.style.display = 'none';
     startGame();
     audio.play();
 
