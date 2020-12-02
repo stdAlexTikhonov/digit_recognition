@@ -4,8 +4,7 @@ import "./styles/styles.css"
 import background_audio from './assets/audio/back.mp3';
 import { World } from "./world";
 import { Player } from "./player"; 
-import { Star } from "./star"; 
-
+import { Star } from "./star";
 
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,

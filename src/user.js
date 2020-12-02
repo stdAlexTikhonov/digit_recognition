@@ -55,39 +55,42 @@ document.onkeyup = e => {
     if (e.shiftKey === false) { frame = FRAME; }
     
 }
-let pointerX, pointerY;
-document.onpointerdown = e => {
-    pointerX = e.offsetX;
-    pointerY = e.offsetY;
-};
 
-document.onpointerup = e => {
-    const diffLeft = e.offsetX - pointerX;
-    const diffUp = e.offsetY - pointerY;
-    const vertical = Math.abs(diffLeft) < Math.abs(diffUp);
+// document.addEventListener('DOMContentLoaded', function() {
+//     THE_WORLD.container.onpointerdown = e => {
+//         pointerX = e.offsetX;
+//         pointerY = e.offsetY;
+//     };
 
-
-    if (vertical) {
-        if (e.offsetY > pointerY) {
-            if (THE_WORLD.player.dir === DOWN) THE_WORLD.player.force = true;
-            else THE_WORLD.player.dir = DOWN;
-            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: DOWN, token: THE_WORLD.player.token, x: player.x, y: player.y }))
-        } else {
-            if (THE_WORLD.player.dir === UP) THE_WORLD.player.force = true;
-            else THE_WORLD.player.dir = UP;
-            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: UP, token: THE_WORLD.player.token, x: player.x, y: player.y }))
-        }
-    } else {
-        if (e.offsetX > pointerX) {
-            if (THE_WORLD.player.dir === RIGHT) THE_WORLD.player.force = true;
-            else THE_WORLD.player.dir = RIGHT;
-            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
-        } else {
-            if (THE_WORLD.player.dir === LEFT) THE_WORLD.player.force = true; 
-            else THE_WORLD.player.dir = LEFT;
-            THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
-        }
-    }
+//     THE_WORLD.container.onpointerup = e => {
+//         const diffLeft = e.offsetX - pointerX;
+//         const diffUp = e.offsetY - pointerY;
+//         const vertical = Math.abs(diffLeft) < Math.abs(diffUp);
 
 
-};
+//         if (vertical) {
+//             if (e.offsetY > pointerY) {
+//                 if (THE_WORLD.player.dir === DOWN) THE_WORLD.player.force = true;
+//                 else THE_WORLD.player.dir = DOWN;
+//                 THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: DOWN, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+//             } else {
+//                 if (THE_WORLD.player.dir === UP) THE_WORLD.player.force = true;
+//                 else THE_WORLD.player.dir = UP;
+//                 THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: UP, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+//             }
+//         } else {
+//             if (e.offsetX > pointerX) {
+//                 if (THE_WORLD.player.dir === RIGHT) THE_WORLD.player.force = true;
+//                 else THE_WORLD.player.dir = RIGHT;
+//                 THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+//             } else {
+//                 if (THE_WORLD.player.dir === LEFT) THE_WORLD.player.force = true; 
+//                 else THE_WORLD.player.dir = LEFT;
+//                 THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+//             }
+//         }
+
+
+//     };
+
+// });
