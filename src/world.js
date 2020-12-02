@@ -11,6 +11,7 @@ import { Player } from "./player";
 import { Star } from "./star";
 import { Rock } from "./rock";
 import { Predator } from "./predator"
+import { pause } from "./Components/Pause";
 
 import sprite from './assets/merphy/sprite.png';
 import sprite3 from './assets/merphy/sprite3.png';
@@ -50,6 +51,8 @@ export class World {
         // this.canvas.width = WIDTH * BLOCK_WIDTH;
         // this.canvas.height = HEIGHT * BLOCK_WIDTH;
         // this.ctx = this.canvas.getContext("2d");
+        this.container = document.createElement('div');
+        this.container.style.position = 'relative';
         this.viewport = document.createElement('canvas');
         this.viewport.id = 'viewport';
         this.viewport.width = VIEWPORT_WIDTH * BLOCK_WIDTH;
@@ -63,7 +66,9 @@ export class World {
         
         
         // document.body.appendChild(this.canvas);
-        document.body.appendChild(this.viewport);
+        this.container.appendChild(this.viewport);
+        this.container.appendChild(pause);
+        document.body.appendChild(this.container);
 
         // this.canvas.onmousedown = e1 => {
         //     this.mouse_pressed = true;
