@@ -48,7 +48,7 @@ const startGame = (ip, players_quantity) => {
 
 let frame = 0;
 
-const draw = () => {
+export const draw = () => {
     
  
         // console.log(frame);
@@ -76,8 +76,8 @@ window.onkeydown = (e) => {
         } else  { 
             window.pause = true;
             document.body.appendChild(THE_WORLD.edit_block);
+            window.cancelAnimationFrame(window.myReq);
         }
-
     }
 }
 
@@ -91,9 +91,9 @@ export const stopGame = () => {
 
     scores.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
     start_screen.appendChild(scores);
-    if (THE_WORLD.viewport.parentNode) { 
+    if (THE_WORLD.container.parentNode) { 
         // document.body.removeChild(THE_WORLD.canvas);
-        document.body.removeChild(THE_WORLD.viewport);
+        document.body.removeChild(THE_WORLD.container);
     }
     main.style.display = 'block';
 }
@@ -128,6 +128,8 @@ scores.style.margin = 'auto';
 
 
 start_screen.appendChild(start_btn);
+
+
 main.appendChild(start_screen);
 
 start_btn.onclick = () => {
