@@ -1,3 +1,5 @@
+import { GameScreen } from "../GameScreen";
+
 export const MainScreen = document.createElement('div');
 
 MainScreen.style.width = '100%';
@@ -11,6 +13,10 @@ const createButton = (title) => {
   link.style.margin = '20px';
   link.style.marginBottom = 0;
   link.innerText = title;
+  link.onclick = _ => {
+    document.body.removeChild(MainScreen);
+    document.body.appendChild(GameScreen);
+  }
   return link;
 };
 

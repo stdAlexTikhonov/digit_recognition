@@ -5,7 +5,8 @@ import background_audio from './assets/audio/back.mp3';
 import { World } from "./world";
 import { Player } from "./player"; 
 import { Star } from "./star";
-import { GameScreen } from "./Components/Screens/GameScreen"
+import { GameScreen } from "./Components/Screens/GameScreen";
+import { MainScreen } from "./Components/Screens/MainScreen";
 import { ScoresComponent } from "./Components/Scores";
 
 import {
@@ -19,7 +20,7 @@ export const audio = new Audio(background_audio);
 let frames = 0;
 window.prevStates = [];
 
-document.body.appendChild(GameScreen);
+document.body.appendChild(MainScreen);
 
 
 window.pause = false;
