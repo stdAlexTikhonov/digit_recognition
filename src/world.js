@@ -13,8 +13,8 @@ import { Rock } from "./rock";
 import { Predator } from "./predator"
 
 import sprite from './assets/merphy/sprite.png';
-import sprite2 from './assets/merphy/sprite2.png';
 import sprite3 from './assets/merphy/sprite3.png';
+import sprite2x from './assets/merphy/sprite2x.png';
 
 let seed = SEED;
 
@@ -40,7 +40,7 @@ export class World {
         this.minutes = 0;
         this.seconds = 0;
         this.img = new Image();
-        this.img.src = sprite2;
+        this.img.src = sprite2x;
         this.timer = null;
         this.pause = false;
         this.start = !ip;
@@ -156,7 +156,7 @@ export class World {
         edit_block.style.alignItems = 'center';
 
         for (let i = 0; i < 5; i++) {
-            const div = createDiv(sprite2, i)
+            const div = createDiv(sprite2x, i)
             div.className = 'btn';
             div.onmousedown = e =>  { 
                 resetBtns();
@@ -434,10 +434,10 @@ export class World {
                             this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case GROUND:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case WALL:
-                            this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case BREAK:
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
