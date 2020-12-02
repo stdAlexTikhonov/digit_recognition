@@ -121,6 +121,7 @@ start_btn.style.padding = '15px';
 start_btn.style.margin = '5px';
 
 const scores = document.createElement('div');
+scores.style.color = 'white';
 scores.style.fontFamily = 'Tahoma';
 scores.style.fontSize = '15px';
 scores.style.margin = 'auto';
