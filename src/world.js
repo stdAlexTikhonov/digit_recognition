@@ -85,23 +85,23 @@ export class World {
 
             if (vertical) {
                 if (e.offsetY > pointerY) {
-                    if (THE_WORLD.player.dir === DOWN) THE_WORLD.player.force = true;
-                    else THE_WORLD.player.dir = DOWN;
-                    THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: DOWN, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+                    if (this.player.dir === DOWN) this.player.force = true;
+                    else this.player.dir = DOWN;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: DOWN, token: this.player.token, x: player.x, y: player.y }))
                 } else {
-                    if (THE_WORLD.player.dir === UP) THE_WORLD.player.force = true;
-                    else THE_WORLD.player.dir = UP;
-                    THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: UP, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+                    if (this.player.dir === UP) this.player.force = true;
+                    else this.player.dir = UP;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: UP, token: this.player.token, x: player.x, y: player.y }))
                 }
             } else {
                 if (e.offsetX > pointerX) {
-                    if (THE_WORLD.player.dir === RIGHT) THE_WORLD.player.force = true;
-                    else THE_WORLD.player.dir = RIGHT;
-                    THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+                    if (this.player.dir === RIGHT) this.player.force = true;
+                    else this.player.dir = RIGHT;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: this.player.token, x: player.x, y: player.y }))
                 } else {
-                    if (THE_WORLD.player.dir === LEFT) THE_WORLD.player.force = true; 
-                    else THE_WORLD.player.dir = LEFT;
-                    THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: THE_WORLD.player.token, x: player.x, y: player.y }))
+                    if (this.player.dir === LEFT) this.player.force = true; 
+                    else this.player.dir = LEFT;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: this.player.token, x: player.x, y: player.y }))
                 }
             }
 
