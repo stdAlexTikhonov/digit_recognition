@@ -1,5 +1,6 @@
 import { audio, startGame } from "../../../index";
 import { ScoresComponent } from "../../Scores";
+import { MainScreen } from "../MainScreen";
 import { BackButton } from "../../BackButton";
 
 export const GameScreen = document.createElement('div');
@@ -28,7 +29,7 @@ start_btn.style.margin = '5px';
 
 
 GameScreen.appendChild(start_btn);
-GameScreen.appendChild(BackButton);
+GameScreen.appendChild(BackButton());
 GameScreen.appendChild(ScoresComponent);
 
 start_btn.onclick = () => {

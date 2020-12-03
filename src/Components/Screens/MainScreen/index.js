@@ -1,4 +1,5 @@
 import { GameScreen } from "../GameScreen";
+import { Settings } from "../Settings";
 
 export const MainScreen = document.createElement('div');
 
@@ -15,7 +16,8 @@ const createButton = (title) => {
   link.innerText = title;
   link.onclick = _ => {
     document.body.removeChild(MainScreen);
-    document.body.appendChild(GameScreen);
+    title === 'levels' && document.body.appendChild(GameScreen);
+    title === 'settings' && document.body.appendChild(Settings);
   }
   return link;
 };

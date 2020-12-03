@@ -1,15 +1,17 @@
-import { GameScreen } from "../Screens/GameScreen";
 import { MainScreen } from "../Screens/MainScreen";
 
-export const BackButton = document.createElement('i');
-BackButton.className = "material-icons waves-effect waves-light";
-BackButton.innerHTML = 'navigate_before';
-BackButton.style.position = 'absolute';
-BackButton.style.color = 'white';
-BackButton.style.left = 10;
-BackButton.style.top = 10;
+export const BackButton = () => {
+  const btn = document.createElement('i');
+  btn.className = "material-icons waves-effect waves-light";
+  btn.innerHTML = 'navigate_before';
+  btn.style.position = 'absolute';
+  btn.style.color = 'white';
+  btn.style.left = 10;
+  btn.style.top = 10;
 
-BackButton.onclick = _ => {
-  document.body.removeChild(GameScreen);
-  document.body.appendChild(MainScreen);
+  btn.onclick = _ => {
+    document.body.innerHTML = "";
+    document.body.appendChild(MainScreen);
+  }
+  return btn;
 }
