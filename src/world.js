@@ -70,6 +70,44 @@ export class World {
         this.container.appendChild(pause);
         document.body.appendChild(this.container);
 
+        let pointerX, pointerY;
+
+        this.container.onpointerdown = e => {
+            pointerX = e.offsetX;
+            pointerY = e.offsetY;
+        };
+
+        this.container.onpointerup = e => {
+            const diffLeft = e.offsetX - pointerX;
+            const diffUp = e.offsetY - pointerY;
+            const vertical = Math.abs(diffLeft) < Math.abs(diffUp);
+
+
+            if (vertical) {
+                if (e.offsetY > pointerY) {
+                    if (this.player.dir === DOWN) this.player.force = true;
+                    else this.player.dir = DOWN;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: DOWN, token: this.player.token, x: player.x, y: player.y }))
+                } else {
+                    if (this.player.dir === UP) this.player.force = true;
+                    else this.player.dir = UP;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: UP, token: this.player.token, x: player.x, y: player.y }))
+                }
+            } else {
+                if (e.offsetX > pointerX) {
+                    if (this.player.dir === RIGHT) this.player.force = true;
+                    else this.player.dir = RIGHT;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: RIGHT, token: this.player.token, x: player.x, y: player.y }))
+                } else {
+                    if (this.player.dir === LEFT) this.player.force = true; 
+                    else this.player.dir = LEFT;
+                    this.world.ws && this.world.ws.send(JSON.stringify({ method: "CD", dir: LEFT, token: this.player.token, x: player.x, y: player.y }))
+                }
+            }
+
+
+        };
+
         // this.canvas.onmousedown = e1 => {
         //     this.mouse_pressed = true;
         // }
