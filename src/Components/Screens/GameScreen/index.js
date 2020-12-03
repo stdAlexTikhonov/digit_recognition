@@ -29,7 +29,7 @@ start_btn.style.margin = '5px';
 
 
 GameScreen.appendChild(start_btn);
-GameScreen.appendChild(BackButton());
+GameScreen.appendChild(BackButton('levels'));
 GameScreen.appendChild(ScoresComponent);
 
 start_btn.onclick = () => {

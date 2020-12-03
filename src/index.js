@@ -7,6 +7,7 @@ import { Player } from "./player";
 import { Star } from "./star";
 import { GameScreen } from "./Components/Screens/GameScreen";
 import { MainScreen } from "./Components/Screens/MainScreen";
+import { LevelsScreen } from "./Components/Screens/Levels";
 import { ScoresComponent } from "./Components/Scores";
 
 import {
