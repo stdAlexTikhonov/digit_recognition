@@ -1,6 +1,6 @@
 import { audio, startGame } from "../../../index";
 import { ScoresComponent } from "../../Scores";
-import { MainScreen } from "../MainScreen";
+import { checkbox } from "../Settings";
 import { BackButton } from "../../BackButton";
 
 export const GameScreen = document.createElement('div');

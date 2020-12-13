@@ -25,13 +25,26 @@ start_btn.style.alignItems = "center";
 
 const elem = document.createElement('div');
 elem.className = "switch";
-elem.innerHTML = ` 
-    <label>
-      Off
-      <input type="checkbox">
-      <span class="lever"></span>
-      On
-    </label>`;
+
+const label = document.createElement('label');
+
+const text1 = document.createTextNode("Off");
+export const checkbox = document.createElement('input');
+checkbox.type = 'checkbox';
+checkbox.onclick = (e) => {
+  if (e.target.checked) audio.play();
+  else audio.pause();
+}
+
+const lever = document.createElement('span');
+lever.className = 'lever';
+const text2 = document.createTextNode("On");
+
+label.appendChild(text1);
+label.appendChild(checkbox);
+label.appendChild(lever);
+label.appendChild(text2);
+elem.appendChild(label);
 
 start_btn.appendChild(elem);
 
