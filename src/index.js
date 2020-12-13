@@ -9,6 +9,8 @@ import { GameScreen } from "./Components/Screens/GameScreen";
 import { MainScreen } from "./Components/Screens/MainScreen";
 import { LevelsScreen } from "./Components/Screens/Levels";
 import { ScoresComponent } from "./Components/Scores";
+import { createStore } from "./store";
+import { appReducer } from "./reducers";
 
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,
@@ -17,6 +19,13 @@ import {
 } from "./constants";
 
 export const audio = new Audio(background_audio);
+export const store = createStore(appReducer);
+
+store.dispatch({ type: 'Init' });
+
+store.subscribe(() => {
+    console.log(store.getState());
+})
 
 let frames = 0;
 window.prevStates = [];
