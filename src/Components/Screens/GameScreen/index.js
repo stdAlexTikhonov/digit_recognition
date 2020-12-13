@@ -1,4 +1,4 @@
-import { audio, startGame } from "../../../index";
+import { audio, startGame, store } from "../../../index";
 import { ScoresComponent } from "../../Scores";
 import { checkbox } from "../Settings";
 import { BackButton } from "../../BackButton";
@@ -33,6 +33,7 @@ GameScreen.appendChild(BackButton('levels'));
 GameScreen.appendChild(ScoresComponent);
 
 start_btn.onclick = () => {
+    const { settings } = store.getState();
     startGame();
-    audio.play();
+    settings.music && audio.play();
 }
