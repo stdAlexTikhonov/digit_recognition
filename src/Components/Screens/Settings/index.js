@@ -1,4 +1,5 @@
-import { audio } from "../../../index";
+import { audio, store } from "../../../index";
+import { MUSIC_ON, MUSIC_OFF } from "../../../actions/settingsActions";
 import { BackButton } from "../../BackButton";
 
 export const Settings = document.createElement('div');
@@ -31,9 +32,10 @@ const label = document.createElement('label');
 const text1 = document.createTextNode("Off");
 export const checkbox = document.createElement('input');
 checkbox.type = 'checkbox';
+checkbox.checked = true;
 checkbox.onclick = (e) => {
-  if (e.target.checked) audio.play();
-  else audio.pause();
+  if (e.target.checked) store.dispatch({ type: MUSIC_ON });
+  else store.dispatch({ type: MUSIC_OFF});
 }
 
 const lever = document.createElement('span');
