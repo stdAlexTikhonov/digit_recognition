@@ -24,7 +24,11 @@ export const store = createStore(appReducer);
 store.dispatch({ type: 'Init' });
 
 store.subscribe(() => {
-    console.log(store.getState());
+    const { settings } = store.getState();
+
+    if (settings.music) audio.play();
+    else if (!settings.music) audio.pause();
+
 })
 
 let frames = 0;
