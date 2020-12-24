@@ -1,2 +1,1 @@
-export const MUSIC_ON = "MUSIC_ON";
-export const MUSIC_OFF = "MUSIC_OFF";
+export const TOGGLE_MUSIC = "TOGGLE_MUSIC";

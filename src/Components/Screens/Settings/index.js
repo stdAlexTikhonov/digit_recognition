@@ -36,8 +36,7 @@ settings.forEach((setting) => {
   checkbox.type = 'checkbox';
   checkbox.checked = setting.initial;
   checkbox.onclick = (e) => {
-    if (e.target.checked) store.dispatch({ type: setting.action_on });
-    else store.dispatch({ type: setting.action_off});
+    store.dispatch({ type: setting.action });
   }
 
   const lever = document.createElement('span');

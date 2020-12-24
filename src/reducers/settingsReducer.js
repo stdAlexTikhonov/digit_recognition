@@ -1,4 +1,4 @@
-import { MUSIC_ON, MUSIC_OFF } from "../actions/settingsActions";
+import { TOGGLE_MUSIC } from "../actions/settingsActions";
 
 const init = {
   music: true
@@ -6,16 +6,12 @@ const init = {
 
 export const settingsReducer = (state = init, action) => {
     switch (action.type) {
-      case MUSIC_ON: 
-          return {
-              ...state,
-              music: true
-          }
-      case MUSIC_OFF:
-          return {
-              ...state,
-              music: false
-          }
+        case TOGGLE_MUSIC: {
+            return {
+                ...state,
+                music: !state.music
+            }
+        }
         default:
             return state;
     }
