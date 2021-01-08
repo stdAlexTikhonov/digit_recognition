@@ -1,7 +1,8 @@
-import { TOGGLE_MUSIC } from "../actions/settingsActions";
+import { TOGGLE_MUSIC, TOGGLE_ORIENTATION } from "../actions/settingsActions";
 
 const init = {
-  music: true
+    music: true,
+    orientation: true,
 };
 
 export const settingsReducer = (state = init, action) => {
@@ -10,6 +11,12 @@ export const settingsReducer = (state = init, action) => {
             return {
                 ...state,
                 music: !state.music
+            }
+        }
+        case TOGGLE_ORIENTATION: {
+            return {
+                ...state,
+                orientation: !state.orientation
             }
         }
         default:

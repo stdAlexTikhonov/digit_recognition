@@ -21,7 +21,6 @@ import {
 export const audio = new Audio(background_audio);
 export const store = createStore(appReducer);
 
-store.dispatch({ type: 'Init' });
 
 store.subscribe(() => {
     const { settings } = store.getState();
@@ -29,7 +28,9 @@ store.subscribe(() => {
     if (settings.music) audio.play();
     else if (!settings.music) audio.pause();
 
-})
+});
+
+store.dispatch({ type: 'Init' });
 
 let frames = 0;
 window.prevStates = [];

@@ -15,7 +15,7 @@ Settings.style.overflow = 'auto';
 
 settings.forEach((setting) => {
   const setting_block = document.createElement('div');
-  setting_block.innerText = 'MUSIC: ';
+  setting_block.innerText = `${setting.name}: `;
   setting_block.style.fontSize = '25px';
   setting_block.style.fontWeight = 'bold';
   setting_block.style.color = 'white';
