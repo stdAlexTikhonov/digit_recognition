@@ -102,9 +102,6 @@ export class Predator {
         }
     }
 
-    no_way() {
-        return (+this.dir_up + +this.dir_down + +this.dir_left + +this.dir_right) <= 1
-    }
 
     changeState(world) {
         this.state = this.state < 7 ? this.state + 1 : 0;
@@ -112,7 +109,6 @@ export class Predator {
         if (this.find_death(world))
             this.still_alive = false;
         
-        // this.animation = !this.no_way();
 
         if (this.find_player(world)) {
             this.still_alive = false;
@@ -124,19 +120,27 @@ export class Predator {
         this.check_dir();
         
         if (this.dir === this.prev_dir) {
-            this.animation = this.no_way() ? false : true;
+            
             switch (this.dir) {
                 case DOWN:
-                    if (world[this.y+1][this.x].char === EMPTY) this.y += 1;
+                    if (world[this.y + 1][this.x].char === EMPTY) {
+                        this.animation = true; this.y += 1;
+                    }
                     break;
                 case RIGHT:
-                    if (world[this.y][this.x+1].char === EMPTY) this.x += 1;
+                    if (world[this.y][this.x + 1].char === EMPTY) {
+                        this.animation = true; this.x += 1;
+                    }
                     break;
                 case UP:
-                    if (world[this.y-1][this.x].char === EMPTY) this.y -= 1;
+                    if (world[this.y - 1][this.x].char === EMPTY) {
+                        this.animation = true; this.y -= 1;
+                    }
                     break;
                 case LEFT:
-                    if (world[this.y][this.x-1].char === EMPTY) this.x -= 1;
+                    if (world[this.y][this.x - 1].char === EMPTY) {
+                        this.animation = true; this.x -= 1;
+                    }
                     break;
             }
         }
