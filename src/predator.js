@@ -23,6 +23,7 @@ export class Predator {
         this.char = SCISSORS;
         this.prev_dir = null;
         this.animation = true;
+
     }
 
 
@@ -68,46 +69,39 @@ export class Predator {
         switch (this.dir) {
             case DOWN:
                 if (this.dir === this.prev_dir) {
-                    if (this.dir_left) this.dir = LEFT;
+                    if (this.dir_right) this.dir = RIGHT;
                     else if (this.dir_down) this.dir = DOWN;
-                    else if (this.dir_right) this.dir = RIGHT;
-                    else this.dir = UP;
+                    else this.dir = LEFT;
                 }
                 this.prev_dir = DOWN;
                 break;
             case RIGHT:
                 if (this.dir === this.prev_dir) {
-                    if (this.dir_down) this.dir = DOWN;
+                    if (this.dir_up) this.dir = UP;
                     else if (this.dir_right) this.dir = RIGHT;
-                    else if (this.dir_up) this.dir = UP;
-                    else this.dir = LEFT;
+                    else this.dir = DOWN;
                 } 
                 this.prev_dir = RIGHT;
                 break;
             case UP:
                 if (this.dir === this.prev_dir) {
-                    if (this.dir_right) this.dir = RIGHT;
+                    if (this.dir_left) this.dir = LEFT;
                     else if (this.dir_up) this.dir = UP;
-                    else if (this.dir_left) this.dir = LEFT;
-                    else this.dir = DOWN;
+                    else this.dir = RIGHT;
                 }
                 this.prev_dir = UP;
                 break;
             case LEFT:
                 if (this.dir === this.prev_dir) {
-                    if (this.dir_up) this.dir = UP;
-                    else if (this.dir_left) this.dir = LEFT;
-                    else if (this.dir_down) this.dir = DOWN;
-                    else this.dir = RIGHT;
+                    if (this.dir_down) this.dir = DOWN;
+                    else if (this.dir_left) this.dir = LEFT
+                    else this.dir = UP;
                 }
                 this.prev_dir = LEFT;
                 break;
         }
     }
 
-    no_way() {
-        return !this.dir_up && !this.dir_down && !this.dir_left && !this.dir_right
-    }
 
     changeState(world) {
         this.state = this.state < 7 ? this.state + 1 : 0;
@@ -115,7 +109,6 @@ export class Predator {
         if (this.find_death(world))
             this.still_alive = false;
         
-        // this.animation = !this.no_way();
 
         if (this.find_player(world)) {
             this.still_alive = false;
@@ -127,19 +120,27 @@ export class Predator {
         this.check_dir();
         
         if (this.dir === this.prev_dir) {
-            this.animation = this.no_way() ? false : true;
+            
             switch (this.dir) {
                 case DOWN:
-                    if (world[this.y+1][this.x].char === EMPTY) this.y += 1;
+                    if (world[this.y + 1][this.x].char === EMPTY) {
+                        this.animation = true; this.y += 1;
+                    }
                     break;
                 case RIGHT:
-                    if (world[this.y][this.x+1].char === EMPTY) this.x += 1;
+                    if (world[this.y][this.x + 1].char === EMPTY) {
+                        this.animation = true; this.x += 1;
+                    }
                     break;
                 case UP:
-                    if (world[this.y-1][this.x].char === EMPTY) this.y -= 1;
+                    if (world[this.y - 1][this.x].char === EMPTY) {
+                        this.animation = true; this.y -= 1;
+                    }
                     break;
                 case LEFT:
-                    if (world[this.y][this.x-1].char === EMPTY) this.x -= 1;
+                    if (world[this.y][this.x - 1].char === EMPTY) {
+                        this.animation = true; this.x -= 1;
+                    }
                     break;
             }
         }
