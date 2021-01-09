@@ -1,5 +1,7 @@
 import { PLAYER, SCISSORS, EMPTY, STARS_QUANTITY, FOOD } from "./constants";
 import { Player } from "./player";
+import { PLUS_ONE } from "./actions/scoreActions";
+import { store } from "./index";
 
 export class Star {
     constructor(y,x) {
@@ -42,7 +44,8 @@ export class Star {
         this.right = false;
         this.left = false;
         if (world[this.y][this.x].char === PLAYER) { if (this.still_here) { 
-            Star.scores += 1; 
+            Star.scores += 1;
+            store.dispatch({ type: PLUS_ONE });
             this.still_here = false;
          } }
         else if (this.check_way_down(world)) this.y += 1;

@@ -12,6 +12,7 @@ import { ScoresComponent } from "./Components/Scores";
 import { createStore } from "./store";
 import { appReducer } from "./reducers";
 import { TOGGLE_ORIENTATION } from "./actions/settingsActions";
+import { RESET_SCORE } from "./actions/scoreActions";
 
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,
@@ -31,7 +32,8 @@ store.subscribe(() => {
 
 });
 
-store.dispatch({ type: 'Init' });
+// store.dispatch({ type: 'Init' });
+store.dispatch({ type: RESET_SCORE });
 
 let frames = 0;
 window.prevStates = [];
@@ -43,6 +45,7 @@ window.pause = false;
 window.myReq = null;
 export let THE_WORLD;
 export const startGame = (ip, players_quantity) => {
+    store.dispatch({ type: RESET_SCORE });
     THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY, ip, players_quantity);
     Player.off = false;
     Player.flag = true;
