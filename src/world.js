@@ -1,4 +1,4 @@
-import { stopGame } from "./index"
+import { stopGame, store } from "./index"
 import "./user";
 
 import { 
@@ -19,6 +19,7 @@ import sprite2x from './assets/merphy/sprite2x.png';
 
 let seed = SEED;
 
+
 function random() {
     let x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
@@ -35,6 +36,9 @@ export const generateUID = () => {
 export class World {
 
     constructor(height, width, predators_q, rocks, stars, breaks, ip, players_quantity) {
+
+        const { settings } = store.getState();
+
         this.rand_positions = [];
         this.height = height;
         this.width = width;
@@ -55,8 +59,8 @@ export class World {
         this.container.style.position = 'relative';
         this.viewport = document.createElement('canvas');
         this.viewport.id = 'viewport';
-        this.viewport.width = VIEWPORT_WIDTH * BLOCK_WIDTH;
-        this.viewport.height = VIEWPORT_HEIGHT * BLOCK_WIDTH;
+        this.viewport.width = settings.orientation ? VIEWPORT_WIDTH * BLOCK_WIDTH : VIEWPORT_HEIGHT * BLOCK_WIDTH;
+        this.viewport.height = settings.orientation ? VIEWPORT_HEIGHT * BLOCK_WIDTH : VIEWPORT_WIDTH * BLOCK_WIDTH;
         this.ctx_vp = this.viewport.getContext("2d");
         this.selected_values = [];
         this.mouse_pressed = false;
@@ -428,11 +432,12 @@ export class World {
         //viewport
         this.ctx_vp.fillStyle = 'black';
         this.ctx_vp.fillRect(0, 0, this.viewport.width, this.viewport.height);
+        const { settings } = store.getState();
 
-        const viewport_start_x = this.player.x - Math.floor(VIEWPORT_WIDTH/2);
-        const viewport_start_y = this.player.y - Math.floor(VIEWPORT_HEIGHT/2);
-        const viewport_end_x = viewport_start_x + VIEWPORT_WIDTH;
-        const viewport_end_y = viewport_start_y + VIEWPORT_HEIGHT;
+        const viewport_start_x = this.player.x - Math.floor(settings.orientation ? VIEWPORT_WIDTH/2 : VIEWPORT_HEIGHT/2);
+        const viewport_start_y = this.player.y - Math.floor(settings.orientation ? VIEWPORT_HEIGHT/2 : VIEWPORT_WIDTH/2);
+        const viewport_end_x = viewport_start_x + (settings.orientation ? VIEWPORT_WIDTH : VIEWPORT_HEIGHT);
+        const viewport_end_y = viewport_start_y + (settings.orientation ? VIEWPORT_HEIGHT : VIEWPORT_WIDTH);
 
         this.world.forEach((row,i) => {
             const draw_view_y_flag = i >= viewport_start_y - 1 && i <= viewport_end_y;
