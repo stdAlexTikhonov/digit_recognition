@@ -84,10 +84,3 @@ export const stopGame = () => {
     
     document.body.appendChild(GameScreen);
 }
-
-
-
-
-
-
-
