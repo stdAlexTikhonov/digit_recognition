@@ -10,6 +10,7 @@ export const LevelsScreen = () => {
   container.style.flexDirection = 'column';
 
   const levels = document.createElement('div');
+  levels.style.height = '450px';
   levels.className = "carousel";
 
   const handleClick = () => {
