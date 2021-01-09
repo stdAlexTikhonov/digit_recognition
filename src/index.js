@@ -11,6 +11,7 @@ import { LevelsScreen } from "./Components/Screens/Levels";
 import { ScoresComponent } from "./Components/Scores";
 import { createStore } from "./store";
 import { appReducer } from "./reducers";
+import { TOGGLE_ORIENTATION } from "./actions/settingsActions";
 
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,
@@ -84,3 +85,10 @@ export const stopGame = () => {
     
     document.body.appendChild(GameScreen);
 }
+
+window.addEventListener('orientationchange', function(){
+/* update layout per new orientation */
+    store.dispatch({ type: TOGGLE_ORIENTATION });
+    THE_WORLD.container.removeChild(THE_WORLD.viewport);
+    THE_WORLD.appendCanvas();
+});

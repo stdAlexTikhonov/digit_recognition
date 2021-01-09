@@ -2,6 +2,12 @@ import { audio, store } from "../../../index";
 import { BackButton } from "../../BackButton";
 import { settings } from "./settings";
 
+const isMobile = // will be true if running on a mobile device
+  navigator.userAgent.indexOf("Mobile") !== -1 ||
+  navigator.userAgent.indexOf("iPhone") !== -1 ||
+  navigator.userAgent.indexOf("Android") !== -1 ||
+  navigator.userAgent.indexOf("Windows Phone") !== -1;
+
 export const Settings = document.createElement('div');
 Settings.style.display = 'flex';
 Settings.style.flexDirection = 'column';
@@ -13,7 +19,9 @@ Settings.style.height = "100vh";
 Settings.style.paddingTop = '50px';
 Settings.style.overflow = 'auto';
 
-settings.forEach((setting) => {
+const filtered = isMobile ? settings.filter(item => item.mobile) : settings;
+
+filtered.forEach((setting) => {
   const setting_block = document.createElement('div');
   setting_block.innerText = `${setting.name}: `;
   setting_block.style.fontSize = '25px';

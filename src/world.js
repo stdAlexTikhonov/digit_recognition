@@ -37,8 +37,6 @@ export class World {
 
     constructor(height, width, predators_q, rocks, stars, breaks, ip, players_quantity) {
 
-        const { settings } = store.getState();
-
         this.rand_positions = [];
         this.height = height;
         this.width = width;
@@ -57,11 +55,7 @@ export class World {
         // this.ctx = this.canvas.getContext("2d");
         this.container = document.createElement('div');
         this.container.style.position = 'relative';
-        this.viewport = document.createElement('canvas');
-        this.viewport.id = 'viewport';
-        this.viewport.width = settings.orientation ? VIEWPORT_WIDTH * BLOCK_WIDTH : VIEWPORT_HEIGHT * BLOCK_WIDTH;
-        this.viewport.height = settings.orientation ? VIEWPORT_HEIGHT * BLOCK_WIDTH : VIEWPORT_WIDTH * BLOCK_WIDTH;
-        this.ctx_vp = this.viewport.getContext("2d");
+        this.appendCanvas();
         this.selected_values = [];
         this.mouse_pressed = false;
         this.selected_value = EMPTY;
@@ -70,7 +64,7 @@ export class World {
         
         
         // document.body.appendChild(this.canvas);
-        this.container.appendChild(this.viewport);
+        
         this.container.appendChild(pause);
         document.body.appendChild(this.container);
 
@@ -345,6 +339,18 @@ export class World {
             
         }
 
+    }
+
+    appendCanvas() {
+        const { settings } = store.getState();
+
+        this.viewport = document.createElement('canvas');
+        this.viewport.id = 'viewport';
+        this.viewport.width = settings.orientation ? VIEWPORT_WIDTH * BLOCK_WIDTH : VIEWPORT_HEIGHT * BLOCK_WIDTH;
+        this.viewport.height = settings.orientation ? VIEWPORT_HEIGHT * BLOCK_WIDTH : VIEWPORT_WIDTH * BLOCK_WIDTH;
+        this.ctx_vp = this.viewport.getContext("2d");
+
+        this.container.appendChild(this.viewport);
     }
 
 
