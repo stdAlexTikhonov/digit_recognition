@@ -49,7 +49,7 @@ export const startGame = (ip, players_quantity) => {
     THE_WORLD = new World(HEIGHT, WIDTH, PREDATOR_QUANTITY, ROCKS_QUANTITY, STARS_QUANTITY, BREAKS_QUANTITY, ip, players_quantity);
     Player.off = false;
     Player.flag = true;
-    Star.scores = 0;
+    store.dispatch({ type: RESET_SCORE });
     prevStates.push(THE_WORLD.print());
     document.body.removeChild(GameScreen);
     window.pause = false;
@@ -75,13 +75,14 @@ export const draw = () => {
 }
 
 export const stopGame = () => {
+    const { score } = store.getState();
     THE_WORLD.stopTimer(); 
     THE_WORLD.ws && THE_WORLD.ws.send(JSON.stringify({ method: "CLOSE", token: THE_WORLD.player.token}));
   
     window.cancelAnimationFrame(window.myReq);
     window.pause = true;
 
-    ScoresComponent.innerHTML = 'Your score: ' + Star.scores + '<br>' + 'Your time: ' + THE_WORLD.getTime();
+    ScoresComponent.innerHTML = 'Your score: ' + score + '<br>' + 'Your time: ' + THE_WORLD.getTime();
 
     THE_WORLD.container.parentNode &&
         document.body.removeChild(THE_WORLD.container);

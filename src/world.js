@@ -542,7 +542,7 @@ export class World {
             })
         })
 
-        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Time: ' + this.getTime();
+        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + store.getState().score + '  Time: ' + this.getTime();
     }
 
     check_predators() {

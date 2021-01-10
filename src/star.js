@@ -44,7 +44,6 @@ export class Star {
         this.right = false;
         this.left = false;
         if (world[this.y][this.x].char === PLAYER) { if (this.still_here) { 
-            Star.scores += 1;
             store.dispatch({ type: PLUS_ONE });
             this.still_here = false;
          } }
@@ -58,5 +57,3 @@ export class Star {
 
     }
 }
-
-Star.scores = 0;
