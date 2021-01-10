@@ -12,6 +12,7 @@ import { Star } from "./star";
 import { Rock } from "./rock";
 import { Predator } from "./predator"
 import { pause } from "./Components/Pause";
+import { Scores } from "./Components/Scores";
 
 import sprite from './assets/merphy/sprite.png';
 import sprite3 from './assets/merphy/sprite3.png';
@@ -61,10 +62,11 @@ export class World {
         this.selected_value = EMPTY;
         this.ws = ip && new WebSocket(`ws://${ip}:3000`);
         
-        
-        
+
+    
         // document.body.appendChild(this.canvas);
         
+        this.container.appendChild(Scores);
         this.container.appendChild(pause);
         document.body.appendChild(this.container);
 
@@ -542,7 +544,7 @@ export class World {
             })
         })
 
-        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + Star.scores + '  Time: ' + this.getTime();
+        return this.world.map(row => row.join(EMPTY)).join('\n') + '\nscores: ' + store.getState().score + '  Time: ' + this.getTime();
     }
 
     check_predators() {
