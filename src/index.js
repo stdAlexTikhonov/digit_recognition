@@ -4,7 +4,6 @@ import "./styles/styles.css"
 import background_audio from './assets/audio/back.mp3';
 import { World } from "./world";
 import { Player } from "./player"; 
-import { Star } from "./star";
 import { GameScreen } from "./Components/Screens/GameScreen";
 import { MainScreen } from "./Components/Screens/MainScreen";
 import { LevelsScreen } from "./Components/Screens/Levels";
@@ -13,6 +12,7 @@ import { createStore } from "./store";
 import { appReducer } from "./reducers";
 import { TOGGLE_ORIENTATION } from "./actions/settingsActions";
 import { RESET_SCORE } from "./actions/scoreActions";
+import { Scores } from "./Components/Scores";
 
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,
@@ -25,10 +25,12 @@ export const store = createStore(appReducer);
 
 
 store.subscribe(() => {
-    const { settings } = store.getState();
+    const { settings, score } = store.getState();
 
     if (settings.music) audio.play();
     else if (!settings.music) audio.pause();
+
+    Scores.innerText = score;
 
 });
 
