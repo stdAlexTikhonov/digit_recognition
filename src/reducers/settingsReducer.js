@@ -1,7 +1,7 @@
 import { TOGGLE_MUSIC, TOGGLE_ORIENTATION } from "../actions/settingsActions";
 
 const init = {
-    music: true,
+    music: false,
     orientation: true,
 };
 
