@@ -22,8 +22,7 @@ export class Player {
         this.merphy_state = STOP;
         this.dy = 0;
         this.char = PLAYER
-        
-
+        this.prev_horizontal_state = MOVE_LEFT;
         
     }
 
@@ -73,6 +72,12 @@ export class Player {
                 break;
             case MOVE_RIGHT:
                 this.dy = 2;
+                break;
+            case MOVE_UP:
+                this.dy = this.prev_horizontal_state === MOVE_LEFT ? 0 : 2;
+                break;
+            case MOVE_DOWN:
+                this.dy = this.prev_horizontal_state === MOVE_LEFT ? 0 : 2;
                 break;
             default:
                 this.dy = 0;
@@ -152,6 +157,7 @@ export class Player {
                 }
                 else if (this.check_exit_left(world)) Player.off = true;
                 else this.merphy_state = STOP;
+                this.prev_horizontal_state = MOVE_LEFT;
                 break;
             case RIGHT:
                 if (this.check_predator({x: this.x + 1, y: this.y}, world)) Player.off = true;
@@ -162,6 +168,7 @@ export class Player {
                 } else if (this.check_force_move_right(world)) { this.x += 1; this.merphy_state = MOVE_RIGHT; }
                 else if (this.check_exit_right(world)) Player.off = true;
                 else this.merphy_state = STOP;
+                this.prev_horizontal_state = MOVE_RIGHT;
                 break;
         }
 
