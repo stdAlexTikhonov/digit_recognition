@@ -457,9 +457,11 @@ export class World {
 
                     switch(this.player.merphy_state) {
                         case MOVE_RIGHT:
+                        case FORCE_RIGHT:
                             pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             break;
                         case MOVE_LEFT:
+                        case FORCE_LEFT:
                             pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             break;
                         case MOVE_UP:

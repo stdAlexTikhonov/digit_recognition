@@ -1,7 +1,7 @@
 import { 
     ROCK, SCISSORS, EMPTY, LEFT, RIGHT,
     UP, DOWN, STOP, MOVE_LEFT, MOVE_RIGHT,
-    MOVE_UP, MOVE_DOWN, PLAYER, EXIT
+    MOVE_UP, MOVE_DOWN, PLAYER, EXIT, FORCE_LEFT, FORCE_RIGHT
 } from "./constants"
 
 import sprite from './assets/merphy/sprite.png';
@@ -72,6 +72,14 @@ export class Player {
                 break;
             case MOVE_RIGHT:
                 this.dy = 2;
+                break;
+            case FORCE_LEFT:
+                this.dy = 3;
+                this.state = 1;
+                break;
+            case FORCE_RIGHT:
+                this.dy = 3;
+                this.state = 0;
                 break;
             case MOVE_UP:
                 this.dy = this.prev_horizontal_state === MOVE_LEFT ? 0 : 2;
@@ -153,7 +161,7 @@ export class Player {
                     this.x -= 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
                 } else if (this.check_force_move_left(world)) {
-                    this.x -= 1; this.merphy_state = MOVE_LEFT;
+                    this.x -= 1; this.merphy_state = FORCE_LEFT;
                 }
                 else if (this.check_exit_left(world)) Player.off = true;
                 else this.merphy_state = STOP;
@@ -165,7 +173,7 @@ export class Player {
                     this.merphy_state = MOVE_RIGHT;
                     this.x += 1;
                     if (!this.EMPTIES.some(point => point.x === this.x && point.y === this.y)) this.EMPTIES.push({ x: this.x, y: this.y, char: EMPTY});
-                } else if (this.check_force_move_right(world)) { this.x += 1; this.merphy_state = MOVE_RIGHT; }
+                } else if (this.check_force_move_right(world)) { this.x += 1; this.merphy_state = FORCE_RIGHT; }
                 else if (this.check_exit_right(world)) Player.off = true;
                 else this.merphy_state = STOP;
                 this.prev_horizontal_state = MOVE_RIGHT;
