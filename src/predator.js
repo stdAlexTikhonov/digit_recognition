@@ -61,7 +61,9 @@ export class Predator {
     }
 
     find_death(world) {
-        return world[this.y-1][this.x].char === ROCK || world[this.y-1][this.x].char === FOOD;
+        const pt1 = world[this.y - 1][this.x].char === ROCK || world[this.y - 1][this.x].char === FOOD;
+        const pt2 = world[this.y][this.x].char === ROCK || world[this.y][this.x].char === FOOD;
+        return pt1 || pt2;
     }
 
 

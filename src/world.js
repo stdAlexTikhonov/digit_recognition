@@ -5,13 +5,14 @@ import {
     WIDTH, HEIGHT, BLOCK_WIDTH, UP, DOWN, RIGHT, LEFT,
     DIRS, PLAYER, ROCK, FOOD, BREAK, EXIT,
     WALL, GROUND, EMPTY, SCISSORS, elements,
-    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, REMOTE_PLAYER, STOP
+    GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, FIRE, REMOTE_PLAYER, STOP
 } from "./constants";
 import { sleep } from "./helpers";
 import { Player } from "./player";
 import { Star } from "./star";
 import { Rock } from "./rock";
 import { Predator } from "./predator"
+import { Explosion } from "./explosion";
 import { pause } from "./Components/Pause";
 import { Scores } from "./Components/Scores";
 
@@ -284,6 +285,7 @@ export class World {
         //     const pp = this.rndomizer();//player position
         //     this.PLAYERS.push({y: pp.y, x: pp.x, char: REMOTE_PLAYER});
         // }
+        this.EXPLOSIONS = [];
 
         const pp = this.rndomizer();//player position
 
@@ -413,6 +415,8 @@ export class World {
         this.WALLS.forEach(W => WORLD[W.y][W.x] = W);
 
         this.PLAYERS.forEach(P => WORLD[P.y][P.x] = P);
+        
+        this.EXPLOSIONS.forEach(EXP => WORLD[EXP.y][EXP.x] = EXP);
 
         WORLD[this.EXIT.y][this.EXIT.x] = this.EXIT;
         return WORLD;
@@ -537,6 +541,9 @@ export class World {
                         // case REMOTE_PLAYER:
                         //     this.ctx_vp.drawImage(this.player.img, 0, BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                         //     break;
+                        case FIRE:
+                            this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y, BLOCK_WIDTH, BLOCK_WIDTH);
+                            break;
                         case EXIT:
                             this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*5, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
@@ -553,7 +560,9 @@ export class World {
 
     check_predators() {
         const died = this.PREDATORS.find(rock => !rock.still_alive);
-        if (died) this.STARS.push(new Star(died.y, died.x));
+        if (died) {
+            this.EXPLOSIONS.push(new Explosion(died.y, died.x));
+        }
         this.PREDATORS = this.PREDATORS.filter(predator => predator.still_alive);
     }
 
@@ -562,7 +571,6 @@ export class World {
     }
 
     check_rocks() {
-        
         this.ROCKS = this.ROCKS.filter(rock => !rock.killer);
     }
 
@@ -573,16 +581,21 @@ export class World {
             this.world[this.player.y][this.player.x] = this.player;
         } else {
             this.player.animation = false;
-            sleep(2000);
+            // sleep(2000);
             stopGame();  
         }
              
+    }
+
+    check_explosions() {
+        this.EXPLOSIONS = this.EXPLOSIONS.filter(exp => exp.still_here);
     }
 
     tick() {
         this.PREDATORS.forEach(PREDATOR => PREDATOR.changeState(this.world));
         this.ROCKS.forEach(ROCK => ROCK.changeState(this.world, this.player));
         this.STARS.forEach(STAR => STAR.changeState(this.world));
+        this.EXPLOSIONS.forEach(EXP => EXP.changeState());
         this.ip && this.PLAYERS.forEach(PLAYER => {
             PLAYER.changeState(this.world);
             PLAYER.changePic();
@@ -590,10 +603,11 @@ export class World {
         this.player.changeState(this.world);
         this.player.changePic();
         this.check_food();
-        this.check_rocks();
         this.world = this.generate();
         this.check_player();
         this.check_predators();
+        this.check_rocks();
+        this.check_explosions();
     }
 
 }

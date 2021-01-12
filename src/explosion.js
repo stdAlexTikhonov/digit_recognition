@@ -13,10 +13,12 @@ export class Explosion {
       this.char = FIRE;
       this.img = new Image();
       this.img.src = explosion_sprite;
+      this.still_here = true;
     }
 
 
     changeState() {
-      this.state = this.state > 6 ? 0 : this.state + 1;
+      this.state = this.state + 1;
+      this.still_here = this.state <= 6;
     }
 }
