@@ -562,6 +562,21 @@ export class World {
         const died = this.PREDATORS.find(rock => !rock.still_alive);
         if (died) {
             this.EXPLOSIONS.push(new Explosion(died.y, died.x));
+            this.EXPLOSIONS.push(new Explosion(died.y+1, died.x));
+            this.EXPLOSIONS.push(new Explosion(died.y-1, died.x));
+            this.EXPLOSIONS.push(new Explosion(died.y, died.x+1));
+            this.EXPLOSIONS.push(new Explosion(died.y, died.x-1));
+            this.EXPLOSIONS.push(new Explosion(died.y+1, died.x-1));
+            this.EXPLOSIONS.push(new Explosion(died.y+1, died.x+1));
+            this.EXPLOSIONS.push(new Explosion(died.y-1, died.x-1));
+            this.EXPLOSIONS.push(new Explosion(died.y - 1, died.x + 1));
+
+            const arr = [ {x: died.x, y: died.y }, {x: died.x, y: died.y + 1 }, {x: died.x, y: died.y -1 }, {x: died.x + 1, y: died.y },{x: died.x - 1, y: died.y }, {x: died.x-1, y: died.y+1 },{x: died.x + 1, y: died.y + 1},{x: died.x -1, y: died.y -1 },{x: died.x+1, y: died.y -1 }]
+            
+            this.GROUND = this.GROUND.filter(G => !arr.some(el => el.x === G.x && el.y === G.y));
+            this.ROCKS = this.ROCKS.filter(G => !arr.some(el => el.x === G.x && el.y === G.y));
+            this.STARS = this.STARS.filter(G => !arr.some(el => el.x === G.x && el.y === G.y));
+            this.BREAKS = this.BREAKS.filter(G => !arr.some(el => el.x === G.x && el.y === G.y));
         }
         this.PREDATORS = this.PREDATORS.filter(predator => predator.still_alive);
     }
