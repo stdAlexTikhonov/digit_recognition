@@ -7,6 +7,7 @@ import {
     WALL, GROUND, EMPTY, SCISSORS, elements,
     GROUND_QUANTITY, SEED, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, MOVE_DOWN, MOVE_UP, STEPS, MOVE_RIGHT, MOVE_LEFT, FORCE_LEFT, FORCE_RIGHT, PLAYERS_QUANTITY, REMOTE_PLAYER, STOP
 } from "./constants";
+import { sleep } from "./helpers";
 import { Player } from "./player";
 import { Star } from "./star";
 import { Rock } from "./rock";
@@ -455,22 +456,23 @@ export class World {
                     let pos_x = (j - viewport_start_x)*BLOCK_WIDTH;
                     let pos_y = (i - viewport_start_y)*BLOCK_WIDTH;
 
-                    switch(this.player.merphy_state) {
-                        case MOVE_RIGHT:
-                        case FORCE_RIGHT:
-                            pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                            break;
-                        case MOVE_LEFT:
-                        case FORCE_LEFT:
-                            pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                            break;
-                        case MOVE_UP:
-                            pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                            break;
-                        case MOVE_DOWN:
-                            pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
-                            break;
-                    }
+                    if (this.player.animation)
+                        switch(this.player.merphy_state) {
+                            case MOVE_RIGHT:
+                            case FORCE_RIGHT:
+                                pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                break;
+                            case MOVE_LEFT:
+                            case FORCE_LEFT:
+                                pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                break;
+                            case MOVE_UP:
+                                pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                break;
+                            case MOVE_DOWN:
+                                pos_y -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
+                                break;
+                        }
 
                     switch (el.char) {
                         case SCISSORS:
@@ -569,7 +571,11 @@ export class World {
             Player.flag = false;
         } else if (Player.flag) {
             this.world[this.player.y][this.player.x] = this.player;
-        } else stopGame();
+        } else {
+            this.player.animation = false;
+            sleep(2000);
+            stopGame();  
+        }
              
     }
 

@@ -23,6 +23,7 @@ export class Player {
         this.dy = 0;
         this.char = PLAYER
         this.prev_horizontal_state = MOVE_LEFT;
+        this.animation = true;
         
     }
 
