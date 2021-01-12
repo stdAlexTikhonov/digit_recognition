@@ -577,6 +577,8 @@ export class World {
             this.ROCKS = this.ROCKS.filter(G => !arr.some(el => el.x === G.x && el.y === G.y));
             this.STARS = this.STARS.filter(G => !arr.some(el => el.x === G.x && el.y === G.y));
             this.BREAKS = this.BREAKS.filter(G => !arr.some(el => el.x === G.x && el.y === G.y));
+
+            Player.off = arr.some(el => el.x === this.player.x && el.y === this.player.y);
         }
         this.PREDATORS = this.PREDATORS.filter(predator => predator.still_alive);
     }
