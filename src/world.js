@@ -566,12 +566,12 @@ export class World {
 
     check_player() {
         if (Player.off && Player.flag) {
-            
             Player.flag = false;
         } else if (Player.flag) {
             this.world[this.player.y][this.player.x] = this.player;
         } else {
-            stopGame();
+            const timeout = setTimeout(() => { stopGame(); clearTimeout(timeout); }, 2000)
+            
         }
 
 
