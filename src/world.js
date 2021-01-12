@@ -569,12 +569,8 @@ export class World {
             Player.flag = false;
         } else if (Player.flag) {
             this.world[this.player.y][this.player.x] = this.player;
-        } else {
-            const timeout = setTimeout(() => { stopGame(); clearTimeout(timeout); }, 2000)
-            
-        }
-
-
+        } else stopGame();
+             
     }
 
     tick() {
