@@ -40,7 +40,8 @@ export class Predator {
         const up = world[this.y-1][this.x].char === PLAYER;
         const down = world[this.y+1][this.x].char === PLAYER;
         const left = world[this.y][this.x-1].char === PLAYER;
-        const right = world[this.y][this.x+1].char === PLAYER;
+        const right = world[this.y][this.x + 1].char === PLAYER;
+        const here = world[this.y][this.x].char === PLAYER;
         switch (this.dir) {
             case UP:
                 FOUND_PLAYER = up;
@@ -56,7 +57,7 @@ export class Predator {
                 break;
         }
 
-        return FOUND_PLAYER;
+        return FOUND_PLAYER || here;
     }
 
     find_death(world) {
