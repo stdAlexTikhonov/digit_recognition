@@ -243,6 +243,11 @@ export class World {
         //WALLS
         this.WALLS = [];
 
+        const pp = this.rndomizer();//player position
+
+        this.player = new Player(pp.y,pp.x);
+        this.player.token = generateUID();
+
         //Breaks
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
@@ -287,10 +292,7 @@ export class World {
         // }
         this.EXPLOSIONS = [];
 
-        const pp = this.rndomizer();//player position
-
-        this.player = new Player(pp.y,pp.x);
-        this.player.token = generateUID();
+        
 
         const ext = this.rndomizer();
         this.EXIT = { x: ext.x, y: ext.y, char: EXIT };
@@ -422,7 +424,7 @@ export class World {
         return WORLD;
     }
 
-    rndomizer() {
+    rndomizer(type) {
 
         let rand_x = Math.floor(random() * (this.width - 2)) + 1;
         let rand_y = Math.floor(random() * (this.height - 2)) + 1;
@@ -435,6 +437,16 @@ export class World {
         }
 
         this.rand_positions.push(pos);
+        if (type === PLAYER) {
+            this.rand_positions.push({ x: pos.x - 1, y: pos.y + 1 });
+            this.rand_positions.push({ x: pos.x - 1, y: pos.y - 1 });
+            this.rand_positions.push({ x: pos.x - 1, y: pos.y });
+            this.rand_positions.push({ x: pos.x + 1, y: pos.y + 1 });
+            this.rand_positions.push({ x: pos.x + 1, y: pos.y - 1});
+            this.rand_positions.push({ x: pos.x + 1, y: pos.y });
+            this.rand_positions.push({ x: pos.x, y: pos.y + 1 });
+            this.rand_positions.push({ x: pos.x, y: pos.y - 1 });
+        }
 
         return pos;
     }
