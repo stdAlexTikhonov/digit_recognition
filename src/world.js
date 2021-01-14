@@ -522,7 +522,7 @@ export class World {
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH ;
                             else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case FOOD:
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;

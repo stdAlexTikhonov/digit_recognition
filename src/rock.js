@@ -1,5 +1,6 @@
 import { PLAYER, SCISSORS, EMPTY, ROCK, LEFT, RIGHT } from "./constants";
 import { Player } from "./player";
+import rock from "./assets/merphy/rock.png"
 
 export class Rock {
     constructor(y,x) {
@@ -10,6 +11,8 @@ export class Rock {
         this.char = ROCK;
         this.right = false;
         this.left = false;
+        this.img = new Image();
+        this.img.src = rock;
     }
 
     check_way_down(world) {
