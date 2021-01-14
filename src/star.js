@@ -2,6 +2,7 @@ import { PLAYER, SCISSORS, EMPTY, STARS_QUANTITY, FOOD } from "./constants";
 import { Player } from "./player";
 import { PLUS_ONE } from "./actions/scoreActions";
 import { store } from "./index";
+import food from "./assets/merphy/food.png";
 
 export class Star {
     constructor(y,x) {
@@ -13,6 +14,8 @@ export class Star {
         this.left = false;
         this.killer = false;
         this.char = FOOD;
+        this.img = new Image();
+        this.img.src = food;
     }
 
     check_way_down(world) {

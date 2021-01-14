@@ -18,7 +18,25 @@ import { Scores } from "./Components/Scores";
 
 import sprite from './assets/merphy/sprite.png';
 import sprite3 from './assets/merphy/sprite3.png';
-import sprite2x from './assets/merphy/sprite2x.png';
+import wall from "./assets/merphy/wall.png";
+import break_ from "./assets/merphy/break.png";
+import ground from "./assets/merphy/ground.png";
+import exit from "./assets/merphy/exit.png";
+
+const wall_img = new Image();
+wall_img.src = wall;
+
+const break_img = new Image();
+break_img.src = break_;
+
+const ground_img = new Image();
+ground_img.src = ground;
+
+const exit_img = new Image();
+exit_img.src = exit;
+
+
+
 
 let seed = SEED;
 
@@ -45,8 +63,6 @@ export class World {
         this.width = width;
         this.minutes = 0;
         this.seconds = 0;
-        this.img = new Image();
-        this.img.src = sprite2x;
         this.timer = null;
         this.pause = false;
         this.start = !ip;
@@ -201,7 +217,7 @@ export class World {
         edit_block.style.alignItems = 'center';
 
         for (let i = 0; i < 5; i++) {
-            const div = createDiv(sprite2x, i)
+            const div = createDiv(wall_img, i)
             div.className = 'btn';
             div.onmousedown = e =>  { 
                 resetBtns();
@@ -252,7 +268,7 @@ export class World {
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
             const bip = this.rndomizer(); //break init position
-            this.BREAKS.push({y: bip.y, x: bip.x, char: BREAK});
+            this.BREAKS.push({y: bip.y, x: bip.x, char: BREAK, img: break_img });
         }
 
         //Predators
@@ -282,7 +298,7 @@ export class World {
         this.GROUND = [];
         for (let i = 0; i < GROUND_QUANTITY; i++) {
             const rip = this.rndomizer(); //predator init position
-            this.GROUND.push({y: rip.y, x: rip.x, char: GROUND});
+            this.GROUND.push({y: rip.y, x: rip.x, char: GROUND, img: ground_img });
         }
 
         this.PLAYERS = [];
@@ -295,7 +311,7 @@ export class World {
         
 
         const ext = this.rndomizer();
-        this.EXIT = { x: ext.x, y: ext.y, char: EXIT };
+        this.EXIT = { x: ext.x, y: ext.y, char: EXIT, img: exit_img };
   
         if (ip) this.ws.onopen = () => this.ws.send(JSON.stringify({method: "SET_PLAYER_POSITION", token: this.player.token, player: this.player}));
 
@@ -384,11 +400,11 @@ export class World {
     }
 
     generate() {
-        const FIRST_ROW = new Array(this.width).fill({ char: WALL});
-        const LAST_ROW = new Array(this.width).fill({ char: WALL});
+        const FIRST_ROW = new Array(this.width).fill({ char: WALL, img: wall_img });
+        const LAST_ROW = new Array(this.width).fill({ char: WALL, img: wall_img });
 
         const MIDDLE = new Array(this.width).fill({char: EMPTY});
-        MIDDLE[0] = { char: WALL } ; MIDDLE[this.width-1] = { char: WALL};
+        MIDDLE[0] = { char: WALL, img: wall_img } ; MIDDLE[this.width-1] = { char: WALL, img: wall_img };
 
         const WORLD = new Array(this.height)
 
@@ -510,25 +526,25 @@ export class World {
                             this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case GROUND:
-                            this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case WALL:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case BREAK:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH ;
                             else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*3, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case FOOD:
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             else if (el.left) pos_x -= BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
                             else if (el.falling) pos_y += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH; 
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH-1, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y, BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case PLAYER:
                             
@@ -557,7 +573,7 @@ export class World {
                             this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y, BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case EXIT:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*5, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                     }
                
