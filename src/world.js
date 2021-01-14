@@ -18,15 +18,24 @@ import { Scores } from "./Components/Scores";
 
 import sprite from './assets/merphy/sprite.png';
 import sprite3 from './assets/merphy/sprite3.png';
-import sprite2x from './assets/merphy/sprite2x.png';
 import wall from "./assets/merphy/wall.png";
 import break_ from "./assets/merphy/break.png";
+import ground from "./assets/merphy/ground.png";
+import exit from "./assets/merphy/exit.png";
 
 const wall_img = new Image();
 wall_img.src = wall;
 
 const break_img = new Image();
 break_img.src = break_;
+
+const ground_img = new Image();
+ground_img.src = ground;
+
+const exit_img = new Image();
+exit_img.src = exit;
+
+
 
 
 let seed = SEED;
@@ -54,8 +63,6 @@ export class World {
         this.width = width;
         this.minutes = 0;
         this.seconds = 0;
-        this.img = new Image();
-        this.img.src = sprite2x;
         this.timer = null;
         this.pause = false;
         this.start = !ip;
@@ -210,7 +217,7 @@ export class World {
         edit_block.style.alignItems = 'center';
 
         for (let i = 0; i < 5; i++) {
-            const div = createDiv(sprite2x, i)
+            const div = createDiv(wall_img, i)
             div.className = 'btn';
             div.onmousedown = e =>  { 
                 resetBtns();
@@ -291,7 +298,7 @@ export class World {
         this.GROUND = [];
         for (let i = 0; i < GROUND_QUANTITY; i++) {
             const rip = this.rndomizer(); //predator init position
-            this.GROUND.push({y: rip.y, x: rip.x, char: GROUND});
+            this.GROUND.push({y: rip.y, x: rip.x, char: GROUND, img: ground_img });
         }
 
         this.PLAYERS = [];
@@ -304,7 +311,7 @@ export class World {
         
 
         const ext = this.rndomizer();
-        this.EXIT = { x: ext.x, y: ext.y, char: EXIT };
+        this.EXIT = { x: ext.x, y: ext.y, char: EXIT, img: exit_img };
   
         if (ip) this.ws.onopen = () => this.ws.send(JSON.stringify({method: "SET_PLAYER_POSITION", token: this.player.token, player: this.player}));
 
@@ -519,7 +526,7 @@ export class World {
                             this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, DIRS.indexOf(el.dir) * BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case GROUND:
-                            this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case WALL:
                             this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
@@ -566,7 +573,7 @@ export class World {
                             this.ctx_vp.drawImage(el.img, BLOCK_WIDTH * el.state, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y, BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case EXIT:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*5, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                     }
                
