@@ -19,6 +19,15 @@ import { Scores } from "./Components/Scores";
 import sprite from './assets/merphy/sprite.png';
 import sprite3 from './assets/merphy/sprite3.png';
 import sprite2x from './assets/merphy/sprite2x.png';
+import wall from "./assets/merphy/wall.png";
+import break_ from "./assets/merphy/break.png";
+
+const wall_img = new Image();
+wall_img.src = wall;
+
+const break_img = new Image();
+break_img.src = break_;
+
 
 let seed = SEED;
 
@@ -252,7 +261,7 @@ export class World {
         this.BREAKS = [];
         for (let i = 0; i < breaks; i++) {
             const bip = this.rndomizer(); //break init position
-            this.BREAKS.push({y: bip.y, x: bip.x, char: BREAK});
+            this.BREAKS.push({y: bip.y, x: bip.x, char: BREAK, img: break_img });
         }
 
         //Predators
@@ -384,11 +393,11 @@ export class World {
     }
 
     generate() {
-        const FIRST_ROW = new Array(this.width).fill({ char: WALL});
-        const LAST_ROW = new Array(this.width).fill({ char: WALL});
+        const FIRST_ROW = new Array(this.width).fill({ char: WALL, img: wall_img });
+        const LAST_ROW = new Array(this.width).fill({ char: WALL, img: wall_img });
 
         const MIDDLE = new Array(this.width).fill({char: EMPTY});
-        MIDDLE[0] = { char: WALL } ; MIDDLE[this.width-1] = { char: WALL};
+        MIDDLE[0] = { char: WALL, img: wall_img } ; MIDDLE[this.width-1] = { char: WALL, img: wall_img };
 
         const WORLD = new Array(this.height)
 
@@ -513,10 +522,10 @@ export class World {
                             this.ctx_vp.drawImage(this.img, 0, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case WALL:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*4, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case BREAK:
-                            this.ctx_vp.drawImage(this.img, BLOCK_WIDTH*2, 0, BLOCK_WIDTH, BLOCK_WIDTH, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
+                            this.ctx_vp.drawImage(el.img, pos_x, pos_y,BLOCK_WIDTH, BLOCK_WIDTH);
                             break;
                         case ROCK:
                             if (el.right) pos_x += BLOCK_WIDTH/STEPS * value - BLOCK_WIDTH;
