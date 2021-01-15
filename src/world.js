@@ -380,13 +380,17 @@ export class World {
 
     startTimer() {
         this.timer = setTimeout(() => {
-            this.seconds++;
-            if (this.seconds > 59) {
-                this.seconds = 0;
-                this.minutes++;
+            if (!window.pause) {
+                this.seconds++;
+                if (this.seconds > 59) {
+                    this.seconds = 0;
+                    this.minutes++;
+                }
+                
+                Time.innerText = this.getTime();
             }
             this.startTimer();
-            Time.innerText = this.getTime();
+           
         }, 1000);
     }
 
