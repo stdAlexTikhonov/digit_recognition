@@ -629,6 +629,7 @@ export class World {
             this.player.animation = false;
             // sleep(2000);
             stopGame();  
+            Time.innerText = "00:00";
         }
              
     }
