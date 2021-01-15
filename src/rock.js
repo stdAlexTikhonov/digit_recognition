@@ -1,6 +1,6 @@
 import { PLAYER, SCISSORS, EMPTY, ROCK, LEFT, RIGHT } from "./constants";
 import { Player } from "./player";
-import rock from "./assets/merphy/rock.png"
+import rock from "./assets/images/rock.png"
 
 export class Rock {
     constructor(y,x) {

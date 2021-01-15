@@ -2,7 +2,7 @@ import { PLAYER, SCISSORS, EMPTY, STARS_QUANTITY, FOOD } from "./constants";
 import { Player } from "./player";
 import { PLUS_ONE } from "./actions/scoreActions";
 import { store } from "./index";
-import food from "./assets/merphy/food.png";
+import food from "./assets/images/food.png";
 
 export class Star {
     constructor(y,x) {

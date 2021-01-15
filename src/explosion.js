@@ -3,7 +3,7 @@ import { Player } from "./player";
 import { PLUS_ONE } from "./actions/scoreActions";
 import { store } from "./index";
 
-import explosion_sprite from "./assets/merphy/explosion_sprite.png";
+import explosion_sprite from "./assets/images/explosion_sprite.png";
 
 export class Explosion {
     constructor(y,x) {
