@@ -14,6 +14,7 @@ import { Rock } from "./rock";
 import { Predator } from "./predator"
 import { Explosion } from "./explosion";
 import { Dashboard } from "./Components/Dashboard";
+import { Time } from "./Components/Time";
 
 import sprite from './assets/images/sprite.png';
 import sprite3 from './assets/images/sprite3.png';
@@ -385,6 +386,7 @@ export class World {
                 this.minutes++;
             }
             this.startTimer();
+            Time.innerText = this.getTime();
         }, 1000);
     }
 
