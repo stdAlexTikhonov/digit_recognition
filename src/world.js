@@ -13,8 +13,7 @@ import { Star } from "./star";
 import { Rock } from "./rock";
 import { Predator } from "./predator"
 import { Explosion } from "./explosion";
-import { pause } from "./Components/Pause";
-import { Scores } from "./Components/Scores";
+import { Dashboard } from "./Components/Dashboard";
 
 import sprite from './assets/images/sprite.png';
 import sprite3 from './assets/images/sprite3.png';
@@ -84,8 +83,8 @@ export class World {
     
         // document.body.appendChild(this.canvas);
         
-        this.container.appendChild(Scores);
-        this.container.appendChild(pause);
+        this.container.appendChild(Dashboard);
+     
         document.body.appendChild(this.container);
 
         let pointerX, pointerY;

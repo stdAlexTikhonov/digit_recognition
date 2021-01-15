@@ -1,23 +1,21 @@
 import { draw, audio, store } from "../../index";
-export const pause = document.createElement('i');
-pause.className = "material-icons waves-effect waves-light";
-pause.innerHTML = 'pause';
-pause.style.position = 'absolute';
-pause.style.color = 'white';
-pause.style.right = 10;
-pause.style.top = 10;
+export const Pause = document.createElement('i');
+Pause.className = "material-icons waves-effect waves-light";
+Pause.innerHTML = 'pause';
+Pause.style.color = 'white';
 
-pause.onclick = _ => {
+
+Pause.onclick = _ => {
   const { settings } = store.getState();
   if (window.pause) {
     window.pause = false;
-    pause.innerHTML = 'pause';
+    Pause.innerHTML = 'pause';
     settings.music && audio.play();
     draw();
   } else {
-     settings.music && audio.pause();
+    settings.music && audio.pause();
     window.pause = true;  
-    pause.innerHTML = 'play_arrow';
+    Pause.innerHTML = 'play_arrow';
     window.cancelAnimationFrame(window.myReq);
   }
 
