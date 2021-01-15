@@ -7,12 +7,11 @@ import { Player } from "./player";
 import { GameScreen } from "./Components/Screens/GameScreen";
 import { MainScreen } from "./Components/Screens/MainScreen";
 import { LevelsScreen } from "./Components/Screens/Levels";
-import { ScoresComponent } from "./Components/Scores";
+import { ScoresComponent, Scores } from "./Components/Scores";
 import { createStore } from "./store";
 import { appReducer } from "./reducers";
 import { TOGGLE_ORIENTATION } from "./actions/settingsActions";
 import { RESET_SCORE } from "./actions/scoreActions";
-import { Scores } from "./Components/Scores";
 
 import {
     WIDTH, HEIGHT, PREDATOR_QUANTITY,
