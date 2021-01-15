@@ -3,7 +3,7 @@ import {
     RIGHT, LEFT,
     SCISSORS, ROCK, FOOD
 } from "./constants";
-import sprite3 from "./assets/merphy/sprite3.png";
+import sprite3 from "./assets/images/sprite3.png";
 import { Player } from "./player";
 
 export class Predator {

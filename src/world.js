@@ -16,12 +16,12 @@ import { Explosion } from "./explosion";
 import { pause } from "./Components/Pause";
 import { Scores } from "./Components/Scores";
 
-import sprite from './assets/merphy/sprite.png';
-import sprite3 from './assets/merphy/sprite3.png';
-import wall from "./assets/merphy/wall.png";
-import break_ from "./assets/merphy/break.png";
-import ground from "./assets/merphy/ground.png";
-import exit from "./assets/merphy/exit.png";
+import sprite from './assets/images/sprite.png';
+import sprite3 from './assets/images/sprite3.png';
+import wall from "./assets/images/wall.png";
+import break_ from "./assets/images/break.png";
+import ground from "./assets/images/ground.png";
+import exit from "./assets/images/exit.png";
 
 const wall_img = new Image();
 wall_img.src = wall;

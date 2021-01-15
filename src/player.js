@@ -4,7 +4,7 @@ import {
     MOVE_UP, MOVE_DOWN, PLAYER, EXIT, FORCE_LEFT, FORCE_RIGHT
 } from "./constants"
 
-import sprite from './assets/merphy/sprite.png';
+import sprite from './assets/images/sprite.png';
 
 export class Player {
     constructor(y,x) {
