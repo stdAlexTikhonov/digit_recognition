@@ -4,7 +4,7 @@ import { Time } from "../Time";
 
 export const Dashboard = document.createElement('div');
 Dashboard.style.display = 'flex';
-Dashboard.style.width = '100%';
+Dashboard.style.width = '95%';
 Dashboard.style.position = 'absolute';
 Dashboard.style.top = 0;
 Dashboard.style.left = 0;

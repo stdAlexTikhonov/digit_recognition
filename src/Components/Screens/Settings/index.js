@@ -20,23 +20,19 @@ Settings.style.background = 'black';
 const filtered = isMobile ? settings_.filter(item => item.mobile) : settings_;
 
 filtered.forEach((setting) => {
-  const setting_block = document.createElement('button');
+  const setting_block = document.createElement('div');
   setting_block.style.height = '50px';
   setting_block.style.width = '50px';
-  setting_block.style.padding = 0;
-  setting_block.style.overflow = 'hidden';
-  setting_block.style.outline = 'none';
-  const img = new Image(50, 50);
-  img.src = setting.initial ? setting.img_on : setting.img_off;
-  setting_block.appendChild(img);
+  setting_block.style.backgroundSize = '100%';
+  setting_block.style.backgroundImage = `url(${setting.initial ? setting.img_on : setting.img_off})`;
   
   setting_block.onclick = (e) => {
     store.dispatch({ type: setting.action });
     const { settings } = store.getState();
     if (setting.name === 'Music') {
-      img.src = settings.music ? setting.img_on : setting.img_off;
+      setting_block.style.backgroundImage = `url(${settings.music ? setting.img_on : setting.img_off})`;
     } else if (setting.name === 'Orientation') {
-      img.src = settings.orientation ? setting.img_on : setting.img_off;
+      setting_block.style.backgroundImage = `url(${settings.orientation ? setting.img_on : setting.img_off})`;
     }
 
   }
