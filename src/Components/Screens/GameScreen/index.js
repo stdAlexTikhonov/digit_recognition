@@ -1,7 +1,9 @@
 import { audio, startGame, store } from "../../../index";
 import { ScoresComponent } from "../../Scores";
-import { checkbox } from "../Settings";
+import { checkbox, Settings } from "../Settings";
 import { BackButton } from "../../BackButton";
+import { settings } from "../Settings/settings";
+
 
 export const GameScreen = document.createElement('div');
 GameScreen.style.display = 'flex';
@@ -25,15 +27,23 @@ start_btn.style.color = 'lightgreen';
 start_btn.style.cursor = 'pointer';
 start_btn.style.padding = '15px';
 start_btn.style.margin = '5px';
+start_btn.style.textTransform = 'uppercase';
+start_btn.style.minWidth = '250px'
 
+const settings_btn = start_btn.cloneNode(true);
+settings_btn.innerText = "Settings";
 
 
 GameScreen.appendChild(start_btn);
-GameScreen.appendChild(BackButton('levels'));
+GameScreen.appendChild(settings_btn);
 GameScreen.appendChild(ScoresComponent);
 
 start_btn.onclick = () => {
     const { settings } = store.getState();
     startGame();
     settings.music && audio.play();
+}
+
+settings_btn.onclick = () => {
+    document.body.appendChild(Settings);
 }
