@@ -39,7 +39,7 @@ store.dispatch({ type: RESET_SCORE });
 let frames = 0;
 window.prevStates = [];
 
-document.body.appendChild(MainScreen);
+document.body.appendChild(GameScreen);
 
 
 window.pause = false;
