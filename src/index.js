@@ -1,8 +1,8 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test.png";
-import _, { filter } from 'lodash';
+import digits from "./assets/images/test5.png";
+import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
   value: function(chunkSize) {
@@ -35,7 +35,12 @@ canvas.onclick = () => {
     const converted = Array.from(a.data);
     const chunked = converted.chunk(4);
     
-    const single_value = chunked.map((item) => item.some(elem => elem !== 255) ? 0 : 255);
+    let single_value = chunked.map((item) => item.some(elem => elem < 50) ? 0 : 255);
+
+    const check_value = single_value.every(elem => elem === 255);
+
+    //if all values is 255
+    if (check_value) single_value = chunked.map((item) => item.some(elem => elem < 150) ? 0 : 255);
 
     const split_by_rows = single_value.chunk(canvas.width);
     
