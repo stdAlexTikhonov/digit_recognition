@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test5.png";
+import digits from "./assets/images/test.png";
 import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -120,7 +120,7 @@ canvas.onclick = () => {
     // const compressed = trimmed_digits.map(compress_digit);
 
 
-    const compress_digit = digit => digit.map(compress);
+    const compress_digit = digit => digit.map(compress).filter(row => row.some(el => el === 0));
 
     const compress_cycle = digits => {
         while (digits[0][0].length > 10) {
