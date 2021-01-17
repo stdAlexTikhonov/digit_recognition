@@ -51,10 +51,10 @@ canvas.onclick = () => {
     
 
     const compress= (row) => {
-        const chuncked = row.chunk(5);
+        const chuncked = row.chunk(2);
         return chuncked.map(elems => {
             let zerros = elems.filter(elem => elem === 0).length;
-            return zerros >= 2 ? 0 : 255;
+            return zerros >= 1 ? 0 : 255;
         });
     }
 
@@ -104,5 +104,37 @@ canvas.onclick = () => {
     
     const trimmed_digits = digits.map(trim_digit);
 
-    console.log(trimmed_digits);
+    // const compress_digit = digit => {
+    //     const chunked = digit.map(elems => elems.chunk(3));
+    //     return chunked.map(elems => {
+    //         return elems.reduce((a, b) => +a + +b);
+    //     });
+    //     // return chunked;
+    // };
+
+    // const compressed = trimmed_digits.map(compress_digit);
+
+
+    const compress_digit = digit => digit.map(compress);
+
+    const compress_cycle = digits => {
+        while (digits[0][0].length > 10) {
+            digits = digits.map(compress_digit);
+        }
+       
+        digits = digits.map(digit => _.zip(...digit));
+
+        while (digits[0][0].length > 10) {
+            digits = digits.map(compress_digit);
+        }
+
+        return digits;
+    }
+
+
+
+    const compressed = compress_cycle(trimmed_digits);
+
+    console.log(compressed);
+
 }
