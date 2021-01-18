@@ -137,9 +137,63 @@ canvas.onclick = () => {
     }
 
 
-
     const compressed = compress_cycle(trimmed_digits);
 
-    console.log(compressed);
+    const compare = (prev, value, value2) => {
+        if (value === value2) return value;
+        else return prev === value ? value2 : value;
+    }
+
+    const compressTo5 = (arr, convert) => {
+        const len = arr.length;
+        arr = convert && arr.map(el => el === 0 ? 1 : 0);
+        let result = Array(5);
+        switch (len) {
+            case 9:
+                result[0] = arr[0] || arr[1];
+                result[1] = compare(result[0], arr[2], arr[3]);
+                result[2] = arr[4];
+                result[3] = compare(result[2], arr[5], arr[6]);
+                result[4] = compare(result[3], arr[7], arr[8]);
+                return result;
+            
+            case 8:
+                result[0] = arr[0];
+                result[1] = compare(result[0], arr[1], arr[2]);
+                result[2] = compare(result[1], arr[3], arr[4]);
+                result[3] = compare(arr[7], arr[5], arr[6]);
+                result[4] = arr[7];
+                return result;
+            
+            case 7:
+                result[0] = arr[0];
+                result[1] = compare(result[0], arr[1], arr[2]);
+                result[2] = arr[3];
+                result[3] = compare(arr[6], arr[4], arr[5]);
+                result[4] = arr[6];
+                return result;
+            
+            case 6:
+                result[0] = arr[0];
+                result[1] = arr[1];
+                result[2] = compare(result[1], arr[2], arr[3]);
+                result[3] = arr[4];
+                result[4] = arr[5];
+                return result;
+
+            default:
+                return arr;
+            
+        }
+    }
+
+    const compress_digits_to_5 = (digit) => digit.map(row => compressTo5(row, true));
+
+    const compressed_to_5 = compressed.map(compress_digits_to_5);
+
+
+    const last_transpile = compressed_to_5.map(digit => _.zip(...digit));
+
+    console.log(last_transpile);
 
 }
