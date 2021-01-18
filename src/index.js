@@ -2,7 +2,7 @@
 //height: 470px
 import "./styles/styles.css"
 import digits from "./assets/images/test.png";
-import _ from 'lodash';
+import _, { transform } from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
   value: function(chunkSize) {
@@ -194,6 +194,28 @@ canvas.onclick = () => {
 
     const compressed_to_5_vertical = vert_transpile.map(compress_digits_to_5);
 
-    console.log(compressed_to_5_vertical);
+    const last_transpile = compressed_to_5_vertical.map(digit => _.zip(...digit));
+
+    const transform_digit = (digit) => {
+        return digit.map(row => row.map(el => el === 0 ? 1 : 0)) //.reduce((a,b) => a.concat(b))
+    }
+
+    const final = last_transpile.map(transform_digit);
+
+    console.log(final);
+
+    const mapping = [
+        [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+        [0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1]
+    ];
+
 
 }
