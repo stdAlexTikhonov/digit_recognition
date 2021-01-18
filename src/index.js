@@ -197,7 +197,7 @@ canvas.onclick = () => {
     const last_transpile = compressed_to_5_vertical.map(digit => _.zip(...digit));
 
     const transform_digit = (digit) => {
-        return digit.map(row => row.map(el => el === 0 ? 1 : 0)) //.reduce((a,b) => a.concat(b))
+        return digit.map(row => row.map(el => el === 0 ? 1 : 0)).reduce((a,b) => a.concat(b))
     }
 
     const final = last_transpile.map(transform_digit);
@@ -216,6 +216,37 @@ canvas.onclick = () => {
         [0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1]
     ];
+
+    
+
+    // final.forEach(row => {
+    //     mapping.map(ideal_row => {
+    //         let result = 0;
+    //         row.forEach((item, i) => {
+    //             result += item === ideal_row[i] ? 1 : 0
+    //         })
+
+    //         return result/25;
+    //     })
+    // });
+
+    const result = final.map(final_row => {
+        const results = mapping.map(ideal_row => {
+                let result = 0;
+                final_row.forEach((item, i) => {
+                    result += item === ideal_row[i] ? 1 : 0
+                })
+
+                return result/25;
+        })
+
+        const indexOfMaxValue = results.indexOf(Math.max(...results));
+        
+        return indexOfMaxValue;
+    });
+  
+    console.log(result);
+
 
 
 }
