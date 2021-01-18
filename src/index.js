@@ -144,13 +144,12 @@ canvas.onclick = () => {
         else return prev === value ? value2 : value;
     }
 
-    const compressTo5 = (arr, convert) => {
+    const compressTo5 = (arr) => {
         const len = arr.length;
-        arr = convert && arr.map(el => el === 0 ? 1 : 0);
         let result = Array(5);
         switch (len) {
             case 9:
-                result[0] = arr[0] || arr[1];
+                result[0] = arr[0] === 0 ? arr[0] : arr[1];
                 result[1] = compare(result[0], arr[2], arr[3]);
                 result[2] = arr[4];
                 result[3] = compare(result[2], arr[5], arr[6]);
@@ -187,13 +186,14 @@ canvas.onclick = () => {
         }
     }
 
-    const compress_digits_to_5 = (digit) => digit.map(row => compressTo5(row, true));
+    const compress_digits_to_5 = (digit) => digit.map(compressTo5);
 
     const compressed_to_5 = compressed.map(compress_digits_to_5);
 
+    const vert_transpile = compressed_to_5.map(digit => _.zip(...digit));
 
-    const last_transpile = compressed_to_5.map(digit => _.zip(...digit));
+    const compressed_to_5_vertical = vert_transpile.map(compress_digits_to_5);
 
-    console.log(last_transpile);
+    console.log(compressed_to_5_vertical);
 
 }
