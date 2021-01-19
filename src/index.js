@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test.png";
+import digits from "./assets/images/test4.png";
 import _, { transform } from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -120,19 +120,21 @@ canvas.onclick = () => {
     // const compressed = trimmed_digits.map(compress_digit);
 
 
-    const compress_digit = digit => digit.map(compress).filter(row => row.some(el => el === 0));
+    const compress_digit = digit => {
+        while (digit[0].length >= 10) {
+             digit = digit.map(compress).filter(row => row.some(el => el === 0));
+        }
+        return digit;
+    }
 
     const compress_cycle = digits => {
-        while (digits[0][0].length > 10) {
-            digits = digits.map(compress_digit);
-        }
        
+        digits = digits.map(compress_digit);
+    
         digits = digits.map(digit => _.zip(...digit));
 
-        while (digits[0][0].length > 10) {
-            digits = digits.map(compress_digit);
-        }
-
+        digits = digits.map(compress_digit);
+        
         return digits;
     }
 
@@ -201,8 +203,6 @@ canvas.onclick = () => {
     }
 
     const final = last_transpile.map(transform_digit);
-
-    console.log(final);
 
     const mapping = [
         [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
