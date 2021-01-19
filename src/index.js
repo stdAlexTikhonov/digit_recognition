@@ -2,7 +2,7 @@
 //height: 470px
 import "./styles/styles.css"
 import digits from "./assets/images/test.png";
-import _, { map, transform } from 'lodash';
+import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
   value: function(chunkSize) {
@@ -47,15 +47,9 @@ canvas.onclick = () => {
     const vertical_trimed = split_by_rows.filter(row => row.some(elem => elem === 0));
 
 
-    // const arr1 = Array(3).fill(1).map((elem, i) => Array(3).fill(i));
-    //write analog of zip
-    // const transpiled = _.zip(...vertical_trimed);
-
-    //compress horizontally
-
     
 
-    const compress= (row) => {
+    const compress = (row) => {
         const chuncked = row.chunk(2);
         return chuncked.map(elems => {
             let zerros = elems.filter(elem => elem === 0).length;
@@ -63,12 +57,6 @@ canvas.onclick = () => {
         });
     }
 
-    // const compressed_horizontally = vertical_trimed.map(compress);
-
-   
-
-    // const compressed_vertically = transpiled.map(compress);
-    
     //trim horizontally
     const transpiled = _.zip(...vertical_trimed);
 
@@ -112,163 +100,65 @@ canvas.onclick = () => {
     const trim_digit = digit => digit.filter(row => row.some(el => el === 1));
 
     const getLines = digit => digit.map(row => (row.filter(el => el === 1).length / row.length)).map(item => item < 0.5 ? 0 : 1);
+
+    const getVerticalLines = digit => digit.map(row => {
+        const half = Math.floor(row.length / 2);
+        const top_half = row.slice(0, half);
+        const bottom_half = row.slice(half);
+        return (row.filter(el => el === 1).length / row.length)
+    });
     // const trimmed_digits = digits.map(trim_digit);
 
     const transformed = digits.map(transform_digit);
 
     const trimmed_h = transformed.map(trim_digit);
 
-    const vertical_lines = trimmed_h.map(getLines);
-
     const transpiled_back = trimmed_h.map(digit => _.zip(...digit));
 
     const trimmed_v = transpiled_back.map(trim_digit);
 
+    const top_half = trimmed_v.map(item => {
+        const half = Math.floor(item.length / 2);
+        return item.slice(0, half);
+    });
+
+    const bottom_half = trimmed_v.map(item => {
+        const half = Math.floor(item.length / 2);
+        return item.slice(half);
+    });
+    
     const horizontal_lines = trimmed_v.map(getLines);
+
+    const top_half_transpited = top_half.map(digit => _.zip(...digit));
+    const bottom_half_transpited = bottom_half.map(digit => _.zip(...digit));
+
+    const vertical_lines_top = top_half_transpited.map(getLines);
+    const vertical_lines_bottom = bottom_half_transpited.map(getLines);
 
     //разбить строку пополам и проверить в каждой половине по отдельности
     const compress_lines = row => row.map((item, i) => (item === row[i+1] && item === 1) ? 0 : item);
 
     const pressed_h = horizontal_lines.map(compress_lines);
 
-    const pressed_v = vertical_lines.map(compress_lines);
+    const pressed_h_top = vertical_lines_top.map(compress_lines);
+    const pressed_h_bottom = vertical_lines_bottom.map(compress_lines);
 
-    const get_indexies = row => row.map((item, i) => (item === 1) ? i/row.length : null).filter(item => item);
 
-    // console.log(vertical_lines);
+    const get_indexies = row => row.map((item, i) => (item === 1) ? (i === 0 ? 0.01 : i/row.length) : null).filter(item => item).map(item => parseFloat(item.toFixed(1)));
+
 
     const h_indexies = pressed_h.map(get_indexies);
 
-    const v_indexies = pressed_v.map(get_indexies);
+    const v_top_indexies = pressed_h_top.map(get_indexies);
+    const v_bottom_indexies = pressed_h_bottom.map(get_indexies);
+
 
     
-
-   
+    console.log(h_indexies);
+    console.log("And now");
+    console.log(v_top_indexies);
+    console.log(v_bottom_indexies);
     
-
-
-    // const compressed = trimmed_digits.map(compress_digit);
-
-
-    // const compress_digit = digit => {
-    //     console.log(digit);
-    //     while (digit[0].length >= 10) {
-    //          digit = digit.map(compress).filter(row => row.some(el => el === 0));
-    //     }
-    //     return digit;
-    // }
-
-    // const compress_cycle = digits => {
-       
-    //     digits = digits.map(compress_digit);
     
-    //     digits = digits.map(digit => _.zip(...digit));
-
-    //     digits = digits.map(compress_digit);
-        
-    //     return digits;
-    // }
-
-
-    // const compressed = compress_cycle(trimmed_digits);
-
-    // const compare = (prev, value, value2) => {
-    //     if (value === value2) return value;
-    //     else return prev === value ? value2 : value;
-    // }
-
-    // const compressTo5 = (arr) => {
-    //     const len = arr.length;
-    //     let result = Array(5);
-    //     switch (len) {
-    //         case 9:
-    //             result[0] = arr[0] === 0 ? arr[0] : arr[1];
-    //             result[1] = compare(result[0], arr[2], arr[3]);
-    //             result[2] = arr[4];
-    //             result[3] = compare(result[2], arr[5], arr[6]);
-    //             result[4] = compare(result[3], arr[7], arr[8]);
-    //             return result;
-            
-    //         case 8:
-    //             result[0] = arr[0];
-    //             result[1] = compare(result[0], arr[1], arr[2]);
-    //             result[2] = compare(result[1], arr[3], arr[4]);
-    //             result[3] = compare(arr[7], arr[5], arr[6]);
-    //             result[4] = arr[7];
-    //             return result;
-            
-    //         case 7:
-    //             result[0] = arr[0];
-    //             result[1] = compare(result[0], arr[1], arr[2]);
-    //             result[2] = arr[3];
-    //             result[3] = compare(arr[6], arr[4], arr[5]);
-    //             result[4] = arr[6];
-    //             return result;
-            
-    //         case 6:
-    //             result[0] = arr[0];
-    //             result[1] = arr[1];
-    //             result[2] = compare(result[1], arr[2], arr[3]);
-    //             result[3] = arr[4];
-    //             result[4] = arr[5];
-    //             return result;
-
-    //         default:
-    //             return arr;
-            
-    //     }
-    // }
-
-    // const compress_digits_to_5 = (digit) => digit.map(compressTo5);
-
-    // const compressed_to_5 = compressed.map(compress_digits_to_5);
-
-    // const vert_transpile = compressed_to_5.map(digit => _.zip(...digit));
-
-    // const compressed_to_5_vertical = vert_transpile.map(compress_digits_to_5);
-
-    // const last_transpile = compressed_to_5_vertical.map(digit => _.zip(...digit));
-
-    // const transform_digit = (digit) => {
-    //     return digit.map(row => row.map(el => el === 0 ? 1 : 0)).reduce((a,b) => a.concat(b))
-    // }
-
-    // const final = last_transpile.map(transform_digit);
-
-    // const mapping = [
-    //     [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-    //     [1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
-    //     [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-    //     [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-    //     [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
-    //     [0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-    //     [1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-    //     [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-    //     [0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-    //     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1]
-    // ];
-
-    
-
-
-
-    // const result = final.map(final_row => {
-    //     const results = mapping.map(ideal_row => {
-    //             let result = 0;
-    //             final_row.forEach((item, i) => {
-    //                 result += item === ideal_row[i] ? 1 : 0
-    //             })
-
-    //             return result/25;
-    //     })
-
-    //     const indexOfMaxValue = results.indexOf(Math.max(...results));
-        
-    //     return indexOfMaxValue;
-    // });
-  
-    // console.log(result);
-
-
 
 }
