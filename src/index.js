@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test6.png";
+import digits from "./assets/images/test5.png";
 import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -99,7 +99,7 @@ canvas.onclick = () => {
     
     const trim_digit = digit => digit.filter(row => row.some(el => el === 1));
 
-    const getLines = digit => digit.map(row => (row.filter(el => el === 1).length / row.length)).map(item => item < 0.5 ? 0 : 1);
+    const getLines = digit => digit.map(row => (row.filter(el => el === 1).length / row.length)).map(item => item < 0.6 ? 0 : 1);
 
     const getVerticalLines = digit => digit.map(row => {
         const half = Math.floor(row.length / 2);
@@ -153,17 +153,7 @@ canvas.onclick = () => {
     const v_bottom_indexies = pressed_h_bottom.map(get_indexies);
 
 
-    
-    // console.log(h_indexies);
-    // console.log("And now");
-    // console.log(v_top_indexies);
-    // console.log(v_bottom_indexies);
-    
-    // const digit1_h = h_indexies[9];
 
-    const digit1_v_top = v_top_indexies[0];
-
-    const digit1_v_bottom = v_bottom_indexies[0];
 
     
 
@@ -215,4 +205,5 @@ canvas.onclick = () => {
     }));
 
     console.log(filled);
+
 }
