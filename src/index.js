@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test5.png";
+import digits from "./assets/images/test.png";
 import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -99,7 +99,7 @@ canvas.onclick = () => {
     
     const trim_digit = digit => digit.filter(row => row.some(el => el === 1));
 
-    const getLines = digit => digit.map(row => (row.filter(el => el === 1).length / row.length)).map(item => item < 0.6 ? 0 : 1);
+    const getLines = digit => digit.map(row => (row.filter(el => el === 1).length / row.length)).map(item => item < 0.5 ? 0 : 1);
 
     const getVerticalLines = digit => digit.map(row => {
         const half = Math.floor(row.length / 2);
@@ -134,9 +134,13 @@ canvas.onclick = () => {
 
     const vertical_lines_top = top_half_transpited.map(getLines);
     const vertical_lines_bottom = bottom_half_transpited.map(getLines);
+    const vertical_lines = trimmed_h.map(getLines);
 
-    //разбить строку пополам и проверить в каждой половине по отдельности
-    const compress_lines = row => row.map((item, i) => (item === row[i+1] && item === 1) ? 0 : item);
+    const compress_lines = row => row.map((item, i) => {
+        const flag1 = (item === row[i + 1] && item === 1);
+        const flag2 = (row[i + 1] === 0 && item === 1 && row[i - 1] === 0);
+        return flag1 || flag2 ? 0 : item
+    });
 
     const pressed_h = horizontal_lines.map(compress_lines);
 
@@ -167,11 +171,8 @@ canvas.onclick = () => {
     const check_left = val => val < 0.3;
     const check_center = val => val > 0.4 && val < 0.7;
     const check_right = val => val > 0.7;
-    const top_left_8 = val => val > 0.2 && val < 0.5;
+    const top_left_8 = val => val > 0.2 && val < 0.4;
     const check_top_8 = val => val > 0.6 && val < 0.9;
-
-
-
 
     let result = new Array(5).fill(1);
 
@@ -204,6 +205,22 @@ canvas.onclick = () => {
             }
     }));
 
-    console.log(filled);
+    const reducer = digit => digit.reduce((a, b) => a.concat(b));
+
+  
+    const mapping = {
+        0: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        1: [1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
+        2: [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+        3: [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        4: [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        5: [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        6: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        7: [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        8: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        9: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    }
+
+    const final = filled.map(reducer);
 
 }
