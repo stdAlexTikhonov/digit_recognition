@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test.png";
+import digits from "./assets/images/test6.png";
 import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -154,11 +154,42 @@ canvas.onclick = () => {
 
 
     
-    console.log(h_indexies);
-    console.log("And now");
-    console.log(v_top_indexies);
-    console.log(v_bottom_indexies);
+    // console.log(h_indexies);
+    // console.log("And now");
+    // console.log(v_top_indexies);
+    // console.log(v_bottom_indexies);
     
+    // const digit1_h = h_indexies[9];
+
+    const digit1_v_top = v_top_indexies[0];
+
+    const digit1_v_bottom = v_bottom_indexies[0];
+
     
+
+    const check_top_line = val => val < 0.3;
+    const check_bottom_line = val => val > 0.8;
+    const check_middle_line = val => val > 0.2 && val < 0.6;
+    const check_4_and_6 = val => val > 0.4 && val < 0.8;
+    const check_9 = val => val > 0.3 && val < 0.6;
+
+
+    let result = new Array(5).fill(1);
+
+
+    const filled = h_indexies.map(digit1_h => result.map((_, i) => {
+            switch (i) {
+                case 0:
+                    return digit1_h.some(check_top_line) ? new Array(5).fill(1) : new Array(5).fill(0);
+                case 2:
+                    return digit1_h.some(check_middle_line) || digit1_h.some(check_4_and_6) || digit1_h.some(check_9) ? new Array(5).fill(1) : new Array(5).fill(0);
+                case 4:
+                    return digit1_h.some(check_bottom_line) ? new Array(5).fill(1) : new Array(5).fill(0);
+                default:
+                    return new Array(5).fill(0);
+            }
+    }));
+
+    console.log(filled);
 
 }
