@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test4.png";
+import digits from "./assets/images/test6.png";
 import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -175,22 +175,38 @@ canvas.onclick = () => {
 
     //check verticals
     const check_left = val => val < 0.3;
-    const check_center = val => val > 0.3 && val < 0.6;
+    const check_center = val => val > 0.4 && val < 0.7;
     const check_right = val => val > 0.7;
-    const top_left_5_and_8 = val => val > 0.2 && val < 0.5;
-    const check_top_8 = val => val > 0.5 && val < 0.9;
+    const top_left_8 = val => val > 0.2 && val < 0.5;
+    const check_top_8 = val => val > 0.6 && val < 0.9;
 
 
 
 
     let result = new Array(5).fill(1);
 
-    const filled = h_indexies.map(digit1_h => result.map((_, i) => {
-            switch (i) {
+    const filled = h_indexies.map((digit1_h,i) => result.map((_, index) => {
+            switch (index) {
                 case 0:
                     return digit1_h.some(check_top_line) ? new Array(5).fill(1) : new Array(5).fill(0);
+                case 1: {
+                    const empty = new Array(5).fill(0);
+                    const digit = v_top_indexies[i];
+                    if (digit.some(check_left) || digit.some(top_left_8)) empty[0] = 1;
+                    if (digit.some(check_right) || digit.some(check_top_8)) empty[4] = 1;
+                    if (digit.some(check_center)) empty[2] = 1;
+                    return empty;
+                }
                 case 2:
                     return digit1_h.some(check_middle_line) || digit1_h.some(check_4_and_6) || digit1_h.some(check_9) ? new Array(5).fill(1) : new Array(5).fill(0);
+                case 3: {
+                    const empty = new Array(5).fill(0);
+                    const digit = v_bottom_indexies[i];
+                    if (digit.some(check_left)) empty[0] = 1;
+                    if (digit.some(check_right) ) empty[4] = 1;
+                    if (digit.some(check_center)) empty[2] = 1;
+                    return empty;
+                }
                 case 4:
                     return digit1_h.some(check_bottom_line) ? new Array(5).fill(1) : new Array(5).fill(0);
                 default:
@@ -199,6 +215,4 @@ canvas.onclick = () => {
     }));
 
     console.log(filled);
-    console.log(v_top_indexies);
-
 }
