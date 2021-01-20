@@ -1,7 +1,7 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test6.png";
+import digits from "./assets/images/test4.png";
 import _ from 'lodash';
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -173,9 +173,17 @@ canvas.onclick = () => {
     const check_4_and_6 = val => val > 0.4 && val < 0.8;
     const check_9 = val => val > 0.3 && val < 0.6;
 
+    //check verticals
+    const check_left = val => val < 0.3;
+    const check_center = val => val > 0.3 && val < 0.6;
+    const check_right = val => val > 0.7;
+    const top_left_5_and_8 = val => val > 0.2 && val < 0.5;
+    const check_top_8 = val => val > 0.5 && val < 0.9;
+
+
+
 
     let result = new Array(5).fill(1);
-
 
     const filled = h_indexies.map(digit1_h => result.map((_, i) => {
             switch (i) {
@@ -191,5 +199,6 @@ canvas.onclick = () => {
     }));
 
     console.log(filled);
+    console.log(v_top_indexies);
 
 }
