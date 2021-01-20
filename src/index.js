@@ -1,8 +1,9 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test.png";
-import _ from 'lodash';
+import digits from "./assets/images/test4.png";
+
+const zip = rows=>rows[0].map((_,c)=>rows.map(row=>row[c]))
 
 Object.defineProperty(Array.prototype, 'chunk', {
   value: function(chunkSize) {
@@ -58,7 +59,7 @@ canvas.onclick = () => {
     }
 
     //trim horizontally
-    const transpiled = _.zip(...vertical_trimed);
+    const transpiled = zip(vertical_trimed);
 
     let top_index = 0;
     let bottom_index = 0;
@@ -113,7 +114,7 @@ canvas.onclick = () => {
 
     const trimmed_h = transformed.map(trim_digit);
 
-    const transpiled_back = trimmed_h.map(digit => _.zip(...digit));
+    const transpiled_back = trimmed_h.map(digit => zip(digit));
 
     const trimmed_v = transpiled_back.map(trim_digit);
 
@@ -129,8 +130,8 @@ canvas.onclick = () => {
     
     const horizontal_lines = trimmed_v.map(getLines);
 
-    const top_half_transpited = top_half.map(digit => _.zip(...digit));
-    const bottom_half_transpited = bottom_half.map(digit => _.zip(...digit));
+    const top_half_transpited = top_half.map(digit => zip(digit));
+    const bottom_half_transpited = bottom_half.map(digit => zip(digit));
 
     const vertical_lines_top = top_half_transpited.map(getLines);
     const vertical_lines_bottom = bottom_half_transpited.map(getLines);
