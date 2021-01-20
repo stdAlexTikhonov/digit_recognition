@@ -134,12 +134,11 @@ canvas.onclick = () => {
 
     const vertical_lines_top = top_half_transpited.map(getLines);
     const vertical_lines_bottom = bottom_half_transpited.map(getLines);
-    const vertical_lines = trimmed_h.map(getLines);
 
     const compress_lines = row => row.map((item, i) => {
         const flag1 = (item === row[i + 1] && item === 1);
         const flag2 = (row[i + 1] === 0 && item === 1 && row[i - 1] === 0);
-        return flag1 || flag2 ? 0 : item
+        return flag1 ? 0 : item
     });
 
     const pressed_h = horizontal_lines.map(compress_lines);
@@ -157,9 +156,6 @@ canvas.onclick = () => {
     const v_bottom_indexies = pressed_h_bottom.map(get_indexies);
 
 
-
-
-    
 
     const check_top_line = val => val < 0.3;
     const check_bottom_line = val => val > 0.8;
@@ -184,6 +180,7 @@ canvas.onclick = () => {
                     const empty = new Array(5).fill(0);
                     const digit = v_top_indexies[i];
                     if (digit.some(check_left) || digit.some(top_left_8)) empty[0] = 1;
+
                     if (digit.some(check_right) || digit.some(check_top_8)) empty[4] = 1;
                     if (digit.some(check_center)) empty[2] = 1;
                     return empty;
@@ -208,19 +205,36 @@ canvas.onclick = () => {
     const reducer = digit => digit.reduce((a, b) => a.concat(b));
 
   
-    const mapping = {
-        0: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-        1: [1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
-        2: [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-        3: [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-        4: [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        5: [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-        6: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-        7: [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        8: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-        9: [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    }
+    const mapping = [
+        [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    ]
 
     const final = filled.map(reducer);
+
+    const magic = final.map(final_row => {
+        const results = mapping.map(ideal_row => {
+                let result = 0;
+                final_row.forEach((item, i) => {
+                    result += item === ideal_row[i] ? 1 : 0
+                })
+
+                return result/25;
+        })
+
+        const indexOfMaxValue = results.lastIndexOf(Math.max(...results));
+        
+        return indexOfMaxValue;
+    });
+
+    console.log(magic);
 
 }
