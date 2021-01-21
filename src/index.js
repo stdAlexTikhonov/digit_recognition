@@ -1,7 +1,17 @@
 //width: 460px
 //height: 470px
 import "./styles/styles.css"
-import digits from "./assets/images/test4.png";
+import digits from "./assets/images/test.png";
+import digits2 from "./assets/images/test2.png";
+import digits3 from "./assets/images/test3.png";
+import digits4 from "./assets/images/test4.png";
+import digits5 from "./assets/images/test5.png";
+import digits6 from "./assets/images/test6.png";
+
+const images = [
+    digits, digits2, digits3, digits4, digits5, digits6
+];
+
 
 const zip = rows=>rows[0].map((_,c)=>rows.map(row=>row[c]))
 
@@ -30,6 +40,28 @@ base_image.onload = function () {
     context.drawImage(base_image, 0, 0);
 }
 
+const select_box = document.createElement('select');
+
+for (let i = 0; i < 6; i++) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.text = 'test ' + i;
+
+    select_box.appendChild(option);
+}
+
+
+
+document.body.appendChild(select_box);
+
+select_box.onchange = (e) => {
+    const val = e.target.value;
+    base_image.src = images[val];
+    canvas.width = base_image.width;
+    canvas.height = base_image.height;
+    context.drawImage(base_image, 0, 0);
+}
+
     
 canvas.onclick = () => {
     const a = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -47,16 +79,6 @@ canvas.onclick = () => {
     
     const vertical_trimed = split_by_rows.filter(row => row.some(elem => elem === 0));
 
-
-    
-
-    const compress = (row) => {
-        const chuncked = row.chunk(2);
-        return chuncked.map(elems => {
-            let zerros = elems.filter(elem => elem === 0).length;
-            return zerros >= 1 ? 0 : 255;
-        });
-    }
 
     //trim horizontally
     const transpiled = zip(vertical_trimed);
@@ -130,7 +152,11 @@ canvas.onclick = () => {
 
     const compress_lines = row => row.map((item, i) => {
         const flag1 = (item === row[i + 1] && item === 1);
-        const flag2 = (row[i + 1] === 0 && item === 1 && row[i - 1] === 0);
+        return flag1 ? 0 : item
+    });
+
+    const compress_lines_right = row => row.map((item, i) => {
+        const flag1 = (item === row[i - 1] && item === 1);
         return flag1 ? 0 : item
     });
 
@@ -138,6 +164,21 @@ canvas.onclick = () => {
 
     const pressed_h_top = vertical_lines_top.map(compress_lines);
     const pressed_h_bottom = vertical_lines_bottom.map(compress_lines);
+
+    
+    
+    const mid_index = vertical_lines_top[0].length / 2;
+
+
+    const vertical_lines_top_left = vertical_lines_top.map(digit => digit.slice(0, mid_index));
+    const vertical_lines_top_right = vertical_lines_top.map(digit => digit.slice(mid_index));
+    
+
+    const pressed_h_top_left = vertical_lines_top_left.map(compress_lines);
+    const pressed_h_top_right = vertical_lines_top_right.map(compress_lines);
+
+
+    const is_one = pressed_h_top_left.map(item => item[item.length - 1] === 1);
 
 
     const get_indexies = row => row.map((item, i) => (item === 1) ? (i === 0 ? 0.01 : i/row.length) : null).filter(item => item).map(item => parseFloat(item.toFixed(1)));
@@ -148,7 +189,7 @@ canvas.onclick = () => {
     const v_top_indexies = pressed_h_top.map(get_indexies);
     const v_bottom_indexies = pressed_h_bottom.map(get_indexies);
 
-
+    
 
     const check_top_line = val => val < 0.3;
     const check_bottom_line = val => val > 0.8;
@@ -171,11 +212,12 @@ canvas.onclick = () => {
                     return digit1_h.some(check_top_line) ? new Array(5).fill(1) : new Array(5).fill(0);
                 case 1: {
                     const empty = new Array(5).fill(0);
-                    const digit = v_top_indexies[i];
-                    if (digit.some(check_left) || digit.some(top_left_8)) empty[0] = 1;
-
-                    if (digit.some(check_right) || digit.some(check_top_8)) empty[4] = 1;
-                    if (digit.some(check_center)) empty[2] = 1;
+                    const is_left = pressed_h_top_left[i].some(item => item === 1);
+                    const is_right = pressed_h_top_right[i].some(item => item === 1);
+                    const is_center = is_one[i];
+                    if (is_left) empty[0] = 1;
+                    if (is_right) empty[4] = 1;
+                    if (is_center && is_left && is_right) empty[2] = 1;
                     return empty;
                 }
                 case 2:
@@ -228,6 +270,6 @@ canvas.onclick = () => {
         return indexOfMaxValue;
     });
 
-    console.log(magic);
+    console.log(magic.join(''));
 
 }
