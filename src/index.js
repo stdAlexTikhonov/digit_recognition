@@ -102,14 +102,6 @@ canvas.onclick = () => {
 
     const getLines = digit => digit.map(row => (row.filter(el => el === 1).length / row.length)).map(item => item < 0.5 ? 0 : 1);
 
-    const getVerticalLines = digit => digit.map(row => {
-        const half = Math.floor(row.length / 2);
-        const top_half = row.slice(0, half);
-        const bottom_half = row.slice(half);
-        return (row.filter(el => el === 1).length / row.length)
-    });
-    // const trimmed_digits = digits.map(trim_digit);
-
     const transformed = digits.map(transform_digit);
 
     const trimmed_h = transformed.map(trim_digit);
